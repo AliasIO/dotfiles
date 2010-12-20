@@ -1,0 +1,66 @@
+background yes
+use_xft yes
+xftfont Droid Sans:size=9
+xftalpha 1
+update_interval 4.0
+total_run_times 0
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 200 500
+maximum_width 220
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+default_color white
+default_shade_color black
+default_outline_color black
+alignment top_right
+gap_x 20
+gap_y 20
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale no
+
+
+TEXT
+Uptime ${alignr}${uptime}
+
+
+CPU $alignr ${cpu cpu0}% ${cpugraph cpu0 10,100}
+$alignr ${cpu cpu1}% ${cpugraph cpu1 10,100}
+$alignr ${cpu cpu2}% ${cpugraph cpu2 10,100}
+$alignr ${cpu cpu3}% ${cpugraph cpu3 10,100}
+
+MEM ${alignr}$memperc% ${membar 8,100}
+swap ${alignr}$swapperc% ${swapbar 8,100}
+
+
+Disk I/O $alignr ${diskio} ${diskiograph 10,100}
+
+/ ${alignr}${fs_used_perc /}% ${fs_bar 8,100 /}
+home ${alignr}${fs_used_perc /home}% ${fs_bar 8,100 /home}
+backup ${alignr}${fs_used_perc /mnt/backup}% ${fs_bar 8,100 /mnt/backup}
+movies ${alignr}${fs_used_perc /mnt/movies}% ${fs_bar 8,100 /mnt/movies}
+sandisk ${alignr}${fs_used_perc /mnt/sandisk}% ${fs_bar 8,100 /mnt/sandisk}
+
+
+$processes processes $alignr $running_processes running
+
+Name $alignr PID    CPU
+
+${top name 1} $alignr ${top pid 1} ${top cpu 1}
+${top name 2} $alignr ${top pid 2} ${top cpu 2}
+${top name 3} $alignr ${top pid 3} ${top cpu 3}
+${top name 4} $alignr ${top pid 4} ${top cpu 4}
+${top name 5} $alignr ${top pid 5} ${top cpu 5}
+
+
+WLAN (${wireless_link_qual_perc wlan0}%) ${alignr}IP ${addr wlan0}
+
+In $alignr ${downspeed wlan0}kb/s ${downspeedgraph wlan0 10,100}
+Out $alignr ${upspeed wlan0}kb/s ${upspeedgraph wlan0 10,100}
