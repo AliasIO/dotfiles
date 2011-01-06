@@ -228,7 +228,7 @@ endfunction
 map <Leader>v ;e ~/.vimrc<CR>
 
 "Delete all buffers
-map <silent> <Leader>bd ;bd *<CR>
+map <silent> <Leader>bd ;1,999 bd<CR>
 
 "Save file and check for PHP syntax errors
 map <F4>        ;w\|!php -l %<CR>
