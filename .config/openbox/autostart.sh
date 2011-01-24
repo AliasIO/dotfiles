@@ -61,7 +61,7 @@ gvim &
 thunar &
 
 ## Browser
-(sleep 5s && iceweasel4) &
+(sleep 5s && /home/elbertf/apps/firefox/firefox) &
 
 ## Enable passwordless login
 (sleep 10s && ssh-add) &
