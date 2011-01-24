@@ -1,0 +1,27 @@
+out_to_x no   
+background no 
+no_buffers yes
+out_to_console yes
+double_buffer yes
+own_window yes                                                                             
+own_window_type override
+own_window_transparent yes
+update_interval 1 
+uppercase no
+use_spacer none
+total_run_times 0
+
+TEXT
+CPU <fc=\#F90>${cpu cpu1}%</fc> <fc=\#9F0>${cpu cpu2}%</fc> <fc=\#09F>${cpu cpu3}%</fc> <fc=\#F09>${cpu cpu4}%</fc> - \
+MEM <fc=\#F90>$memperc%</fc> - \
+SWAP <fc=\#F90>$swapperc%</fc> - \
+DISK USAGE <fc=\#F90>/ ${fs_used_perc /}%</fc> \
+<fc=\#9F0>/BOOT ${fs_used_perc /boot}%</fc> \
+<fc=\#09F>/HOME ${fs_used_perc /home}%</fc> \
+<fc=\#F09>/MNT/BACKUP ${fs_used_perc /mnt/backup}%</fc> \
+<fc=\#0F9>/MNT/MOVIES ${fs_used_perc /mnt/movies}%</fc> \
+<fc=\#90F>/MNT/SANDISK ${fs_used_perc /mnt/sandisk}%</fc> - \
+DISK IO <fc=\#F90>[${diskio}]</fc> - \
+WLAN (${wireless_link_qual_perc wlan0}%) <fc=\#F90>IN [${downspeed wlan0}]</fc> <fc=\#9F0>OUT [${upspeed wlan0}]</fc> - \
+TOP CPU <fc=\#F90>[${top name 1}]</fc> - \
+TOP MEM <fc=\#F90>[${top_mem name 1}]</fc>
