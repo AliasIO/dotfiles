@@ -3,7 +3,7 @@ Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
        , fgColor = "white"
        , position = Top
        , lowerOnStart = False
-       , commands = [ Run Com "conky -c ~/.conkyclirc -i1 -q" ["&"] "conky" 50
+       , commands = [ Run Com "conky -c ~/.conkyclirc -i1 -q" ["&"] "conky" 30
 	                -- , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                     -- , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                     -- , Run Memory ["-t","Mem: <usedratio>%"] 10
