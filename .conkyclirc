@@ -9,7 +9,7 @@ own_window_transparent yes
 update_interval 1 
 uppercase no
 use_spacer none
-total_run_times 0
+total_run_times 1
 
 TEXT
 CPU <fc=\#F90>${cpu cpu1}%</fc> <fc=\#9F0>${cpu cpu2}%</fc> <fc=\#09F>${cpu cpu3}%</fc> <fc=\#F09>${cpu cpu4}%</fc> \
