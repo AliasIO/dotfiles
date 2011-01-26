@@ -1,4 +1,4 @@
--- Imports.
+-- Imports
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -15,11 +15,14 @@ myManageHook = composeAll . concat $
     [ [className =? c --> doFloat | c <- myFloats]
     , [title     =? t --> doFloat | t <- myOtherFloats]
     , [resource  =? r --> doFloat | r <- myIgnores]
-    , [className =? "Firefox"   --> doF (W.shift "2:web")]
-    , [className =? "Minefield" --> doF (W.shift "2:web")]
-    , [className =? "Iceweasel" --> doF (W.shift "2:web")]
-    , [className =? "Gvim"      --> doF (W.shift "3:edit")]
-    , [className =? "Vlc"       --> doF (W.shift "4:media")]
+    , [className =? "Firefox"      --> doF (W.shift "2-WEB")]
+    , [className =? "Minefield"    --> doF (W.shift "2-WEB")]
+    , [className =? "Iceweasel"    --> doF (W.shift "2-WEB")]
+    , [className =? "Gvim"         --> doF (W.shift "3-EDIT")]
+    , [className =? "Vlc"          --> doF (W.shift "4-MEDIA")]
+    , [title     =? "Alsa Mixer"   --> doF (W.shift "4-MEDIA")]
+    , [className =? "Transmission" --> doF (W.shift "6-PIRATE")]
+    , [className =? "Nicotine"     --> doF (W.shift "6-PIRATE")]
     ]
     where
     myFloats      = ["Gimp", "gimp"]
@@ -27,19 +30,18 @@ myManageHook = composeAll . concat $
     myIgnores     = []
 
 -- The main function.
---main = do
---	spawn "sh ~/.xmonad/autostart.sh"
---	xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 main = do
 	spawn "sh ~/.xmonad/autostart.sh"
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
 	xmonad $ defaultConfig
-		{ workspaces = ["1:cli","2:web","3:edit","4:media","5","6","7","8","9","0","-","="]
+		{ workspaces = ["1-CLI","2-WEB","3-EDIT","4-MEDIA","5","6-PIRATE","7","8","9","0","-","="]
 		, manageHook = myManageHook <+> manageHook defaultConfig -- uses default too
 		, layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
 		, logHook    = dynamicLogWithPP $ xmobarPP
-			{ ppOutput = hPutStrLn xmproc
-			, ppTitle  = xmobarColor "green" "" . shorten 50
+			{ ppOutput  = hPutStrLn xmproc
+			, ppCurrent = xmobarColor "#F09" "" . wrap "[" "]"
+			, ppSep     = " - "
+			, ppTitle   = xmobarColor "#9F0" "" . shorten 50
 			}
 		, modMask    = mod4Mask
         } `additionalKeys`
@@ -48,16 +50,7 @@ main = do
 		, ((mod4Mask, xK_m),     spawn "vlc")
 		, ((mod4Mask, xK_t),     spawn "terminator")
 		, ((0,        xK_Print), spawn "scrot")
+		, ((0,        xK_F11),   spawn "amixer --quiet set Master 3-")
+		, ((0,        xK_F12),   spawn "amixer --quiet set Master 3+")
+		, ((mod4Mask, xK_s),     spawn "amixer --quiet set Master toggle")
 		]
-
--- Command to launch the bar.
---myBar = "xmobar"
-
--- Custom PP, configure it as you like. It determines what's being written to the bar.
---myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
-
--- Keybinding to toggle the gap for the bar.
---toggleStrutsKey XConfig { XMonad.modMask = modMask } = (modMask, xK_b)
-
--- Main configuration, override the defaults to your liking.
---myConfig = defaultConfig { modMask = mod4Mask }

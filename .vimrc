@@ -38,6 +38,7 @@ map n nzz
 
 "{{{ INDENTATION OPTIONS
 set autoindent                         "Auto-indent new lines
+set nocindent                          "Use smartindent instead
 set noexpandtab                        "Use tabs, not spaces
 set shiftwidth=4                       "Tab width for indentation
 set smartindent                        "Smart indentation
@@ -154,7 +155,7 @@ endfunction
 colorscheme custom_mono                "Use custom color scheme
 
 if has("gui_running")
-	set lines=45 columns=180           "Set window size
+	"set lines=45 columns=180           "Set window size
 	set guifont=DejaVu\ Sans\ Mono\ 9
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
@@ -185,27 +186,10 @@ if has("autocmd")
 endif
 "}}}
 
-"{{{ CTAGS OPTIONS
-set tags=./tags;$HOME                  "Work up the tree until a tags file is found
-
-let Tlist_Ctags_Cmd          = "/usr/bin/ctags"
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Show_One_File      = 1
-let Tlist_Exit_OnlyWindow    = 1
-let Tlist_WinWidth           = 30
-
-map <F6> ;TlistToggle<CR>
-map <F8> ;!ctags -R -h ".php.inc.module" --exclude=".git" --totals=yes --fields=+iaS --PHP-kinds=+cf
-	\ --regex-PHP='/abstract class ([^ ]*)/\1/c/'
-	\ --regex-PHP='/interface ([^ ]*)/\1/c/'
-	\ --regex-PHP="/(public \|static \|abstract \|protected \|private )+function ([^ (]*)/\2/f/"
-	\ .<Enter>
-"}}}
-
 "{{{ NERDTREE OPTIONS
 let NERDTreeQuitOnOpen=1
 
-map <F5> ;NERDTreeToggle<CR>
+map <F4> ;NERDTreeToggle<CR>
 "}}}
 
 "{{{ CUSTOM COMMANDS & MAPPINGS
@@ -213,25 +197,11 @@ map <F5> ;NERDTreeToggle<CR>
 noremap ; :
 noremap : ;
 
-"Use tab for autocomplete but not when indenting
-"inoremap <tab> <C-R>=Tab_Or_Complete()<CR>
-
-function! Tab_Or_Complete()
-	if col('.') > 1 && strpart(getline('.'), col('.') - 3, 4) =~ '\w'
-		return "\<C-n>"
-	else
-		return "\<Tab>"
-	endif
-endfunction
-
 "Edit .vimrc
 map <Leader>v ;e ~/.vimrc<CR>
 
 "Delete all buffers
 map <silent> <Leader>bd ;1,999 bd<CR>
-
-"Save file and check for PHP syntax errors
-map <F4>        ;w\|!php -l %<CR>
 
 "Easier tab navigation
 nnoremap <silent> <C-Right> :tabnext<CR>

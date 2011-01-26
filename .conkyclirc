@@ -12,11 +12,11 @@ use_spacer none
 total_run_times 0
 
 TEXT
-cpu <fc=\#F90>${cpu cpu1}%</fc> <fc=\#9F0>${cpu cpu2}%</fc> <fc=\#09F>${cpu cpu3}%</fc> <fc=\#F09>${cpu cpu4}%</fc> : \
-mem <fc=\#F90>$memperc%</fc> : \
-du <fc=\#F90>/ ${fs_used_perc /}%</fc> \
-<fc=\#9F0>boot ${fs_used_perc /boot}%</fc> \
-<fc=\#09F>home ${fs_used_perc /home}%</fc> \
-<fc=\#F09>backup ${fs_used_perc /mnt/backup}%</fc> \
-<fc=\#0F9>movies ${fs_used_perc /mnt/movies}%</fc> \
-<fc=\#90F>sandisk ${fs_used_perc /mnt/sandisk}%</fc> :
+CPU <fc=\#F90>${cpu cpu1}%</fc> <fc=\#9F0>${cpu cpu2}%</fc> <fc=\#09F>${cpu cpu3}%</fc> <fc=\#F09>${cpu cpu4}%</fc> \
+MEM <fc=\#F90>$memperc%</fc> \
+DU <fc=\#F90>/ ${fs_used_perc /}%</fc> \
+<fc=\#9F0>/boot ${fs_used_perc /boot}%</fc> \
+<fc=\#09F>/home ${fs_used_perc /home}%</fc> \
+<fc=\#F09>/mnt/backup ${fs_used_perc /mnt/backup}%</fc> \
+<fc=\#0F9>/mnt/movies ${fs_used_perc /mnt/movies}%</fc> \
+<fc=\#90F>/mnt/sandisk ${fs_used_perc /mnt/sandisk}%</fc>

@@ -4,15 +4,16 @@ Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
        , position = Top
        , lowerOnStart = True
        , commands = [ Run Com "conky -c ~/.conkyclirc -i1 -q" ["&"] "conky" 30
+					, Run Com "~/.xmonad/volume-bars.sh" [] "volume" 10
 	                -- , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
-                    -- , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                    -- , Run Cpu ["-L","3","-H","80","--normal","#9F0","--high","red"] 10
                     -- , Run Memory ["-t","Mem: <usedratio>%"] 10
                     -- , Run Swap [] 10
                     -- , Run Com "uname" ["-s","-r"] "" 36000
 					, Run StdinReader
-	    			, Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+	    			, Run Date "%b %_d %H:%M:%S" "date" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %conky% %date%"
+       , template = "%StdinReader% }{ %conky% VOL <fc=#F09>%volume%</fc> %date%"
        }

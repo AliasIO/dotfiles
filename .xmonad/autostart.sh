@@ -9,15 +9,21 @@ xloadimage -onroot -center -border black ~/images/wallpapers/spaceinvaders.gif &
 # Enable passwordless SSH authentication
 ssh-agent &
 
-terminator &
+terminator -e htop -T "HTOP" &
 
-# Start Firefox
+(sleep 1s && terminator) &
+
 ~/apps/firefox/firefox &
 
-# Start Gvim 
 gvim &
 
-vlc &
+transmission &
+
+nicotine &
+
+terminator -e alsamixer -T "Alsa Mixer" &
+
+(sleep 1s && vlc) &
 
 ## cb-fortune - have Statler say a little adage
-(sleep 120s && cb-fortune) &
+#(sleep 120s && cb-fortune) &
