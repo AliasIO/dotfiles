@@ -2,6 +2,7 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Layout.NoBorders
@@ -12,20 +13,28 @@ import qualified XMonad.StackSet as W -- to shift and float windows
 main = do
 	spawn "sh ~/.xmonad/autostart.sh"
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-	xmonad $ defaultConfig
+	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
 		, manageHook = myManageHook <+> manageHook defaultConfig -- uses default too
 		, layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
 		, logHook    = dynamicLogWithPP $ xmobarPP
-			{ ppOutput  = hPutStrLn xmproc
-			, ppCurrent = xmobarColor "#F09" "" . wrap "[" "]"
-			, ppSep     = " - "
-			, ppTitle   = xmobarColor "#9F0" "" . shorten 50
+			{ ppCurrent         = xmobarColor "#F09" "" . wrap "[" "]"
+			, ppHidden          = xmobarColor "#FFF" ""
+			, ppHiddenNoWindows = xmobarColor "#444" ""
+			, ppLayout          = xmobarColor "#FFF" ""
+			, ppOutput          = hPutStrLn xmproc
+			, ppSep             = " | "
+			, ppTitle           = xmobarColor "#9F0" "" . shorten 50
+			, ppUrgent          = xmobarColor "#F90" "" . wrap "*" "*"
+			, ppVisible         = xmobarColor "#FFF" ""
+			, ppWsSep           = " "
 			}
-		, modMask    = mod4Mask
+		, modMask            = mod4Mask
+		, normalBorderColor  = "#444"
+		, focusedBorderColor = "#FFF"
         } `additionalKeys` myKeys
 
-myWorkspaces = ["1-CLI","2-WEB","3-EDIT","4-MEDIA","5","6-PIRATE","7","8","9","0","-","="]
+myWorkspaces = ["1:CLI","2:WEB","3:CODE","4:MEDIA","5:FTP","6:PIRATE","7","8","9","0"]
 
 -- Organize windows
 myManageHook :: ManageHook
@@ -34,15 +43,15 @@ myManageHook = composeAll . concat $
     [ [className =? c --> doFloat | c <- myFloats]
     , [title     =? t --> doFloat | t <- myOtherFloats]
     , [resource  =? r --> doFloat | r <- myIgnores]
-    , [className =? "Firefox"              --> doF (W.shift "2-WEB")]
-    , [className =? "Minefield"            --> doF (W.shift "2-WEB")]
-    , [className =? "Iceweasel"            --> doF (W.shift "2-WEB")]
-    , [className =? "Gvim"                 --> doF (W.shift "3-EDIT")]
-    , [className =? "Vlc"                  --> doF (W.shift "4-MEDIA")]
-    , [title     =? "Alsa Mixer"           --> doF (W.shift "4-MEDIA")]
-    , [title     =? "music - File Manager" --> doF (W.shift "4-MEDIA")]
-    , [className =? "Transmission"         --> doF (W.shift "6-PIRATE")]
-    , [className =? "Nicotine"             --> doF (W.shift "6-PIRATE")]
+    , [className =? "Firefox"              --> doF (W.shift "2:WEB")]
+    , [className =? "Minefield"            --> doF (W.shift "2:WEB")]
+    , [className =? "Iceweasel"            --> doF (W.shift "2:WEB")]
+    , [className =? "Gvim"                 --> doF (W.shift "3:CODE")]
+    , [className =? "Vlc"                  --> doF (W.shift "4:MEDIA")]
+    , [title     =? "Alsa Mixer"           --> doF (W.shift "4:MEDIA")]
+    , [title     =? "music - File Manager" --> doF (W.shift "4:MEDIA")]
+    , [className =? "Transmission"         --> doF (W.shift "6:PIRATE")]
+    , [className =? "Nicotine"             --> doF (W.shift "6:PIRATE")]
     ]
     where
     myFloats      = ["Gimp", "gimp"]

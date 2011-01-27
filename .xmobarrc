@@ -1,6 +1,6 @@
-Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
-       , bgColor = "black"
-       , fgColor = "white"
+Config { font     = "xft:MonteCarloFixed12"
+       , bgColor  = "#000"
+       , fgColor  = "#444"
        , position = Top
        , lowerOnStart = True
        , commands = [ Run Com "conky -c ~/.conkyclirc -i1 -q" ["&"] "conky" 30
@@ -13,7 +13,7 @@ Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
 					, Run StdinReader
 	    			, Run Date "%b %_d %H:%M:%S" "date" 10
                     ]
-       , sepChar = "%"
+       , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %conky% VOL <fc=#F09>%volume%</fc> %date%"
+       , template = "%StdinReader% }{ %conky% <fc=#FFF>VOL</fc> <fc=#F09>%volume%</fc> | <fc=#FFF>%date%</fc>"
        }
