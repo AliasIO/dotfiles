@@ -61,6 +61,7 @@ myManageHook = composeAll . concat $
 -- Key bindings
 myKeys =
 	[ ((mod4Mask, xK_w),     spawn "~/apps/firefox/firefox")
+	, ((mod4Mask, xK_e),     spawn "gvim")
 	, ((mod4Mask, xK_f),     spawn "thunar")
 	, ((mod4Mask, xK_g),     spawn "gimp")
 	, ((mod4Mask, xK_m),     spawn "vlc")

@@ -44,6 +44,8 @@ set shiftwidth=4                       "Tab width for indentation
 set smartindent                        "Smart indentation
 set tabstop=4                          "Tab width
 
+set list                               "List invisible characters
+set listchars=tab:▸\ 
 filetype indent off
 
 "Prevent smartindent from removing leading whitespace before #
