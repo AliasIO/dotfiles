@@ -67,8 +67,8 @@ myKeys =
 	, ((mod4Mask, xK_m),     spawn "vlc")
 	, ((mod4Mask, xK_t),     spawn "terminator")
 	, ((0,        xK_Print), spawn "scrot")
-	, ((0,        xK_F11),   spawn "amixer --quiet set Master 3-")
-	, ((0,        xK_F12),   spawn "amixer --quiet set Master 3+")
+	, ((mod4Mask, xK_F11),   spawn "amixer --quiet set Master 3-")
+	, ((mod4Mask, xK_F12),   spawn "amixer --quiet set Master 3+")
 	, ((mod4Mask, xK_s),     spawn "amixer --quiet set Master toggle")
 	, ((mod4Mask, xK_b),     sendMessage ToggleStruts)
 	]
