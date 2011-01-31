@@ -24,7 +24,7 @@ main = do
 			, ppLayout          = xmobarColor "#FFF" ""
 			, ppOutput          = hPutStrLn xmproc
 			, ppSep             = " | "
-			, ppTitle           = xmobarColor "#9F0" "" . shorten 50
+			, ppTitle           = xmobarColor "#9F0" "" . shorten 30
 			, ppUrgent          = xmobarColor "#F90" "" . wrap "*" "*"
 			, ppVisible         = xmobarColor "#FFF" ""
 			, ppWsSep           = " "
@@ -60,17 +60,20 @@ myManageHook = composeAll . concat $
 
 -- Key bindings
 myKeys =
-	[ ((mod4Mask, xK_w),     spawn "~/apps/firefox/firefox")
-	, ((mod4Mask, xK_e),     spawn "gvim")
-	, ((mod4Mask, xK_f),     spawn "thunar")
-	, ((mod4Mask, xK_g),     spawn "gimp")
-	, ((mod4Mask, xK_m),     spawn "vlc")
-	, ((mod4Mask, xK_t),     spawn "terminator")
-	, ((0,        xK_Print), spawn "scrot")
-	, ((mod4Mask, xK_F11),   spawn "amixer --quiet set Master 3-")
-	, ((mod4Mask, xK_F12),   spawn "amixer --quiet set Master 3+")
-	, ((mod4Mask, xK_s),     spawn "amixer --quiet set Master toggle")
-	, ((mod4Mask, xK_b),     sendMessage ToggleStruts)
+	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
+	, ((mod4Mask, xK_e),       spawn "gvim")
+	, ((mod4Mask, xK_f),       spawn "thunar")
+	, ((mod4Mask, xK_g),       spawn "gimp")
+	, ((mod4Mask, xK_m),       spawn "vlc")
+	, ((mod4Mask, xK_t),       spawn "terminator")
+	, ((0,        xK_Print),   spawn "scrot")
+	, ((mod4Mask, xK_F11),     spawn "amixer --quiet set Master 3-")
+	, ((mod4Mask, xK_F12),     spawn "amixer --quiet set Master 3+")
+	, ((mod4Mask, xK_s),       spawn "amixer --quiet set Master toggle")
+	, ((0,        0x1008ff11), spawn "amixer --quiet set Master 3-")
+	, ((0,        0x1008ff13), spawn "amixer --quiet set Master 3+")
+	, ((0,        0x1008ff12), spawn "amixer --quiet set Master toggle")
+	, ((mod4Mask, xK_b),       sendMessage ToggleStruts)
 	]
     ++
     [ ((m .|. mod4Mask, k), windows $ f i) | (i, k) <- zip myWorkspaces numPadKeys

@@ -25,7 +25,7 @@ set wildmenu                           "Show wild menu
 
 syntax on                              "Turn on syntax highlighting
 
-"{{{ SEARCH OPTIONS
+"SEARCH OPTIONS
 set ignorecase                         "Case insensitive search
 set incsearch                          "Incremental search
 set hlsearch                           "Highlight search
@@ -34,9 +34,8 @@ set smartcase                          "Case sensitive search if upper case char
 "Center page on the next/previous search
 map N Nzz
 map n nzz
-"}}}
 
-"{{{ INDENTATION OPTIONS
+"INDENTATION OPTIONS
 set autoindent                         "Auto-indent new lines
 set nocindent                          "Use smartindent instead
 set noexpandtab                        "Use tabs, not spaces
@@ -59,29 +58,27 @@ if has("autocmd")
 	autocmd Filetype ruby setlocal tabstop=2 shiftwidth=2
 
 	"Disable auto-comment
-	autocmd FileType * setlocal formatoptions-=orc
+	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 endif
-"}}}
 
-"{{{ PHP OPTIONS
+"PHP OPTIONS
 let php_sql_query    = 0
 let phpHtmlInStrings = 1
 let php_noShortTags  = 1
 
 "Load filetype specific plugins
 filetype plugin on
-"}}}
 
-"{{{ CSS OPTIONS
+"CSS OPTIONS
 if has("autocmd")
 	"Automatically fix some CSS formatting issues
 	autocmd BufWritePre *.css silent call FormatCSS()
 
 	function! FormatCSS()
-		normal mz
+		normal Mmz
 
-		"Hex color codes to uppercase
-		:%s/\(.\+:.*\)\(#[0-9a-f]\{3,6\}\)/\1\U\2/e
+		"Hex color codes to lowercase
+		:%s/\(.\+:.*\)\(#[0-9a-f]\{3,6\}\)/\1\L\2/e
 
 		"Text before colon to lowercase
 		:%s/\([^:]\+\)\(:.\+;\)/\L\1\E\2/e
@@ -92,9 +89,8 @@ if has("autocmd")
 		normal `z
 	endfunction
 endif
-"}}}
 
-"{{{ GUI OPTIONS
+"GUI OPTIONS
 set laststatus=1                       "Hide the status unless window is split
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
@@ -170,9 +166,8 @@ else
 	set nocursorline                   "Don't highlight the current line
 	set nospell                        "Disable spell checking
 endif
-"}}}
 
-"{{{ MISC
+"MISC
 if has("autocmd")
 	"Restore cursor position when re-opening file
 	autocmd BufReadPost * normal `"
@@ -180,21 +175,19 @@ if has("autocmd")
 	"Drupal file extensions
 	autocmd BufRead,BufNewFile *.module,*.install set filetype=php
 
-	"Remove trailing whitespace on save
-	autocmd BufWritePre *.php,*.js,*.html,*.css :%s/\s\+$//e
+	"Remove trailing whitespace and DOS line endings on save
+	autocmd BufWritePre *.php,*.js,*.html,*.css :%s/\(\s\|\)\+$//e
 	
 	"Apply .vimrc changes on save
 	autocmd BufWritePost .vimrc source $MYVIMRC
 endif
-"}}}
 
-"{{{ NERDTREE OPTIONS
+"NERDTREE OPTIONS
 let NERDTreeQuitOnOpen=1
 
 map <F4> ;NERDTreeToggle<CR>
-"}}}
 
-"{{{ CUSTOM COMMANDS & MAPPINGS
+"CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
 noremap ; :
 noremap : ;
@@ -234,4 +227,3 @@ imap <Home>     <nop>
 imap <End>      <nop>
 imap <PageUp>   <nop>
 imap <PageDown> <nop>
-"}}}

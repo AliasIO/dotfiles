@@ -12,7 +12,8 @@ use_spacer none
 total_run_times 2
 
 TEXT
-<fc=\#FFF>WLAN</fc> <fc=\#F90>${downspeed wlan0}</fc> <fc=\#9F0>${upspeed wlan0}</fc> | \
+<fc=\#FFF>WLAN</fc> <fc=\#F90>[${downspeed wlan0}]</fc> <fc=\#9F0>[${upspeed wlan0}]</fc> | \
+<fc=\#FFF>IO</fc> <fc=\#F90>[${diskio}]</fc> | \
 <fc=\#FFF>CPU</fc> <fc=\#F90>${cpu cpu1}%</fc> <fc=\#9F0>${cpu cpu2}%</fc> <fc=\#09F>${cpu cpu3}%</fc> <fc=\#F09>${cpu cpu4}%</fc> | \
 <fc=\#FFF>MEM</fc> <fc=\#F90>$memperc%</fc> | \
 <fc=\#FFF>DU</fc> <fc=\#F90>ROOT ${fs_used_perc /}%</fc> \
