@@ -25,6 +25,8 @@ set wildmenu                           "Show wild menu
 
 syntax on                              "Turn on syntax highlighting
 
+call pathogen#runtime_append_all_bundles()
+
 "SEARCH OPTIONS
 set ignorecase                         "Case insensitive search
 set incsearch                          "Incremental search
@@ -172,6 +174,9 @@ if has("autocmd")
 	"Restore cursor position when re-opening file
 	autocmd BufReadPost * normal `"
 	
+	"Less files
+	autocmd BufRead,BufNewFile *.less set filetype=css
+	
 	"Drupal file extensions
 	autocmd BufRead,BufNewFile *.module,*.install set filetype=php
 
@@ -183,14 +188,24 @@ if has("autocmd")
 endif
 
 "NERDTREE OPTIONS
-let NERDTreeQuitOnOpen=1
+if exists(":NERDTree")
+	let NERDTreeQuitOnOpen=1
 
-map <F4> ;NERDTreeToggle<CR>
+	map <F4> ;NERDTreeToggle<CR>
+endif
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
 noremap ; :
 noremap : ;
+
+"Tabular plugin
+if exists(":Tabularize")
+	nmap <Leader>t= ;Tabularize /=>\?<CR>
+	vmap <Leader>t= ;Tabularize /=>\?<CR>
+	nmap <Leader>t: ;Tabularize /:\zs<CR>
+	vmap <Leader>t: ;Tabularize /:\zs<CR>
+endif
 
 "Edit .vimrc
 map <Leader>v ;e ~/.vimrc<CR>

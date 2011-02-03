@@ -3,6 +3,9 @@
 # Start network manager
 nm-applet &
 
+# Screensaver
+xscreensaver -no-splash &
+
 # Set wallpaper
 xloadimage -onroot -center -border black ~/images/wallpapers/spaceinvaders.gif &
 
