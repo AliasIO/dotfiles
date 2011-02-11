@@ -58,13 +58,13 @@ hi mytaglistcomment  guifg=#777777 guibg=#000000 gui=NONE ctermfg=NONE ctermbg=1
 hi mytaglistfilename guifg=#ffffff guibg=#000000 gui=NONE ctermfg=NONE ctermbg=15 cterm=NONE
 
 "syntax highlighting
-hi comment       guifg=#555555 gui=italic ctermfg=8  cterm=NONE
-hi constant      guifg=#ffffff gui=bold   ctermfg=15 cterm=bold
-hi function      guifg=#999999 gui=NONE   ctermfg=7  cterm=NONE
+hi comment       guifg=#ff9900 gui=italic ctermfg=8  cterm=NONE
+hi constant      guifg=#e6db74 gui=bold   ctermfg=15 cterm=bold
+hi function      guifg=#0099ff gui=NONE   ctermfg=7  cterm=NONE
 hi identifier    guifg=#99ff00 gui=NONE   ctermfg=2  cterm=NONE
 hi keyword       guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
 hi number        guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi preproc       guifg=#999999 gui=NONE   ctermfg=8  cterm=NONE
+hi preproc       guifg=#FF0099 gui=NONE   ctermfg=8  cterm=NONE
 hi statement     guifg=#999999 gui=NONE   ctermfg=15 cterm=NONE
 hi special       guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
 hi string        guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE

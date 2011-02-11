@@ -14,6 +14,8 @@ ssh-agent &
 
 terminator -e htop -T "HTOP" &
 
+xchat &
+
 (sleep 1s && terminator) &
 
 ~/apps/firefox/firefox &

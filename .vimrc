@@ -65,7 +65,7 @@ endif
 
 "PHP OPTIONS
 let php_sql_query    = 0
-let phpHtmlInStrings = 1
+let phpHtmlInStrings = 0
 let php_noShortTags  = 1
 
 "Load filetype specific plugins
@@ -152,7 +152,7 @@ function! MyTabLabel(n)
 	return label
 endfunction
 
-colorscheme custom_mono                "Use custom color scheme
+colorscheme custom                     "Use custom color scheme
 
 if has("gui_running")
 	"set lines=45 columns=180           "Set window size
