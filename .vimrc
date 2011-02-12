@@ -1,5 +1,5 @@
-set autochdir                          "Change working directory when opening file
-set completeopt=longest,menu           "Pick longest item first on autocomplete
+"set autochdir                          "Change working directory when opening file
+set completeopt=menu                   "Autocomplete
 set encoding=utf-8                     "Set encoding to UTF-8
 set history=999                        "Keep a history of commands
 set fileencodings=utf-8,latin2         "File encodings
@@ -205,6 +205,11 @@ if exists(":Tabularize")
 	vmap <Leader>t= ;Tabularize /=>\?<CR>
 	nmap <Leader>t: ;Tabularize /:\zs<CR>
 	vmap <Leader>t: ;Tabularize /:\zs<CR>
+endif
+
+"FuzzyFinder plugin
+if exists(":FufFile")
+	nmap <Leader>f ;FufFile<CR>
 endif
 
 "Edit .vimrc

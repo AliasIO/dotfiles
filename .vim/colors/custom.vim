@@ -9,7 +9,7 @@ endif
 "set environment to 256 colours
 set t_co=256
 
-let colors_name = "custom_mono"
+let colors_name = "custom"
 
 if version >= 700
 	hi cursorline     guifg=NONE    guibg=#060606 gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
