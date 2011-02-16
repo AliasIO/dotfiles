@@ -185,38 +185,44 @@ if has("autocmd")
 	
 	"Apply .vimrc changes on save
 	autocmd BufWritePost .vimrc source $MYVIMRC
+
+    "Custom mappings for plugins
+    autocmd VimEnter * call Plugins()
 endif
 
-"NERDTREE OPTIONS
-if exists(":NERDTree")
-	let NERDTreeQuitOnOpen=1
+"PLUGIN OPTIONS
+function! Plugins()
+	"NERDTree
+	if exists(":NERDTree")
+		let NERDTreeQuitOnOpen=1
 
-	map <F4> ;NERDTreeToggle<CR>
-endif
+		nnoremap <Leader>n :NERDTreeToggle<CR>
+	endif
+
+	"Tabular
+	if exists(":Tabularize")
+		nnoremap <Leader>t= :Tabularize /=>\?<CR>
+		vnoremap <Leader>t= :Tabularize /=>\?<CR>
+		nnoremap <Leader>t: :Tabularize /:\zs<CR>
+		vnoremap <Leader>t: :Tabularize /:\zs<CR>
+	endif
+
+	"FuzzyFinder
+	if exists(":FufFile")
+		nnoremap <Leader>f :FufFile<CR>
+	endif
+endfunction
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
 noremap ; :
 noremap : ;
 
-"Tabular plugin
-if exists(":Tabularize")
-	nmap <Leader>t= ;Tabularize /=>\?<CR>
-	vmap <Leader>t= ;Tabularize /=>\?<CR>
-	nmap <Leader>t: ;Tabularize /:\zs<CR>
-	vmap <Leader>t: ;Tabularize /:\zs<CR>
-endif
-
-"FuzzyFinder plugin
-if exists(":FufFile")
-	nmap <Leader>f ;FufFile<CR>
-endif
-
 "Edit .vimrc
-map <Leader>v ;e ~/.vimrc<CR>
+nnoremap <Leader>v :e ~/.vimrc<CR>
 
 "Delete all buffers
-map <silent> <Leader>bd ;1,999 bd<CR>
+nnoremap <silent> <Leader>bd :1,999 bd<CR>
 
 "Easier tab navigation
 nnoremap <silent> <C-Right> :tabnext<CR>
