@@ -211,6 +211,11 @@ function! Plugins()
 	if exists(":FufFile")
 		nnoremap <Leader>f :FufFile<CR>
 	endif
+
+	"Gundo
+	if exists(":GundoToggle")
+		nnoremap <Leader>g :GundoToggle<CR>
+	endif
 endfunction
 
 "CUSTOM COMMANDS & MAPPINGS
