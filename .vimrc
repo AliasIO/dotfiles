@@ -226,6 +226,9 @@ noremap : ;
 "Edit .vimrc
 nnoremap <Leader>v :e ~/.vimrc<CR>
 
+"Stop highlighting search words
+nnoremap <Leader>h :nohlsearch<CR>
+
 "Delete all buffers
 nnoremap <silent> <Leader>bd :1,999 bd<CR>
 
