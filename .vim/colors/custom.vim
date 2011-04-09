@@ -12,9 +12,9 @@ set t_co=256
 let colors_name = "custom"
 
 if version >= 700
-	hi cursorline     guifg=NONE    guibg=#1c1c1c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
-	hi cursorcolumn   guifg=NONE    guibg=#1c1c1c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
-	hi matchparen     guifg=#99ff00 guibg=NONE    gui=bold ctermfg=2    ctermbg=16 cterm=NONE
+	hi cursorline     guifg=NONE    guibg=#0c0c0c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
+	hi cursorcolumn   guifg=NONE    guibg=#0c0c0c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
+	hi matchparen     guifg=#ff9900 guibg=NONE    gui=bold ctermfg=2    ctermbg=16 cterm=NONE
 endif
 
 "background and menu colors

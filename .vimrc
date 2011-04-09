@@ -74,7 +74,7 @@ filetype plugin on
 "CSS OPTIONS
 if has("autocmd")
 	"Automatically fix some CSS formatting issues
-	autocmd BufWritePre *.css silent call FormatCSS()
+	autocmd BufWritePre *.css,*.less silent call FormatCSS()
 
 	function! FormatCSS()
 		normal Mmz
@@ -86,7 +86,7 @@ if has("autocmd")
 		:%s/\([^:]\+\)\(:.\+;\)/\L\1\E\2/e
 
 		"Add a space after colons
-		:%s/:\([^ ][^;]\+;\)/: \1/e
+		":%s/:\([^ ][^;]\+;\)/: \1/e
 
 		normal `z
 	endfunction
@@ -192,6 +192,21 @@ endif
 
 "PLUGIN OPTIONS
 function! Plugins()
+	"FuzzyFinder
+	if exists(":FufFile")
+		nnoremap <Leader>f :FufFile<CR>
+	endif
+
+	"Gundo
+	if exists(":GundoToggle")
+		nnoremap <Leader>g :GundoToggle<CR>
+	endif
+
+	"Increment
+	if exists(":Inc")
+		vnoremap <Leader>i :Inc p0<CR>
+	endif
+
 	"NERDTree
 	if exists(":NERDTree")
 		let NERDTreeQuitOnOpen=1
@@ -205,16 +220,6 @@ function! Plugins()
 		vnoremap <Leader>t= :Tabularize /=>\?<CR>
 		nnoremap <Leader>t: :Tabularize /:\zs<CR>
 		vnoremap <Leader>t: :Tabularize /:\zs<CR>
-	endif
-
-	"FuzzyFinder
-	if exists(":FufFile")
-		nnoremap <Leader>f :FufFile<CR>
-	endif
-
-	"Gundo
-	if exists(":GundoToggle")
-		nnoremap <Leader>g :GundoToggle<CR>
 	endif
 endfunction
 
