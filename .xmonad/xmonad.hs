@@ -74,6 +74,7 @@ myKeys =
 	, ((0,        0x1008ff13), spawn "amixer --quiet set Master 3+")
 	, ((0,        0x1008ff12), spawn "amixer --quiet set Master toggle")
 	, ((mod4Mask, xK_b),       sendMessage ToggleStruts)
+	, ((mod4Mask, xK_f),       spawn "kill `ps ax | grep firefox/plugin-container | grep -v grep | cut -c1-6`")
 	]
     ++
     [ ((m .|. mod4Mask, k), windows $ f i) | (i, k) <- zip myWorkspaces numPadKeys
