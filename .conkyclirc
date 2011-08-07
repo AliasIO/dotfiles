@@ -21,4 +21,3 @@ TEXT
 <fc=\#09F>HOME ${fs_used_perc /home}%</fc> \
 <fc=\#F09>BACKUP ${fs_used_perc /mnt/backup}%</fc> \
 <fc=\#0F9>MOVIES ${fs_used_perc /mnt/movies}%</fc> \
-<fc=\#90F>SANDISK ${fs_used_perc /mnt/sandisk}%</fc> |

@@ -7,33 +7,33 @@ nm-applet &
 xscreensaver -no-splash &
 
 # Set wallpaper
-xloadimage -onroot -center -border black ~/images/wallpapers/spaceinvaders.gif &
+xloadimage -onroot -center -border black ~/images/wallpapers/skysurvey.org.jpg &
 
 # Enable passwordless SSH authentication
 ssh-agent &
 
-terminator -e htop -T "HTOP" &
+#terminator -e htop -T "HTOP" &
 
-xchat &
+terminator -e "vlc -I ncurses ~/music/*.pls" -T "VLC" &
 
-(sleep 1s && terminator) &
+#xchat &
+
+terminator &
 
 ~/apps/firefox/firefox &
 
+~/apps/bitcoin/bin/64/bitcoin &
+
 gvim &
 
-transmission &
+#thunar ~/music &
 
-nicotine &
+#terminator -e alsamixer -T "Alsa Mixer" &
 
-thunar ~/music &
-
-terminator -e alsamixer -T "Alsa Mixer" &
-
-(sleep 1s && vlc) &
+#(sleep 1s && vlc) &
 
 ## VNC server
-(sleep 30s && /usr/lib/vino/vino-server) &
+#(sleep 30s && /usr/lib/vino/vino-server) &
 
 # Dropbox deamon
 (sleep 60s && ~/.dropbox-dist/dropboxd) &

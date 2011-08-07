@@ -24,7 +24,7 @@ main = do
 			, ppLayout          = xmobarColor "#FFF" ""
 			, ppOutput          = hPutStrLn xmproc
 			, ppSep             = " | "
-			, ppTitle           = xmobarColor "#9F0" "" . shorten 30
+			, ppTitle           = xmobarColor "#9F0" "" . shorten 40
 			, ppUrgent          = xmobarColor "#F90" "" . wrap "*" "*"
 			, ppVisible         = xmobarColor "#FFF" ""
 			, ppWsSep           = " "
@@ -34,7 +34,7 @@ main = do
 		, focusedBorderColor = "#FFF"
         } `additionalKeys` myKeys
 
-myWorkspaces = ["1:CLI","2:WEB","3:CODE","4:MEDIA","5:FTP","6:PIRATE","7","8","9","0"]
+myWorkspaces = ["1:CLI","2:WEB","3:CODE","4:MEDIA","5:FTP","6:DESIGN","7","8","9","0:BITCOIN"]
 
 -- Organize windows
 myManageHook :: ManageHook
@@ -49,9 +49,10 @@ myManageHook = composeAll . concat $
     , [className =? "Gvim"                 --> doF (W.shift "3:CODE")]
     , [className =? "Vlc"                  --> doF (W.shift "4:MEDIA")]
     , [title     =? "Alsa Mixer"           --> doF (W.shift "4:MEDIA")]
+    , [title     =? "VLC"                  --> doF (W.shift "4:MEDIA")]
     , [title     =? "music - File Manager" --> doF (W.shift "4:MEDIA")]
-    , [className =? "Transmission"         --> doF (W.shift "6:PIRATE")]
-    , [className =? "Nicotine"             --> doF (W.shift "6:PIRATE")]
+    , [className =? "Gimp"                 --> doF (W.shift "6:DESIGN")]
+    , [className =? "Bitcoin"              --> doF (W.shift "0:BITCOIN")]
     ]
     where
     myFloats      = ["Gimp", "gimp"]
@@ -65,7 +66,7 @@ myKeys =
 	, ((mod4Mask, xK_f),       spawn "thunar")
 	, ((mod4Mask, xK_g),       spawn "gimp")
 	, ((mod4Mask, xK_m),       spawn "vlc")
-	, ((mod4Mask, xK_t),       spawn "terminator")
+	, ((0,        xK_F1),      spawn "terminator")
 	, ((0,        xK_Print),   spawn "scrot")
 	, ((mod4Mask, xK_F11),     spawn "amixer --quiet set Master 3-")
 	, ((mod4Mask, xK_F12),     spawn "amixer --quiet set Master 3+")
@@ -74,7 +75,7 @@ myKeys =
 	, ((0,        0x1008ff13), spawn "amixer --quiet set Master 3+")
 	, ((0,        0x1008ff12), spawn "amixer --quiet set Master toggle")
 	, ((mod4Mask, xK_b),       sendMessage ToggleStruts)
-	, ((mod4Mask, xK_f),       spawn "kill `ps ax | grep firefox/plugin-container | grep -v grep | cut -c1-6`")
+	, ((mod4Mask, xK_F),       spawn "kill `ps ax | grep firefox/plugin-container | grep -v grep | cut -c1-6`")
 	]
     ++
     [ ((m .|. mod4Mask, k), windows $ f i) | (i, k) <- zip myWorkspaces numPadKeys
