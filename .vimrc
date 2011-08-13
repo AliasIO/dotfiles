@@ -181,7 +181,7 @@ if has("autocmd")
 	autocmd BufRead,BufNewFile *.module,*.install set filetype=php
 
 	"Remove trailing whitespace and DOS line endings on save
-	autocmd BufWritePre *.php,*.js,*.html,*.css :%s/\(\s\|\)\+$//e
+	autocmd BufWritePre *.php,*.js,*.html,*.css :call StripTrailingWhitespace()
 	
 	"Apply .vimrc changes on save
 	autocmd BufWritePost .vimrc source $MYVIMRC
@@ -189,6 +189,15 @@ if has("autocmd")
     "Custom mappings for plugins
     autocmd VimEnter * call Plugins()
 endif
+
+function! StripTrailingWhitespace()
+	let l = line(".")
+	let c =  col(".")
+
+	%s/\(\s\| \)\+$//e
+
+	call cursor(l, c)
+endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
