@@ -190,11 +190,13 @@ if has("autocmd")
     autocmd VimEnter * call Plugins()
 endif
 
+"Strip trailing whitespace without moving the cursor
 function! StripTrailingWhitespace()
 	let l = line(".")
+
 	let c =  col(".")
 
-	%s/\(\s\| \)\+$//e
+	%s/\(\s\|\)\+$//e
 
 	call cursor(l, c)
 endfunction
