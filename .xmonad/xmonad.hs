@@ -1,11 +1,14 @@
 -- Imports
+import Data.Ratio
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe)
+import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Spiral
 import System.IO
 import qualified XMonad.StackSet as W -- to shift and float windows
 
@@ -16,7 +19,7 @@ main = do
 	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
 		, manageHook = myManageHook <+> manageHook defaultConfig -- uses default too
-		, layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
+		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
 			{ ppCurrent         = xmobarColor "#F09" "" . wrap "[" "]"
 			, ppHidden          = xmobarColor "#FFF" ""
@@ -33,6 +36,14 @@ main = do
 		, normalBorderColor  = "#444"
 		, focusedBorderColor = "#FFF"
         } `additionalKeys` myKeys
+
+myLayouthook = spiral (1 % 1) ||| Full ||| mySplit
+
+mySplit = Mirror $ Tall nmaster delta ratio
+    where
+        nmaster = 1      -- The default number of windows in the master pane
+        delta   = 3/100  -- Percent of screen to increment by when resizing panes
+        ratio   = 70/100 -- Default proportion of screen occupied by master pane
 
 myWorkspaces = ["1:CLI","2:WEB","3:CODE","4:MEDIA","5:FTP","6:DESIGN","7","8","9","0:BITCOIN"]
 
