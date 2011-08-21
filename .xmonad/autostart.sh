@@ -20,6 +20,8 @@ terminator -e "nvlc ~/music/*.pls --no-play-and-stop" -T "VLC" &
 
 terminator &
 
+~/bin/gmail.sh &
+
 ~/apps/firefox/firefox &
 
 ~/apps/bitcoin/bin/64/bitcoin &
