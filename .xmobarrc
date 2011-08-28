@@ -5,6 +5,7 @@ Config { font     = "xft:MonteCarloFixed12"
        , lowerOnStart = True
        , commands = [ Run Com "conky -c ~/.conkyclirc | tail -1" ["&"] "conky" 30
 					, Run Com "~/.xmonad/volume-bars.sh" [] "volume" 10
+					, Run Com "~/.xmonad/gmail.sh" [] "gmail" 10
 	                -- , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                     -- , Run Cpu ["-L","3","-H","80","--normal","#9F0","--high","red"] 10
                     -- , Run Memory ["-t","Mem: <usedratio>%"] 10
@@ -15,5 +16,5 @@ Config { font     = "xft:MonteCarloFixed12"
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %conky% <fc=#FFF>VOL</fc> <fc=#F09>%volume%</fc> | <fc=#FFF>%date%</fc>"
+       , template = "%StdinReader% }{ %conky% <fc=#FFF>VOL</fc> <fc=#F09>%volume%</fc> %gmail%| <fc=#FFF>%date%</fc>"
        }
