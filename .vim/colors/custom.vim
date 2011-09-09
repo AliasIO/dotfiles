@@ -12,54 +12,54 @@ set t_co=256
 let colors_name = "custom"
 
 if version >= 700
-	hi cursorline     guifg=NONE    guibg=#0c0c0c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
-	hi cursorcolumn   guifg=NONE    guibg=#0c0c0c gui=NONE ctermfg=NONE ctermbg=16 cterm=NONE
-	hi matchparen     guifg=#ff9900 guibg=NONE    gui=bold ctermfg=2    ctermbg=16 cterm=NONE
+	hi cursorline   guifg=NONE    guibg=#0c0c0c gui=NONE      ctermfg=NONE ctermbg=NONE cterm=NONE
+	hi cursorcolumn guifg=NONE    guibg=#0c0c0c gui=NONE      ctermfg=NONE ctermbg=NONE cterm=NONE
+	hi matchparen   guifg=#ec7603 guibg=NONE    gui=bold      ctermfg=3    ctermbg=NONE cterm=NONE
 endif
 
 "background and menu colors
-hi cursor           guifg=#000000 guibg=#ffffff gui=NONE      ctermfg=NONE ctermbg=15   cterm=NONE
-hi folded           guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi incsearch        guifg=#000000 guibg=#ff9900 gui=NONE      ctermfg=16   ctermbg=15   cterm=NONE
-hi linenr           guifg=#333333 guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi nontext          guifg=#222222 guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi normal           guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi pmenu            guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi pmenusel         guifg=#ff9900 guibg=#111111 gui=NONE      ctermfg=2    ctermbg=16   cterm=NONE
-hi search           guifg=NONE    guibg=#000000 gui=NONE      ctermfg=NONE ctermbg=16   cterm=NONE
-hi specialkey       guifg=#1c1c1c guibg=#111111 gui=NONE      ctermfg=0    ctermbg=16   cterm=NONE
-hi statusline       guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi statuslinenc     guifg=#ffffff guibg=#222222 gui=italic    ctermfg=15   ctermbg=16   cterm=italic
-hi tabline          guifg=#eeeeee guibg=#222222 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi tablinesel       guifg=#ff9900 guibg=#111111 gui=NONE      ctermfg=2    ctermbg=16   cterm=NONE
-hi tablinefill      guifg=#eeeeee guibg=#222222 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treeclosable     guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treedir          guifg=#ff9900 guibg=#111111 gui=NONE      ctermfg=7    ctermbg=16   cterm=NONE
-hi treedirslash     guifg=#777777 guibg=#111111 gui=NONE      ctermfg=8    ctermbg=16   cterm=NONE
-hi treefile         guifg=#ffffff guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treehelp         guifg=#777777 guibg=#111111 gui=NONE      ctermfg=8    ctermbg=16   cterm=NONE
-hi treeopenable     guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treepartfile     guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treero           guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi treeup           guifg=#777777 guibg=#111111 gui=NONE      ctermfg=8    ctermbg=16   cterm=NONE
-hi title            guifg=#ffffff guibg=NONE    gui=bold      ctermfg=15   ctermbg=NONE cterm=bold
-hi underlined       guifg=#eeeeee guibg=#111111 gui=underline ctermfg=15   ctermbg=16   cterm=underline
-hi vertsplit        guifg=#333333 guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi visual           guifg=NONE    guibg=#000000 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi visualnos        guifg=NONE    guibg=#000000 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi warningmsg       guifg=#99ff00 guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
-hi wildmenu         guifg=#ff9900 guibg=#111111 gui=NONE      ctermfg=15   ctermbg=16   cterm=NONE
+hi cursor           guifg=#000000 guibg=#ffffff gui=NONE      ctermfg=NONE ctermbg=NONE cterm=NONE
+hi folded           guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi incsearch        guifg=#000000 guibg=#ec7603 gui=NONE      ctermfg=0    ctermbg=3    cterm=NONE
+hi linenr           guifg=#333333 guibg=#111111 gui=NONE      ctermfg=5    ctermbg=NONE cterm=NONE
+hi nontext          guifg=#222222 guibg=#111111 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi normal           guifg=#eeeeee guibg=#111111 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi pmenu            guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi pmenusel         guifg=#ec7603 guibg=#111111 gui=NONE      ctermfg=2    ctermbg=NONE cterm=NONE
+hi search           guifg=#000000 guibg=#ec7603 gui=NONE      ctermfg=0    ctermbg=3    cterm=NONE
+hi specialkey       guifg=#1c1c1c guibg=#111111 gui=NONE      ctermfg=0    ctermbg=NONE cterm=NONE
+hi statusline       guifg=#ffffff guibg=#222222 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi statuslinenc     guifg=#ffffff guibg=#222222 gui=italic    ctermfg=7    ctermbg=NONE cterm=italic
+hi tabline          guifg=#eeeeee guibg=#222222 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi tablinesel       guifg=#ec7603 guibg=#111111 gui=NONE      ctermfg=1    ctermbg=NONE cterm=NONE
+hi tablinefill      guifg=#eeeeee guibg=#222222 gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treeclosable     guifg=#eeeeee guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treedir          guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treedirslash     guifg=#858284 guibg=NONE    gui=NONE      ctermfg=8    ctermbg=NONE cterm=NONE
+hi treefile         guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treehelp         guifg=#858284 guibg=NONE    gui=NONE      ctermfg=8    ctermbg=NONE cterm=NONE
+hi treeopenable     guifg=#eeeeee guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treepartfile     guifg=#eeeeee guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treero           guifg=#eeeeee guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi treeup           guifg=#858284 guibg=NONE    gui=NONE      ctermfg=8    ctermbg=NONE cterm=NONE
+hi title            guifg=#ffffff guibg=NONE    gui=bold      ctermfg=7    ctermbg=NONE cterm=bold
+hi underlined       guifg=#eeeeee guibg=NONE    gui=underline ctermfg=7    ctermbg=NONE cterm=underline
+hi vertsplit        guifg=#333333 guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi visual           guifg=NONE    guibg=#22282a gui=NONE      ctermfg=0    ctermbg=5    cterm=NONE
+hi visualnos        guifg=NONE    guibg=#22282a gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi warningmsg       guifg=#93c762 guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
+hi wildmenu         guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
 
 "syntax highlighting
-hi comment       guifg=#516368 gui=italic ctermfg=8  cterm=NONE
-hi constant      guifg=#ff0077 gui=bold   ctermfg=15 cterm=bold
-hi function      guifg=#5dc0d4 gui=NONE   ctermfg=7  cterm=NONE
-hi identifier    guifg=#99ff00 gui=NONE   ctermfg=2  cterm=NONE
-hi keyword       guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi number        guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi preproc       guifg=#ff0077 gui=NONE   ctermfg=8  cterm=NONE
-hi statement     guifg=#cccccc gui=NONE   ctermfg=15 cterm=NONE
-hi special       guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi string        guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi tablinefill   guifg=#ffffff gui=NONE   ctermfg=15 cterm=NONE
-hi type          guifg=#99ee00 gui=NONE   ctermfg=7  cterm=NONE
+hi comment          guifg=#858284 guibg=NONE    gui=italic    ctermfg=1    cterm=NONE   cterm=NONE
+hi constant         guifg=#a082bc guibg=NONE    gui=bold      ctermfg=5    cterm=bold   cterm=NONE
+hi function         guifg=#5dc0d4 guibg=NONE    gui=NONE      ctermfg=6    cterm=NONE   cterm=NONE
+hi identifier       guifg=#93c762 guibg=NONE    gui=NONE      ctermfg=2    cterm=NONE   cterm=NONE
+hi keyword          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
+hi number           guifg=#f7ca1e guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
+hi preproc          guifg=#a082bc guibg=NONE    gui=NONE      ctermfg=5    cterm=NONE   cterm=NONE
+hi statement        guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
+hi special          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
+hi string           guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
+hi tablinefill      guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
+hi type             guifg=#678cb1 guibg=NONE    gui=NONE      ctermfg=4    cterm=NONE   cterm=NONE

@@ -64,33 +64,11 @@ if has("autocmd")
 endif
 
 "PHP OPTIONS
-let php_sql_query    = 0
 let phpHtmlInStrings = 0
 let php_noShortTags  = 1
 
 "Load filetype specific plugins
 filetype plugin on
-
-"CSS OPTIONS
-if has("autocmd")
-	"Automatically fix some CSS formatting issues
-	autocmd BufWritePre *.css,*.less silent call FormatCSS()
-
-	function! FormatCSS()
-		normal Mmz
-
-		"Hex color codes to lowercase
-		:%s/\(.\+:.*\)\(#[0-9a-f]\{3,6\}\)/\1\L\2/e
-
-		"Text before colon to lowercase
-		:%s/\([^:]\+\)\(:.\+;\)/\L\1\E\2/e
-
-		"Add a space after colons
-		":%s/:\([^ ][^;]\+;\)/: \1/e
-
-		normal `z
-	endfunction
-endif
 
 "GUI OPTIONS
 set laststatus=1                       "Hide the status unless window is split
@@ -184,7 +162,7 @@ if has("autocmd")
 	autocmd BufWritePre *.php,*.js,*.html,*.css :call StripTrailingWhitespace()
 	
 	"Apply .vimrc changes on save
-	autocmd BufWritePost .vimrc source $MYVIMRC
+	"autocmd BufWritePost .vimrc source $MYVIMRC
 
     "Custom mappings for plugins
     autocmd VimEnter * call Plugins()
@@ -193,7 +171,6 @@ endif
 "Strip trailing whitespace without moving the cursor
 function! StripTrailingWhitespace()
 	let l = line(".")
-
 	let c =  col(".")
 
 	%s/\(\s\|\)\+$//e
