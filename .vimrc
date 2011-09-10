@@ -46,7 +46,7 @@ set smartindent                        "Smart indentation
 set tabstop=4                          "Tab width
 
 set list                               "List invisible characters
-set listchars=tab:▸\ 
+set listchars=tab:→\
 
 filetype indent on
 
