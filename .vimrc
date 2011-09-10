@@ -47,7 +47,8 @@ set tabstop=4                          "Tab width
 
 set list                               "List invisible characters
 set listchars=tab:▸\ 
-filetype indent off
+
+filetype indent on
 
 "Prevent smartindent from removing leading whitespace before #
 :inoremap # X#
