@@ -46,7 +46,7 @@ set smartindent                        "Smart indentation
 set tabstop=4                          "Tab width
 
 set list                               "List invisible characters
-set listchars=tab:→\
+set listchars=tab:→\ 
 
 filetype indent on
 
@@ -219,6 +219,10 @@ nnoremap <silent> <Leader>bd :1,999 bd<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 nnoremap <silent> <C-Left>  :tabprevious<CR>
 nnoremap <silent> <C-t>     :tabnew<CR>
+
+"Shift blocks visually
+vnoremap < <gv
+vnoremap > >gv
 
 "Scroll page (faster) with ctrl+j/k, cursor at edge of screen
 map <C-j> 3<C-e>L
