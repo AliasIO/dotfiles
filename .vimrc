@@ -134,7 +134,6 @@ endfunction
 colorscheme custom                     "Use custom color scheme
 
 if has("gui_running")
-	"set lines=45 columns=180           "Set window size
 	set guifont=DejaVu\ Sans\ Mono\ 9
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
@@ -181,16 +180,6 @@ endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
-	"FuzzyFinder
-	if exists(":FufFile")
-		nnoremap <Leader>f :FufFile<CR>
-	endif
-
-	"Gundo
-	if exists(":GundoToggle")
-		nnoremap <Leader>g :GundoToggle<CR>
-	endif
-
 	"Increment
 	if exists(":Inc")
 		vnoremap <Leader>i :Inc p0<CR>
