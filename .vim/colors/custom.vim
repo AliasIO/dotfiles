@@ -56,10 +56,10 @@ hi constant         guifg=#a082bc guibg=NONE    gui=bold      ctermfg=5    cterm
 hi function         guifg=#5dc0d4 guibg=NONE    gui=NONE      ctermfg=6    cterm=NONE   cterm=NONE
 hi identifier       guifg=#93c762 guibg=NONE    gui=NONE      ctermfg=2    cterm=NONE   cterm=NONE
 hi keyword          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi number           guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=1    cterm=NONE   cterm=NONE
+hi number           guifg=#f7ca1e guibg=NONE    gui=NONE      ctermfg=1    cterm=NONE   cterm=NONE
 hi preproc          guifg=#a082bc guibg=NONE    gui=NONE      ctermfg=5    cterm=NONE   cterm=NONE
 hi statement        guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi special          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi string           guifg=#f7ca1e guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
+hi string           guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
 hi tablinefill      guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi type             guifg=#678cb1 guibg=NONE    gui=NONE      ctermfg=4    cterm=NONE   cterm=NONE
