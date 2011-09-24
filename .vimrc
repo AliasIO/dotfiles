@@ -216,9 +216,10 @@ nnoremap <Leader>h :nohlsearch<CR>
 nnoremap <silent> <Leader>bd :1,999 bd<CR>
 
 "Easier tab navigation
-nnoremap <silent> <C-Right> :tabnext<CR>
-nnoremap <silent> <C-Left>  :tabprevious<CR>
+nnoremap <silent> <C-Tab>   :tabnext<CR>
+nnoremap <silent> <C-S-Tab> :tabprevious<CR>
 nnoremap <silent> <C-t>     :tabnew<CR>
+nnoremap <silent> <C-w>     :tabclose<CR>
 
 "Shift blocks visually
 vnoremap < <gv

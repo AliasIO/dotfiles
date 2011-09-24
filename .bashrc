@@ -18,3 +18,5 @@ bind 'set visible-stats on'
 export HISTSIZE=1000
 export HISTFILESIZE=1000
 export EDITOR=vim
+
+fortune | cowsay
