@@ -51,7 +51,7 @@ hi warningmsg       guifg=#93c762 guibg=NONE    gui=NONE      ctermfg=7    cterm
 hi wildmenu         guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    ctermbg=NONE cterm=NONE
 
 "syntax highlighting
-hi comment          guifg=#858284 guibg=NONE    gui=italic    ctermfg=7    cterm=NONE   cterm=NONE
+hi comment          guifg=#858284 guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi constant         guifg=#a082bc guibg=NONE    gui=bold      ctermfg=5    cterm=bold   cterm=NONE
 hi function         guifg=#5dc0d4 guibg=NONE    gui=NONE      ctermfg=6    cterm=NONE   cterm=NONE
 hi identifier       guifg=#93c762 guibg=NONE    gui=NONE      ctermfg=2    cterm=NONE   cterm=NONE
@@ -60,6 +60,6 @@ hi number           guifg=#f7ca1e guibg=NONE    gui=NONE      ctermfg=1    cterm
 hi preproc          guifg=#a082bc guibg=NONE    gui=NONE      ctermfg=5    cterm=NONE   cterm=NONE
 hi statement        guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi special          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi string           guifg=#ec7603 guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
+hi string           guifg=#ec8725 guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
 hi tablinefill      guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi type             guifg=#678cb1 guibg=NONE    gui=NONE      ctermfg=4    cterm=NONE   cterm=NONE
