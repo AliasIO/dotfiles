@@ -7,7 +7,7 @@ nm-applet &
 xscreensaver -no-splash &
 
 # Set wallpaper
-xloadimage -onroot -center -border black ~/images/wallpapers/skysurvey.org.jpg &
+xloadimage -onroot -center -border black ~/images/wallpapers/Saturn_eclipse.jpg &
 
 # Enable passwordless SSH authentication
 ssh-agent &

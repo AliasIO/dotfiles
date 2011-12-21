@@ -45,8 +45,8 @@ set shiftwidth=4                       "Tab width for indentation
 set smartindent                        "Smart indentation
 set tabstop=4                          "Tab width
 
-set list                               "List invisible characters
-set listchars=tab:→\ 
+set nolist                             "List invisible characters
+set listchars=tab:→\ ,eol:↵,trail:.
 
 filetype indent on
 
@@ -135,7 +135,7 @@ colorscheme custom                     "Use custom color scheme
 
 if has("gui_running")
 	set guifont=DejaVu\ Sans\ Mono\ 9
-	set guifont=Terminus\ 10
+	set guifont=Terminus\ 11
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
@@ -211,7 +211,10 @@ noremap : ;
 nnoremap <Leader>v :e ~/.vimrc<CR>
 
 "Stop highlighting search words
-nnoremap <Leader>h :nohlsearch<CR>
+nnoremap <Esc><Esc> :nohlsearch<CR>
+
+"Toggle highlighting of special chars
+nnoremap <Space> :set list!<CR>
 
 "Delete all buffers
 nnoremap <silent> <Leader>bd :1,999 bd<CR>
