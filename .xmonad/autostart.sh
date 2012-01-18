@@ -14,7 +14,7 @@ ssh-agent &
 
 #terminator -e htop -T "HTOP" &
 
-terminator -e "nvlc ~/music/*.pls --no-play-and-stop" -T "VLC" &
+#terminator -e "nvlc ~/music/*.pls --no-play-and-stop" -T "VLC" &
 
 #xchat &
 

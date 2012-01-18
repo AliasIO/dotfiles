@@ -21,15 +21,15 @@ main = do
 		, manageHook = myManageHook <+> manageHook defaultConfig -- uses default too
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
-			{ ppCurrent         = xmobarColor "#F09" "" . wrap "[" "]"
-			, ppHidden          = xmobarColor "#FFF" ""
+			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
+			, ppHidden          = xmobarColor "#FF9" ""
 			, ppHiddenNoWindows = xmobarColor "#444" ""
-			, ppLayout          = xmobarColor "#FFF" ""
+			-- , ppLayout          = xmobarColor "#FFF" ""
 			, ppOutput          = hPutStrLn xmproc
 			, ppSep             = " | "
-			, ppTitle           = xmobarColor "#9F0" "" . shorten 40
+			, ppTitle           = xmobarColor "#FFF" "" . shorten 500
 			, ppUrgent          = xmobarColor "#F90" "" . wrap "*" "*"
-			, ppVisible         = xmobarColor "#FFF" ""
+			, ppVisible         = xmobarColor "#999" ""
 			, ppWsSep           = " "
 			}
 		, modMask            = mod4Mask
@@ -45,7 +45,7 @@ mySplit = Mirror $ Tall nmaster delta ratio
         delta   = 3/100  -- Percent of screen to increment by when resizing panes
         ratio   = 70/100 -- Default proportion of screen occupied by master pane
 
-myWorkspaces = ["1:CLI","2:WEB","3:CODE","4:MEDIA","5:FTP","6:DESIGN","7","8","9","0:BITCOIN"]
+myWorkspaces = ["1","2","3","4","5","6","7","8","9","0"]
 
 -- Organize windows
 myManageHook :: ManageHook
@@ -54,19 +54,19 @@ myManageHook = composeAll . concat $
     [ [className =? c --> doFloat | c <- myFloats]
     , [title     =? t --> doFloat | t <- myOtherFloats]
     , [resource  =? r --> doFloat | r <- myIgnores]
-    , [className =? "Firefox"              --> doF (W.shift "2:WEB")]
-    , [className =? "Minefield"            --> doF (W.shift "2:WEB")]
-    , [className =? "Iceweasel"            --> doF (W.shift "2:WEB")]
-    , [className =? "Gvim"                 --> doF (W.shift "3:CODE")]
-    , [className =? "Vlc"                  --> doF (W.shift "4:MEDIA")]
-    , [title     =? "Alsa Mixer"           --> doF (W.shift "4:MEDIA")]
-    , [title     =? "VLC"                  --> doF (W.shift "4:MEDIA")]
-    , [title     =? "music - File Manager" --> doF (W.shift "4:MEDIA")]
-    , [className =? "Gimp"                 --> doF (W.shift "6:DESIGN")]
-    , [className =? "Bitcoin"              --> doF (W.shift "0:BITCOIN")]
+    , [className =? "Firefox"              --> doF (W.shift "2")]
+    , [className =? "Minefield"            --> doF (W.shift "2")]
+    , [className =? "Iceweasel"            --> doF (W.shift "2")]
+    , [className =? "Gvim"                 --> doF (W.shift "3")]
+    , [className =? "Vlc"                  --> doF (W.shift "4")]
+    , [title     =? "Alsa Mixer"           --> doF (W.shift "4")]
+    , [title     =? "VLC"                  --> doF (W.shift "4")]
+    , [title     =? "music - File Manager" --> doF (W.shift "4")]
+    , [className =? "Gimp"                 --> doF (W.shift "6")]
+    , [className =? "Bitcoin"              --> doF (W.shift "0")]
     ]
     where
-    myFloats      = ["Gimp", "gimp"]
+    myFloats      = []
     myOtherFloats = ["Downloads", "Firefox Preferences", "Save As..."]
     myIgnores     = []
 
