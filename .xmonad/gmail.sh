@@ -8,5 +8,10 @@ UNREAD=`curl -su $USERPASS https://mail.google.com/mail/feed/atom/unread | grep 
 
 if [ $UNREAD -gt 0 ]
 then
-	echo "| <fc=#FF>EMAIL: $UNREAD UNREAD</fc> "
+	if [ $UNREAD -gt 1 ]
+	then
+		S="S"
+	fi
+
+	echo "| <fc=#FFF>$UNREAD UNREAD EMAIL$S</fc> "
 fi
