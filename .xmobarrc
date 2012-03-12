@@ -1,6 +1,6 @@
 Config { font     = "xft:MonteCarloFixed12"
-       , bgColor  = "#000"
-       , fgColor  = "#444"
+       , bgColor  = "#1b1b1b"
+       , fgColor  = "#ad7fa8"
        , position = Top
        , lowerOnStart = True
        , commands = [ 
@@ -17,5 +17,5 @@ Config { font     = "xft:MonteCarloFixed12"
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ <fc=#FF9>%volume%</fc> %gmail%| <fc=#FF9>%date%</fc>"
+       , template = "%StdinReader% }{ <fc=#FFF>%volume%</fc> %gmail%| <fc=#FFF>%date%</fc>"
        }
