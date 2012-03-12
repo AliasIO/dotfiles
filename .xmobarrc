@@ -1,6 +1,6 @@
 Config { font     = "xft:MonteCarloFixed12"
        , bgColor  = "#1b1b1b"
-       , fgColor  = "#ad7fa8"
+       , fgColor  = "#666"
        , position = Top
        , lowerOnStart = True
        , commands = [ 
