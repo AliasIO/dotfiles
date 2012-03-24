@@ -16,29 +16,44 @@
 
 
 #nav-bar {
-  background-image: -moz-linear-gradient(hsla(0,0%,85%,1), hsla(0,0%,85%,1) 50%) !important;
+	background-image: -moz-linear-gradient(hsla(0,0%,85%,1), hsla(0,0%,85%,1) 50%) !important;
+}
+
+#nav-bar toolbarbutton {
+	color: #111 !important;
+}
+
+#nav-bar toolbarseparator {
+	visibility: hidden !important;
 }
 
 .tabbrowser-tab:not(:-moz-lwtheme):not([selected="true"]), .tabs-newtab-button:not(:-moz-lwtheme) {
-  background-image: -moz-linear-gradient(hsla(0,0%,25%,1), hsla(0,0%,25%,1) 50%) !important;
-  color: #999 !important;
+	background-image: -moz-linear-gradient(hsla(0,0%,25%,1), hsla(0,0%,25%,1) 50%) !important;
+	color: #999 !important;
 }
 
 .tabbrowser-tab:not([selected="true"]):hover, .tabs-newtab-button:not(:-moz-lwtheme):hover {
-  background-image: -moz-linear-gradient(hsla(0,0%,30%,1), hsla(0,0%,25%,1) 50%) !important;
-  color: #999 !important;
+	background-image: -moz-linear-gradient(hsla(0,0%,30%,1), hsla(0,0%,25%,1) 50%) !important;
+	color: #999 !important;
 }
 
 .tabbrowser-tab[selected="true"] {
-  background-image: -moz-linear-gradient(hsla(0,0%,95%,1), hsla(0,0%,85%,1) 50%) !important;
-  color: #111 !important;
+	background-image: -moz-linear-gradient(hsla(0,0%,95%,1), hsla(0,0%,85%,1) 50%) !important;
+	color: #111 !important;
 }
 
 .tabbrowser-tab[selected="true"]:hover {
-  background-image: -moz-linear-gradient(hsla(0,0%,95%,1), hsla(0,0%,85%,1) 50%) !important;
-  color: #111 !important;
+	background-image: -moz-linear-gradient(hsla(0,0%,95%,1), hsla(0,0%,85%,1) 50%) !important;
+	color: #111 !important;
 }
 
-#bookmarks-ptf toolbarseparator {
-  display: none !important;
+/* Firebug */
+
+#fbPanelBar1-tabBox,
+#fbToolbox {
+	background-image: -moz-linear-gradient(hsla(0,0%,85%,1), hsla(0,0%,85%,1) 50%) !important;
+}
+
+#fbPanelBar1-tabBox panelTab {
+	color: #111 !important;
 }

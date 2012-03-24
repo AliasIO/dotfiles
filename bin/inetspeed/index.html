@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title></title>
+
+		<meta charset="utf-8">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		<script src="lib/highcharts/highcharts.js"></script>
+	</head>
+	<body>
+		<div id="container">Loading&hellip;</div>
+
+		<script>
+			var chart;
+
+			$(document).ready(function() {
+				$.get('speed.txt', null, function(data) {
+					dataset = new Array;
+
+					data.split("\n").map(function(pair) {
+						if ( pair ) {
+							pair = pair.split(' ');
+
+							pair[0] = parseInt(pair[0] + '000');
+							pair[1] = parseFloat(pair[1]);
+
+							dataset.push(pair);
+						}
+					});
+
+					chart = new Highcharts.Chart({
+						chart: {
+							renderTo: 'container',
+							type: 'spline'
+						},
+						title: {
+							text: 'Internet Speed',
+						},
+						xAxis: {
+							type: 'datetime'
+						},
+						yAxis: {
+							title: {
+								text: 'MB/s'
+							},
+							min: 0
+						},
+						series: [{
+							name: 'Speed',
+							data: dataset
+						}]
+					});
+				}, 'text');
+			});
+		</script>
+	</body>
+</html>
