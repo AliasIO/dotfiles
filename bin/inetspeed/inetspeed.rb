@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-output = `wget http://speedtest.sea01.softlayer.com/speedtest/speedtest/random1000x1000.jpg -O /dev/null 2>&1 | grep 'KB/s)'`
+output = `wget http://speedtest-mel.cdn.on.net/speedtest/random1000x1000.jpg -O /dev/null 2>&1 | grep '[KM]B/s)'`
 
 speed = output.sub(/.+\((.+)\/s.+/, '\1').split(" ")
 
@@ -8,10 +8,10 @@ bits = speed[0].to_f * 8
 unit = speed[1]
 
 case unit
-when 'KB', 'MB'
+when 'KB'
 	bits *= 1024
 when 'MB'
-	bits *= 1024
+	bits *= 1024 * 1024
 end
 
 mbits = bits / 1024 / 1024
