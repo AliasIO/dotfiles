@@ -134,7 +134,7 @@ endfunction
 colorscheme custom                     "Use custom color scheme
 
 if has("gui_running")
-	set guifont=DejaVu\ Sans\ Mono\ 9
+	set guifont=DejaVu\ Sans\ Mono\ 10
 	set guifont=Terminus\ 11
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line

@@ -23,7 +23,7 @@
 						if ( pair ) {
 							pair = pair.split(' ');
 
-							pair[0] = parseInt(pair[0] + '000');
+							pair[0] = parseInt(( parseInt(pair[0]) + 60 * 60 * 11 ) + '000');
 							pair[1] = parseFloat(pair[1]);
 
 							dataset.push(pair);
