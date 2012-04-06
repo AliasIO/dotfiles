@@ -18,7 +18,7 @@ cyan='\[\033[0;36m\]'
 CYAN='\[\033[1;36m\]'
 NC='\[\033[0m\]'
 
-PS1="$YELLOW\u@\h:\w$NC# "
+PS1="$YELLOW\u@\h:\w$NC\n$ "
 
 alias ls='ls --color=auto'
 alias ll='ls -l --color=auto'

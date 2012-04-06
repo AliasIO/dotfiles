@@ -181,11 +181,6 @@ endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
-	"Increment
-	if exists(":Inc")
-		vnoremap <Leader>i :Inc p0<CR>
-	endif
-
 	"NERDTree
 	if exists(":NERDTree")
 		let NERDTreeQuitOnOpen=1
@@ -218,6 +213,9 @@ nnoremap <Space> :set list!<CR>
 
 "Delete all buffers
 nnoremap <silent> <Leader>bd :1,999 bd<CR>
+
+"Toggle statusline
+nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set laststatus=1"<CR>
 
 "Easier tab navigation
 nnoremap <silent> <C-Tab>   :tabnext<CR>

@@ -14,7 +14,7 @@ let colors_name = "custom"
 if version >= 700
 	hi cursorline   guifg=NONE    guibg=#0c0c0c gui=NONE      ctermfg=NONE ctermbg=NONE cterm=NONE
 	hi cursorcolumn guifg=NONE    guibg=#0c0c0c gui=NONE      ctermfg=NONE ctermbg=NONE cterm=NONE
-	hi matchparen   guifg=#fba43e guibg=NONE    gui=bold      ctermfg=3    ctermbg=NONE cterm=NONE
+	hi matchparen   guifg=#fa9524 guibg=NONE    gui=bold      ctermfg=3    ctermbg=NONE cterm=NONE
 endif
 
 "background and menu colors
@@ -53,13 +53,13 @@ hi wildmenu         guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm
 "syntax highlighting
 hi comment          guifg=#767370 guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
 hi constant         guifg=#a082bc guibg=NONE    gui=bold      ctermfg=5    cterm=bold   cterm=NONE
-hi function         guifg=#ec7845 guibg=NONE    gui=NONE      ctermfg=6    cterm=NONE   cterm=NONE
-hi identifier       guifg=#93a8cb guibg=NONE    gui=NONE      ctermfg=2    cterm=NONE   cterm=NONE
+hi function         guifg=#ff306c guibg=NONE    gui=NONE      ctermfg=6    cterm=NONE   cterm=NONE
+hi identifier       guifg=#54d9e7 guibg=NONE    gui=NONE      ctermfg=2    cterm=NONE   cterm=NONE
 hi keyword          guifg=#eeeeee guibg=NONE    gui=bold      ctermfg=7    cterm=NONE   cterm=NONE
 hi number           guifg=#f7ca1e guibg=NONE    gui=NONE      ctermfg=1    cterm=NONE   cterm=NONE
-hi preproc          guifg=#fba43e guibg=NONE    gui=NONE      ctermfg=5    cterm=NONE   cterm=NONE
+hi preproc          guifg=#a3dd37 guibg=NONE    gui=NONE      ctermfg=5    cterm=NONE   cterm=NONE
 hi statement        guifg=#eeeeee guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi special          guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi string           guifg=#f6d27a guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
+hi special          guifg=#fa9524 guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
+hi string           guifg=#e8d876 guibg=NONE    gui=NONE      ctermfg=3    cterm=NONE   cterm=NONE
 hi tablinefill      guifg=#ffffff guibg=NONE    gui=NONE      ctermfg=7    cterm=NONE   cterm=NONE
-hi type             guifg=#ab9fc2 guibg=NONE    gui=NONE      ctermfg=4    cterm=NONE   cterm=NONE
+hi type             guifg=#a082bc guibg=NONE    gui=NONE      ctermfg=4    cterm=NONE   cterm=NONE
