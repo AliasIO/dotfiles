@@ -195,6 +195,11 @@ function! Plugins()
 		nnoremap <Leader>t: :Tabularize /:\zs<CR>
 		vnoremap <Leader>t: :Tabularize /:\zs<CR>
 	endif
+
+	"HexHighlight
+	if exists("*HexHighlight")
+		nnoremap <Leader>h :call HexHighlight()<CR>
+	endif
 endfunction
 
 "CUSTOM COMMANDS & MAPPINGS
