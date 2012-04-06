@@ -43,7 +43,7 @@ set nocindent                          "Use smartindent instead
 set noexpandtab                        "Use tabs, not spaces
 set shiftwidth=4                       "Tab width for indentation
 set smartindent                        "Smart indentation
-set tabstop=4                          "Tab width
+set tabstop=2                          "Tab width
 
 set nolist                             "List invisible characters
 set listchars=tab:→\ ,eol:↵,trail:.
@@ -89,7 +89,7 @@ function! MyTabLine()
 		endif
 
 		" the label is made by MyTabLabel()
-		let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+		let s .= ' %{MyTabLabel(' . ( i + 1 ) . ')} '
 	endfor
 
 	" after the last tab fill with TabLineFill and reset tab page nr
