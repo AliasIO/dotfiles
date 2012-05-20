@@ -41,7 +41,7 @@ map n nzz
 set autoindent                         "Auto-indent new lines
 set nocindent                          "Use smartindent instead
 set noexpandtab                        "Use tabs, not spaces
-set shiftwidth=4                       "Tab width for indentation
+set shiftwidth=2                       "Tab width for indentation
 set smartindent                        "Smart indentation
 set tabstop=2                          "Tab width
 
@@ -58,7 +58,7 @@ set indentkeys -=0#
 
 if has("autocmd")
 	"Indent ruby code with two spaces
-	autocmd Filetype ruby setlocal tabstop=2 shiftwidth=2
+	autocmd Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
 
 	"Disable auto-comment
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o

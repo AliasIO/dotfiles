@@ -41,3 +41,5 @@ export EDITOR=vim
 
 fortune #| cowsay
 echo
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

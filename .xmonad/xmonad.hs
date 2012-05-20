@@ -74,7 +74,7 @@ myManageHook = composeAll . concat $
 myKeys =
 	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
 	, ((mod4Mask, xK_e),       spawn "gvim")
-	, ((mod4Mask, xK_f),       spawn "thunar")
+	, ((mod4Mask, xK_f),       spawn "nautilus --no-desktop")
 	, ((mod4Mask, xK_g),       spawn "gimp")
 	, ((mod4Mask, xK_m),       spawn "vlc")
 	, ((0,        xK_F1),      spawn "terminator")
