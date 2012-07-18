@@ -179,6 +179,17 @@ function! StripTrailingWhitespace()
 	call cursor(l, c)
 endfunction
 
+"Tab to auto-complete only when on a word
+function! InsertTabWrapper()
+	let col = col('.') - 1
+
+	if !col || getline('.')[col - 1] !~ '\k'
+		return "\<tab>"
+	else
+		return "\<c-p>"
+	endif
+endfunction
+
 "PLUGIN OPTIONS
 function! Plugins()
 	"NERDTree
@@ -221,6 +232,9 @@ nnoremap <silent> <Leader>bd :1,999 bd<CR>
 
 "Toggle statusline
 nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set laststatus=1"<CR>
+
+"Tab to autocomplete
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 
 "Easier tab navigation
 nnoremap <silent> <C-Tab>   :tabnext<CR>
