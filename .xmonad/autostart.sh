@@ -10,7 +10,7 @@ xscreensaver -no-splash &
 #xloadimage -onroot -center -border black ~/images/wallpapers/atom1600x900.png &
 
 # Enable passwordless SSH authentication
-ssh-agent &
+#ssh-agent &
 
 #terminator -e htop -T "HTOP" &
 
@@ -24,7 +24,7 @@ terminator &
 
 ~/apps/firefox/firefox &
 
-~/apps/bitcoin/bin/64/bitcoin &
+#~/apps/bitcoin/bin/64/bitcoin &
 
 gvim &
 
