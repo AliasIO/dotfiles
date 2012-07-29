@@ -27,7 +27,7 @@ main = do
 			, ppOutput          = hPutStrLn xmproc
 			, ppSep             = " | "
 			, ppTitle           = xmobarColor "#FFF" "" . shorten 500
-			, ppUrgent          = xmobarColor "#FFF" "" . wrap "*" "*"
+			, ppUrgent          = xmobarColor "#CF0" "" . wrap ">>>" "<<<"
 			, ppVisible         = xmobarColor "#FFF" ""
 			, ppWsSep           = " "
 			}
@@ -57,11 +57,12 @@ myManageHook = composeAll . concat $
 	, [className =? "Gvim"    --> doF (W.shift "3")]
 	, [className =? "Vlc"     --> doF (W.shift "4")]
 	, [title     =? "VLC"     --> doF (W.shift "4")]
+	, [className =? "Pidgin"  --> doF (W.shift "4")]
 	, [className =? "Gimp"    --> doF (W.shift "6")]
 	]
 	where
 	myFloats      = []
-	myOtherFloats = ["Downloads", "Firefox Preferences", "Save As...", "Extracting files from archive"]
+	myOtherFloats = ["Downloads", "Firefox Preferences", "Save As...", "Password Required", "Extracting files from archive"]
 	myIgnores     = []
 
 -- Key bindings

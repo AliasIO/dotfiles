@@ -6,6 +6,9 @@ nm-applet &
 # Screensaver
 xscreensaver -no-splash &
 
+# Notification daemon for notify-send
+/usr/lib/notification-daemon/notification-daemon &
+
 # Set wallpaper
 #xloadimage -onroot -center -border black ~/images/wallpapers/atom1600x900.png &
 
@@ -20,13 +23,15 @@ xscreensaver -no-splash &
 
 terminator &
 
-~/bin/gmail.sh &
+#~/bin/gmail.sh &
 
 ~/apps/firefox/firefox &
 
 #~/apps/bitcoin/bin/64/bitcoin &
 
 gvim &
+
+pidgin &
 
 #thunar ~/music &
 
