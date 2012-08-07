@@ -1,0 +1,1 @@
+/home/elbertf/.xmonad/volume-bars.sh
