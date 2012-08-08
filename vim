@@ -1,1 +1,0 @@
-/home/elbertf/.vim
