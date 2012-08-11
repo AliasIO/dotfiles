@@ -92,7 +92,7 @@ let Tlist_WinWidth = 40
 let Tlist_Close_On_Select = 1
 
 "GUI OPTIONS
-set laststatus=1                       "Hide the status unless window is split
+set laststatus=2                       "Show status line
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
 set statusline=%t%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
@@ -185,8 +185,8 @@ if has("autocmd")
 	"Apply .vimrc changes on save
 	"autocmd BufWritePost .vimrc source $MYVIMRC
 
-    "Custom mappings for plugins
-    autocmd VimEnter * call Plugins()
+	"Custom mappings for plugins
+	autocmd VimEnter * call Plugins()
 endif
 
 "Strip trailing whitespace without moving the cursor
@@ -212,6 +212,11 @@ endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
+	"Powerline
+	set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+
+	let Powerline_symbols = 'fancy'
+
 	"NERDTree
 	if exists(":NERDTree")
 		let NERDTreeQuitOnOpen=1
