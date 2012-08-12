@@ -95,7 +95,7 @@ let Tlist_Close_On_Select = 1
 set laststatus=2                       "Show status line
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
-set statusline=%t%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
+"set statusline=%t%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
 set tabline=%!MyTabLine()              "Custom tabline
 
 function! MyTabLine()
@@ -154,8 +154,8 @@ endfunction
 colorscheme custom                     "Use custom color scheme
 
 if has("gui_running")
-	set guifont=DejaVu\ Sans\ Mono\ 10
-	set guifont=Terminus\ 11
+	"set guifont=DejaVu\ Sans\ Mono\ 10
+	"set guifont=Terminus\ 11
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
@@ -212,11 +212,6 @@ endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
-	"Powerline
-	set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
-
-	let Powerline_symbols = 'fancy'
-
 	"NERDTree
 	if exists(":NERDTree")
 		let NERDTreeQuitOnOpen=1
@@ -237,6 +232,11 @@ function! Plugins()
 		nnoremap <Leader>h :call HexHighlight()<CR>
 	endif
 endfunction
+
+"Powerline
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+
+let Powerline_symbols = 'fancy'
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
