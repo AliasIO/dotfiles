@@ -17,7 +17,7 @@ main = do
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
 	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
-		, manageHook = myManageHook <+> manageHook defaultConfig -- uses default too
+		, manageHook =  manageHook defaultConfig <+> manageDocks <+> myManageHook -- uses default too
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
 			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
@@ -32,7 +32,7 @@ main = do
 			, ppWsSep           = " "
 			}
 		, modMask            = mod4Mask
-		, normalBorderColor  = "#444"
+		, normalBorderColor  = "#333"
 		, focusedBorderColor = "#FFF"
 		} `additionalKeys` myKeys
 
@@ -62,8 +62,8 @@ myManageHook = composeAll . concat $
 	]
 	where
 	myFloats      = []
-	myOtherFloats = ["Downloads", "Firefox Preferences", "Save As...", "Password Required", "Extracting files from archive"]
-	myIgnores     = []
+	myOtherFloats = ["Downloads", "Firefox Preferences", "Firefox Update", "Save As...", "Password Required", "Extracting files from archive"]
+	myIgnores     = ["volumeicon"]
 
 -- Key bindings
 myKeys =
