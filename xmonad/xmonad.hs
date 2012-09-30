@@ -62,7 +62,7 @@ myManageHook = composeAll . concat $
 	]
 	where
 	myFloats      = []
-	myOtherFloats = ["Downloads", "Firefox Preferences", "Firefox Update", "Save As...", "Password Required", "Extracting files from archive"]
+	myOtherFloats = ["Downloads", "Firefox Preferences", "Firefox Update", "Save As...", "Password Required", "Cookies", "Extracting files from archive"]
 	myIgnores     = ["volumeicon"]
 
 -- Key bindings
