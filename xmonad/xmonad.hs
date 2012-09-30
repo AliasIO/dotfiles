@@ -17,7 +17,7 @@ main = do
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
 	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
-		, manageHook =  manageHook defaultConfig <+> manageDocks <+> myManageHook -- uses default too
+		, manageHook = manageHook defaultConfig <+> (doF W.swapDown) <+> manageDocks <+> myManageHook
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
 			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
