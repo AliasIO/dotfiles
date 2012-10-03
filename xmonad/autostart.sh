@@ -11,6 +11,9 @@ nm-applet &
 
 (sleep 5s && volumeicon ) &
 
+# Hide mouse when idle
+unclutter -idle 1 -jitter 50
+
 # Disable beep
 xset b off &
 
