@@ -24,7 +24,7 @@ xscreensaver -no-splash &
 /usr/lib/notification-daemon/notification-daemon &
 
 # Set wallpaper
-feh --bg-scale images/wallpapers/anna_fisher_mirror.jpg &
+feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
 
 terminator &
 
