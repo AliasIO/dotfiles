@@ -62,12 +62,12 @@ myManageHook = composeAll . concat $
 	]
 	where
 	myFloats      = []
-	myOtherFloats = ["Downloads", "Firefox Preferences", "Firefox Update", "Save As...", "Password Required", "Cookies", "Extracting files from archive"]
+	myOtherFloats = ["Downloads", "Nightly Preferences", "Nightly Update", "Save As...", "Password Required", "Cookies", "Extracting files from archive"]
 	myIgnores     = ["volumeicon"]
 
 -- Key bindings
 myKeys =
-	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
+	[ ((mod4Mask, xK_w),       spawn "~/programs/firefox/firefox")
 	, ((mod4Mask, xK_e),       spawn "gvim")
 	, ((mod4Mask, xK_f),       spawn "thunar")
 	, ((mod4Mask, xK_g),       spawn "gimp")
