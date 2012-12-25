@@ -1,12 +1,61 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+dull=0
+bright=1
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+fg_black=30
+fg_red=31
+fg_green=32
+fg_yellow=33
+fg_blue=34
+fg_violet=35
+fg_cyan=36
+fg_white=37
+
+fg_null=00
+
+bg_black=40
+bg_red=41
+bg_green=42
+bg_yellow=43
+bg_blue=44
+bg_violet=45
+bg_cyan=46
+bg_white=47
+
+bg_null=00
+
+##
+# ANSI Escape Commands
+##
+esc="\033"
+normal="\[$esc[m\]"
+reset="\[$esc[${dull};${fg_white};${bg_null}m\]"
+
+##
+# Shortcuts for Colored Text ( Bright and FG Only )
+##
+
+# DULL TEXT
+
+black="\[$esc[${dull};${fg_black}m\]"
+red="\[$esc[${dull};${fg_red}m\]"
+green="\[$esc[${dull};${fg_green}m\]"
+yellow="\[$esc[${dull};${fg_yellow}m\]"
+blue="\[$esc[${dull};${fg_blue}m\]"
+violet="\[$esc[${dull};${fg_violet}m\]"
+cyan="\[$esc[${dull};${fg_cyan}m\]"
+white="\[$esc[${dull};${fg_white}m\]"
+
+# bright text
+bright_black="\[$esc[${bright};${fg_black}m\]"
+bright_red="\[$esc[${bright};${fg_red}m\]"
+bright_green="\[$esc[${bright};${fg_green}m\]"
+bright_yellow="\[$esc[${bright};${fg_yellow}m\]"
+bright_blue="\[$esc[${bright};${fg_blue}m\]"
+bright_violet="\[$esc[${bright};${fg_violet}m\]"
+bright_cyan="\[$esc[${bright};${fg_cyan}m\]"
+bright_white="\[$esc[${bright};${fg_white}m\]"
+
+PROMPT_COMMAND='export ERR=$?'
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -23,88 +72,23 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+function parse_git_branch
+{
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
 
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+  echo " ("${ref#refs/heads/}")"
+}
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
+PS1="${bright_white}\u${normal}@${bright_white}\h${normal}:\w${bright_white}\$(parse_git_branch)${normal}\$ ${reset}"
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color) color_prompt=yes;;
-esac
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias ll='ls -l'
+alias la='ls -A'
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
-fi
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
+#function _update_ps1()
+#{
+#	export PS1="$(~/programs/powerline-bash/powerline-bash.py $?)"
+#}
+#
+#export PROMPT_COMMAND="_update_ps1"

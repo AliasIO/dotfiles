@@ -7,7 +7,7 @@ nm-applet &
 xcompmgr &
 
 # Notifications tray
-( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x000000 --height 15 --widthtype request --margin 100 ) &
+( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 15 --widthtype request --margin 100 ) &
 
 ( sleep 5s && volumeicon > /dev/null 2>&1 ) &
 
@@ -35,3 +35,5 @@ gvim &
 pidgin &
 
 vlc &
+
+( sleep 15 && mediatomb ) &
