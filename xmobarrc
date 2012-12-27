@@ -1,12 +1,14 @@
-Config { font     = "xft:MonteCarloFixed12"
-       , bgColor  = "#121212"
-       , fgColor  = "#666"
-       , position = Top
+Config { font         = "Terminus"
+       , border       = NoBorder
+       , borderColor  = ""
+       , bgColor      = "#121212"
+       , fgColor      = "#666"
+       , position     = Top
        , lowerOnStart = True
-       , commands = [ Run StdinReader
+       , commands     = [ Run StdinReader
                     , Run Com "date +'%b %d %T' | tr -s '[:lower:]' '[:upper:]'" [] "date" 10
                     ]
-       , sepChar  = "%"
-       , alignSep = "}{"
-       , template = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
+       , sepChar      = "%"
+       , alignSep     = "}{"
+       , template     = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
        }

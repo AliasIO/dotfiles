@@ -23,18 +23,9 @@ bg_white=47
 
 bg_null=00
 
-##
-# ANSI Escape Commands
-##
 esc="\033"
 normal="\[$esc[m\]"
 reset="\[$esc[${dull};${fg_white};${bg_null}m\]"
-
-##
-# Shortcuts for Colored Text ( Bright and FG Only )
-##
-
-# DULL TEXT
 
 black="\[$esc[${dull};${fg_black}m\]"
 red="\[$esc[${dull};${fg_red}m\]"
@@ -45,7 +36,6 @@ violet="\[$esc[${dull};${fg_violet}m\]"
 cyan="\[$esc[${dull};${fg_cyan}m\]"
 white="\[$esc[${dull};${fg_white}m\]"
 
-# bright text
 bright_black="\[$esc[${bright};${fg_black}m\]"
 bright_red="\[$esc[${bright};${fg_red}m\]"
 bright_green="\[$esc[${bright};${fg_green}m\]"
@@ -61,12 +51,12 @@ PROMPT_COMMAND='export ERR=$?'
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=99999
+HISTFILESIZE=99999
+
 # append to the history file, don't overwrite it
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -85,10 +75,3 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias ll='ls -l'
 alias la='ls -A'
-
-#function _update_ps1()
-#{
-#	export PS1="$(~/programs/powerline-bash/powerline-bash.py $?)"
-#}
-#
-#export PROMPT_COMMAND="_update_ps1"
