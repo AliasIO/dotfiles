@@ -10,7 +10,7 @@ xcompmgr &
 ( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 100 ) &
 
 # Volume icon
-( sleep 10s && volumeicon ) &
+volti &
 
 # Mouse cursor
 xsetroot -cursor_name left_ptr &
