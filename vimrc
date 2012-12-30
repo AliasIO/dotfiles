@@ -24,6 +24,7 @@ set sidescrolloff=5                    "Horizontal scroll offset
 set t_vb=""                            "No terminal visual bell
 set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
+set t_Co=256                           "Use 256 colours
 
 syntax on                              "Turn on syntax highlighting
 
@@ -95,7 +96,7 @@ let Tlist_Close_On_Select = 1
 set laststatus=2                       "Show status line
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
-"set statusline=%t%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
+set statusline=%F%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
 set tabline=%!MyTabLine()              "Custom tabline
 
 function! MyTabLine()
@@ -151,17 +152,17 @@ function! MyTabLabel(n)
 	return label
 endfunction
 
-colorscheme custom                     "Use custom color scheme
+colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
-	"set guifont=DejaVu\ Sans\ Mono\ 10
-	"set guifont=Terminus\ 11
+	set guifont=DejaVu\ Sans\ Mono\ 10
+	set guifont=Terminus\ 10
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
 
 	if has("autocmd")
-		autocmd GUIEnter * set t_vb=   "No visual bell
+		autocmd GUIEnter * set t_vb=     "No visual bell
 	endif
 else
 	set nocursorline                   "Don't highlight the current line
@@ -234,9 +235,9 @@ function! Plugins()
 endfunction
 
 "Powerline
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 
-let Powerline_symbols = 'fancy'
+"let Powerline_symbols = 'fancy'
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
