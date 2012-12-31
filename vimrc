@@ -182,7 +182,7 @@ if has("autocmd")
 
 	"Remove trailing whitespace and DOS line endings on save
 	autocmd BufWritePre *.php,*.rb,*.js,*.html,*.css :call StripTrailingWhitespace()
-	
+
 	"Apply .vimrc changes on save
 	"autocmd BufWritePost .vimrc source $MYVIMRC
 
