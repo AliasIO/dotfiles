@@ -1,4 +1,4 @@
-set autochdir                          "Change working directory when opening file
+"set autochdir                          "Change working directory when opening file
 set completeopt=menu                   "Autocomplete
 set encoding=utf-8                     "Set encoding to UTF-8
 set history=999                        "Keep a history of commands
@@ -59,13 +59,13 @@ filetype indent on
 set cinkeys    -=0#
 set indentkeys -=0#
 
-if has("autocmd")
-	"Indent ruby code with two spaces
-	autocmd Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
+"AUTO COMMANDS
 
-	"Disable auto-comment
-	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-endif
+"Indent ruby code with two spaces
+au Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
+
+"Disable auto-comment
+au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Load filetype specific plugins
 filetype plugin on
