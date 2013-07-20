@@ -17,7 +17,7 @@ main = do
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
 	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
-		, manageHook = manageHook defaultConfig <+> (doF W.swapUp) <+> manageDocks <+> myManageHook 
+		, manageHook = manageHook defaultConfig <+> manageDocks <+> myManageHook 
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
 			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
@@ -50,24 +50,32 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myManageHook :: ManageHook
 
 myManageHook = composeAll . concat $
-	[ [className =? c --> doFloat | c <- myFloats]
-	, [title     =? t --> doFloat | t <- myOtherFloats]
-	, [resource  =? r --> doFloat | r <- myIgnores]
-	, [className =? "Firefox" --> doF (W.shift "2")]
-	, [className =? "Gvim"    --> doF (W.shift "3")]
-	, [className =? "Vlc"     --> doF (W.shift "4")]
-	, [title     =? "VLC"     --> doF (W.shift "4")]
-	, [className =? "Pidgin"  --> doF (W.shift "4")]
-	, [className =? "Gimp"    --> doF (W.shift "6")]
+	[ [className =? c             --> doFloat | c <- myFloats]
+	, [title     =? t             --> doFloat | t <- myOtherFloats]
+	, [resource  =? r             --> doFloat | r <- myIgnores]
+	, [className =? r             --> doF W.swapDown | r <- mySwapDowns]
+	, [className =? "Firefox"     --> doF W.shift "2"]
+	, [className =? "Gvim"        --> doF W.shift "3"]
+	, [className =? "Vlc"         --> doF W.shift "4"]
+	, [title     =? "VLC"         --> doF W.shift "4"]
+	, [className =? "Pidgin"      --> doF W.shift "4"]
+	, [className =? "Thunderbird" --> doF W.shift "5"]
+	, [className =? "Gimp"        --> doF W.shift "6"]
 	]
 	where
 	myFloats      = []
-	myOtherFloats = ["Downloads", "Nightly Preferences", "Nightly Update", "Save As...", "Password Required", "Cookies", "Extracting files from archive"]
-	myIgnores     = ["volumeicon"]
+	myOtherFloats = 
+		[ "Downloads", "Save As...", "Password Required", "Cookies"
+		, "Firefox Preferences", "Firefox Update"
+		, "Thunderbird Preferences", "Thunderbird Update"
+		, "Extracting files from archive"
+		]
+	myIgnores     = [ "volumeicon" ]
+	mySwapDowns   = [ "Thunar" ]
 
 -- Key bindings
 myKeys =
-	[ ((mod4Mask, xK_w),       spawn "~/programs/firefox/firefox")
+	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
 	, ((mod4Mask, xK_e),       spawn "gvim")
 	, ((mod4Mask, xK_f),       spawn "thunar")
 	, ((mod4Mask, xK_g),       spawn "gimp")

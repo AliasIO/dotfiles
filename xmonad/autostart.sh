@@ -7,10 +7,11 @@ nm-applet &
 xcompmgr &
 
 # Notifications tray
-( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 100 ) &
+( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 120 ) &
 
 # Volume icon
 volti &
+#pnmixer &
 
 # Mouse cursor
 xsetroot -cursor_name left_ptr &
@@ -25,11 +26,14 @@ xscreensaver -no-splash &
 /usr/lib/notification-daemon/notification-daemon &
 
 # Set wallpaper
-feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
+#feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
+feh --bg-max ~/dotfiles/wallpapers/earth.jpg &
 
 terminator &
 
-~/programs/firefox/firefox &
+~/apps/firefox/firefox &
+
+~/apps/thunderbird/thunderbird &
 
 gvim &
 
@@ -37,4 +41,5 @@ pidgin &
 
 vlc &
 
-( sleep 15 && mediatomb ) &
+# VPN
+( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/USA.Washington.Seattle_LOC1S10.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth" ) &

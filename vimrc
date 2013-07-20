@@ -26,9 +26,9 @@ set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
 set t_Co=256                           "Use 256 colours
 
-syntax on                              "Turn on syntax highlighting
+execute pathogen#infect()
 
-call pathogen#runtime_append_all_bundles()
+syntax on                              "Turn on syntax highlighting
 
 "SEARCH OPTIONS
 set ignorecase                         "Case insensitive search
@@ -64,6 +64,9 @@ set indentkeys -=0#
 "Indent ruby code with two spaces
 au Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
 
+"Indent sass code with tabs
+au Filetype sass setlocal noexpandtab tabstop=2 shiftwidth=2
+
 "Disable auto-comment
 au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -96,7 +99,7 @@ let Tlist_Close_On_Select = 1
 set laststatus=2                       "Show status line
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
-set statusline=%F%=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
+set statusline=%F%=%{SyntasticStatuslineFlag()}(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
 set tabline=%!MyTabLine()              "Custom tabline
 
 function! MyTabLine()

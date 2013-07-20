@@ -6,9 +6,10 @@ Config { font         = "Terminus"
        , position     = Top
        , lowerOnStart = True
        , commands     = [ Run StdinReader
-                    , Run Com "date +'%b %d %T' | tr -s '[:lower:]' '[:upper:]'" [] "date" 10
-                    ]
+                        , Run Com "date +'%b %d %T' | tr -s '[:lower:]' '[:upper:]'" [] "date" 10
+                        , Run Com "if ifconfig | grep -q tun0; then echo '<fc=#DF0>VPN</fc>'; else echo '<fc=#F90>VPN</fc>'; fi" [] "vpn" 10
+                        ]
        , sepChar      = "%"
        , alignSep     = "}{"
-       , template     = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
+       , template     = "%StdinReader% }{ %vpn% <fc=#FFF>%date%</fc>"
        }
