@@ -42,4 +42,4 @@ pidgin &
 vlc &
 
 # VPN
-( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/USA.Washington.Seattle_LOC1S10.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth" ) &
+( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/USA.Washington.Seattle_LOC1S10.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth --route 106.187.102.84 255.255.255.255 net_gateway" ) &
