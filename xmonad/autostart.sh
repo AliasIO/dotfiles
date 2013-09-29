@@ -7,7 +7,7 @@ nm-applet &
 xcompmgr &
 
 # Notifications tray
-( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 120 ) &
+( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 95 ) &
 
 # Volume icon
 volti &
@@ -42,4 +42,4 @@ pidgin &
 vlc &
 
 # VPN
-( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/USA.Washington.Seattle_LOC1S10.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth --route 106.187.102.84 255.255.255.255 net_gateway" ) &
+#( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/Japan.Tokyo_LOC1S1.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth --route 106.187.102.84 255.255.255.255 net_gateway" ) &

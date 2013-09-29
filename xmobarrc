@@ -1,4 +1,4 @@
-Config { font         = "Terminus"
+Config { font         = "DejaVu Sans"
        , border       = NoBorder
        , borderColor  = ""
        , bgColor      = "#121212"
@@ -7,9 +7,8 @@ Config { font         = "Terminus"
        , lowerOnStart = True
        , commands     = [ Run StdinReader
                         , Run Com "date +'%b %d %T' | tr -s '[:lower:]' '[:upper:]'" [] "date" 10
-                        , Run Com "if ifconfig | grep -q tun0; then echo '<fc=#DF0>VPN</fc>'; else echo '<fc=#F90>VPN</fc>'; fi" [] "vpn" 10
                         ]
        , sepChar      = "%"
        , alignSep     = "}{"
-       , template     = "%StdinReader% }{ %vpn% <fc=#FFF>%date%</fc>"
+       , template     = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
        }

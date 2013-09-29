@@ -159,7 +159,7 @@ colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
 	set guifont=DejaVu\ Sans\ Mono\ 10
-	set guifont=Terminus\ 10
+	"set guifont=Terminus\ 10
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
@@ -176,6 +176,9 @@ endif
 if has("autocmd")
 	"Restore cursor position when re-opening file
 	autocmd BufReadPost * normal `"
+	
+	"TypeScript files
+	autocmd BufRead,BufNewFile *.ts set filetype=typescript
 	
 	"Less files
 	autocmd BufRead,BufNewFile *.less set filetype=css

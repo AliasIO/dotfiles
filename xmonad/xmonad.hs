@@ -8,6 +8,7 @@ import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Grid
+import XMonad.Layout
 import System.IO
 import qualified XMonad.StackSet as W -- to shift and float windows
 
@@ -54,19 +55,21 @@ myManageHook = composeAll . concat $
 	, [title     =? t             --> doFloat | t <- myOtherFloats]
 	, [resource  =? r             --> doFloat | r <- myIgnores]
 	, [className =? r             --> doF W.swapDown | r <- mySwapDowns]
-	, [className =? "Firefox"     --> doF W.shift "2"]
-	, [className =? "Gvim"        --> doF W.shift "3"]
-	, [className =? "Vlc"         --> doF W.shift "4"]
-	, [title     =? "VLC"         --> doF W.shift "4"]
-	, [className =? "Pidgin"      --> doF W.shift "4"]
-	, [className =? "Thunderbird" --> doF W.shift "5"]
-	, [className =? "Gimp"        --> doF W.shift "6"]
+	, [className =? "Firefox"     --> doF (W.shift "2")]
+	, [className =? "Aurora"      --> doF (W.shift "2")]
+	, [className =? "Gvim"        --> doF (W.shift "3")]
+	, [className =? "Vlc"         --> doF (W.shift "4")]
+	, [title     =? "VLC"         --> doF (W.shift "4")]
+	, [className =? "Pidgin"      --> doF (W.shift "4")]
+	, [className =? "Thunderbird" --> doF (W.shift "5")]
+	, [className =? "Gimp"        --> doF (W.shift "6")]
 	]
 	where
 	myFloats      = []
 	myOtherFloats = 
 		[ "Downloads", "Save As...", "Password Required", "Cookies"
 		, "Firefox Preferences", "Firefox Update"
+		, "Aurora Preferences", "Aurora Update"
 		, "Thunderbird Preferences", "Thunderbird Update"
 		, "Extracting files from archive"
 		]
