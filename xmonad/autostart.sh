@@ -27,7 +27,8 @@ xscreensaver -no-splash &
 
 # Set wallpaper
 #feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
-feh --bg-max ~/dotfiles/wallpapers/earth.jpg &
+#feh --bg-max ~/dotfiles/wallpapers/earth.jpg &
+feh --bg-max ~/dotfiles/wallpapers/prologuefxironman/4638463105_df697dc816_o.jpg &
 
 terminator &
 

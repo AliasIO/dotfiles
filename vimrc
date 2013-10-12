@@ -26,9 +26,35 @@ set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
 set t_Co=256                           "Use 256 colours
 
-execute pathogen#infect()
+set wildignore+=*/tmp/*,*/cache/*,tags,*.jpg,*.png,*.gif
 
 syntax on                              "Turn on syntax highlighting
+
+"VUNDLE
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'tsaleh/vim-matchit'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'godlygeek/tabular'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'leafgarland/typescript-vim'
+Bundle 'gorodinskiy/vim-coloresque'
+"Bundle 'Valloric/YouCompleteMe'
+"Bundle 'joonty/vdebug'
+Bundle 'kien/ctrlp.vim'
+Bundle 'ciaranm/detectindent'
+
+"Load filetype specific plugins
+filetype plugin indent on
 
 "SEARCH OPTIONS
 set ignorecase                         "Case insensitive search
@@ -51,8 +77,6 @@ set tabstop=2                          "Tab width
 set nolist                             "List invisible characters
 set listchars=tab:→\ ,eol:↵,trail:.
 
-filetype indent on
-
 "Prevent smartindent from removing leading whitespace before #
 :inoremap # X#
 
@@ -69,9 +93,6 @@ au Filetype sass setlocal noexpandtab tabstop=2 shiftwidth=2
 
 "Disable auto-comment
 au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-"Load filetype specific plugins
-filetype plugin on
 
 "PHP OPTIONS
 "let phpHtmlInStrings = 0
@@ -187,7 +208,7 @@ if has("autocmd")
 	autocmd BufRead,BufNewFile *.module,*.install set filetype=php
 
 	"Remove trailing whitespace and DOS line endings on save
-	autocmd BufWritePre *.php,*.rb,*.js,*.html,*.css :call StripTrailingWhitespace()
+	autocmd BufWritePre *.php,*.rb,*.js,*.ts,*.html,*.css,*.sass,*.scss :call StripTrailingWhitespace()
 
 	"Apply .vimrc changes on save
 	"autocmd BufWritePost .vimrc source $MYVIMRC
@@ -234,9 +255,20 @@ function! Plugins()
 		vnoremap <Leader>t: :Tabularize /:\zs<CR>
 	endif
 
-	"HexHighlight
-	if exists("*HexHighlight")
-		nnoremap <Leader>h :call HexHighlight()<CR>
+	"YouCompleteMe
+	if exists(":YcmCompleter")
+		let g:ycm_collect_identifiers_from_tags_files = 1
+	endif
+
+	"CtrlP
+	if exists(":CtrlP")
+		let g:ctrlp_map = '<c-p>'
+		let g:ctrlp_cmd = 'CtrlP'
+	endif
+
+	"DetectIndent
+	if exists(":DetectIndent")
+		:autocmd BufReadPost * :DetectIndent
 	endif
 endfunction
 
