@@ -52,6 +52,7 @@ Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
 Bundle 'ciaranm/detectindent'
+Bundle 'pangloss/vim-javascript'
 
 "Load filetype specific plugins
 filetype plugin indent on
