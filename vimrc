@@ -158,7 +158,7 @@ function! MyTabLabel(n)
 	let bufnrlist = tabpagebuflist(a:n)
 
 	"Tab number
-	let label .= a:n . ': '
+	"let label .= a:n . ': '
 
 	"Buffer name
 	let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
