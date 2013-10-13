@@ -122,8 +122,16 @@ let Tlist_Close_On_Select = 1
 set laststatus=2                       "Show status line
 set noruler                            "Don't show the cursor position
 set showtabline=2                      "Always show the tabline
-set statusline=%F%=%{SyntasticStatuslineFlag()}(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})%r
 set tabline=%!MyTabLine()              "Custom tabline
+
+set statusline=                        "Custom statusline
+set statusline+=%F
+set statusline+=%(\ [%{fugitive#head()}]%)
+set statusline+=%=
+set statusline+=%#tablinesel#%m%*
+set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
+set statusline+=%#warningmsg#%r%*
+set statusline+=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})
 
 function! MyTabLine()
 	let s = ''
@@ -181,6 +189,7 @@ endfunction
 colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
+	"set guifont=DejaVu\ Sans\ Mono\ 10
 	set guifont=DejaVu\ Sans\ Mono\ 10
 	"set guifont=Terminus\ 10
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
