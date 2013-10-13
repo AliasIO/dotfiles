@@ -27,7 +27,7 @@ set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
 set t_Co=256                           "Use 256 colours
 
-set wildignore+=*/tmp/*,*/cache/*,tags,*.jpg,*.png,*.gif
+set wildignore+=*/tmp/*,*/cache/*,*/.git/*,tags,*.jpg,*.png,*.gif
 
 syntax on                              "Turn on syntax highlighting
 
@@ -50,10 +50,11 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'leafgarland/typescript-vim'
 Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'Valloric/YouCompleteMe'
-"Bundle 'joonty/vdebug'
+Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
 Bundle 'ciaranm/detectindent'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'hail2u/vim-css3-syntax'
 
 "Load filetype specific plugins
 filetype plugin indent on
