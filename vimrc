@@ -15,6 +15,7 @@ set visualbell                         "Visual bell instead of beep on error
 set mouse=a                            "Enable mouse in all modes
 set nowrap                             "Do not wrap lines
 set nowritebackup                      "No backup before overwriting files
+set relativenumber                     "Show relative line numbers
 set number                             "Show line numbers
 set omnifunc=syntaxcomplete#Complete   "Enable autocomplete
 set scrolloff=5                        "Vertical scroll offset
@@ -52,7 +53,7 @@ Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
 Bundle 'ciaranm/detectindent'
-Bundle 'pangloss/vim-javascript'
+Bundle 'kchmck/vim-coffee-script'
 
 "Load filetype specific plugins
 filetype plugin indent on
