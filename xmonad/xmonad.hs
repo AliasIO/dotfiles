@@ -2,7 +2,9 @@
 import Data.Ratio
 import XMonad
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe)
@@ -16,7 +18,7 @@ import qualified XMonad.StackSet as W -- to shift and float windows
 main = do
 	spawn "sh ~/.xmonad/autostart.sh"
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
+	xmonad $ ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
 		, manageHook = manageHook defaultConfig <+> manageDocks <+> myManageHook 
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
@@ -32,6 +34,7 @@ main = do
 			, ppVisible         = xmobarColor "#FFF" ""
 			, ppWsSep           = " "
 			}
+		, handleEventHook    = fullscreenEventHook
 		, modMask            = mod4Mask
 		, normalBorderColor  = "#333"
 		, focusedBorderColor = "#FFF"
@@ -51,7 +54,8 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myManageHook :: ManageHook
 
 myManageHook = composeAll . concat $
-	[ [className =? c             --> doFloat | c <- myFloats]
+	[ [isFullscreen               --> doFullFloat ]
+	, [className =? c             --> doFloat | c <- myFloats]
 	, [title     =? t             --> doFloat | t <- myOtherFloats]
 	, [resource  =? r             --> doFloat | r <- myIgnores]
 	, [className =? r             --> doF W.swapDown | r <- mySwapDowns]

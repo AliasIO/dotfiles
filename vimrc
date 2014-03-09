@@ -52,7 +52,6 @@ Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'Valloric/YouCompleteMe'
 Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
-Bundle 'ciaranm/detectindent'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
 

@@ -6,7 +6,7 @@ Config { font         = "DejaVu Sans"
        , position     = Top
        , lowerOnStart = True
        , commands     = [ Run StdinReader
-                        , Run Com "date +'%b %d %T' | tr -s '[:lower:]' '[:upper:]'" [] "date" 10
+                        , Run Com "/home/elbert/bin/datetime.sh" [] "date" 10
                         ]
        , sepChar      = "%"
        , alignSep     = "}{"

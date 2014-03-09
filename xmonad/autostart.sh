@@ -28,7 +28,7 @@ xscreensaver -no-splash &
 # Set wallpaper
 #feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
 #feh --bg-max ~/dotfiles/wallpapers/earth.jpg &
-feh --bg-max ~/dotfiles/wallpapers/prologuefxironman/4638463105_df697dc816_o.jpg &
+feh --bg-center ~/dotfiles/wallpapers/atom_1600x900_black.png &
 
 terminator &
 
@@ -41,6 +41,3 @@ gvim &
 pidgin &
 
 vlc &
-
-# VPN
-#( sleep 5s && gksu "openvpn --config /home/elbert/apps/hidemyass/TCP/Japan.Tokyo_LOC1S1.TCP.ovpn --auth-user-pass /home/elbert/bin/vpnauth --route 106.187.102.84 255.255.255.255 net_gateway" ) &
