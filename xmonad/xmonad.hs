@@ -78,13 +78,13 @@ myManageHook = composeAll . concat $
 		, "Extracting files from archive"
 		]
 	myIgnores     = [ "volumeicon" ]
-	mySwapDowns   = [ "Thunar" ]
+	mySwapDowns   = [ "Thunar", "Pcmanfm" ]
 
 -- Key bindings
 myKeys =
 	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
 	, ((mod4Mask, xK_e),       spawn "gvim")
-	, ((mod4Mask, xK_f),       spawn "thunar")
+	, ((mod4Mask, xK_f),       spawn "pcmanfm")
 	, ((mod4Mask, xK_g),       spawn "gimp")
 	, ((mod4Mask, xK_m),       spawn "vlc")
 	, ((0,        xK_F1),      spawn "terminator")
