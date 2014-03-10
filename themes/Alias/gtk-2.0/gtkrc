@@ -1,7 +1,7 @@
 /* http://nale12.deviantart.com/ */
 
 gtk-toolbar-icon-size = large-toolbar
-gtk-color-scheme = "base_color:#ffffff\nbg_color:#F1F2F6\ntooltip_bg_color:#656D78\nselected_bg_color:#666666\ntext_color:#808996\nfg_color:#747D8A\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff"
+gtk-color-scheme = "base_color:#ffffff\nbg_color:#F1F2F6\ntooltip_bg_color:#656D78\nselected_bg_color:#666666\ntext_color:#444444\nfg_color:#747D8A\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff"
 gtk-icon-sizes = "panel-menu=16,16:panel=8,8:gtk-button=16,16:gtk-large-toolbar=24,24:gtk-small-toolbar=16,16"
 gtk-button-images	= 0
 gtk-menu-images	= 0					
@@ -17,7 +17,7 @@ style "default"
 
   GtkWidget::interior_focus			= 0
   GtkWidget::focus_padding			= 0
-  GtkWidget::tooltip-radius       = 5
+  GtkWidget::tooltip-radius       = 0
   GtkWidget::tooltip-alpha        = 255
   GtkWidget::new-tooltip-style    = 1
   GtkButton::child-displacement-x               = 0 

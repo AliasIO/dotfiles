@@ -9,7 +9,7 @@ style "range"			= "default"
   engine "murrine"
   {
 		animation = FALSE
-		border_shades = { 0.747, 0.747 } # gradient to draw on border
+		border_shades = { 0.999, 0.999 } # gradient to draw on border
 		contrast = 0.0 # overal contrast with borders
 		focusstyle = 1 # 0 = none, 1 = grey dotted, 2 = colored with fill, 3 = colored glow
 		glazestyle = 0 # 0 = flat highlight, 1 = curved highlight, 2 = concave, 3 = top curved highlight, 4 = beryl highlight

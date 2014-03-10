@@ -50,7 +50,7 @@ style "notebook"
      function			= EXTENSION
 	recolorable		= TRUE
 	file					= "Tabs/tab-top-active.png"
-	border			= { 5, 5, 5, 5 }
+	border			= { 3, 3, 3, 3 }
 	stretch			= TRUE
 	gap_side			= BOTTOM
       }
@@ -59,7 +59,7 @@ style "notebook"
      function			= EXTENSION
 	recolorable		= TRUE
 	file					= "Tabs/tab-bottom-active.png"
-	border			= { 5, 5, 5, 5 }
+	border			= { 3, 3, 3, 3 }
 	stretch			= TRUE
 	gap_side			= TOP
       }
@@ -68,7 +68,7 @@ style "notebook"
      function			= EXTENSION
 	recolorable		= TRUE
 	file					= "Tabs/tab-left-active.png"
-	border			= { 5, 5, 5, 5 }
+	border			= { 3, 3, 3, 3 }
 	stretch			= TRUE
 	gap_side			= RIGHT
       }
@@ -77,7 +77,7 @@ style "notebook"
      function			= EXTENSION
 	recolorable		= TRUE
 	file					= "Tabs/tab-right-active.png"
-	border			= { 5, 5, 5, 5 }
+	border			= { 3, 3, 3, 3 }
 	stretch			= TRUE
 	gap_side			= LEFT
       }
@@ -89,7 +89,7 @@ style "notebook"
      function				= BOX_GAP
 	recolorable			= TRUE
 	file				= "Tabs/notebook-top.png" 
-	border				= { 5, 5, 5, 5 }
+	border				= { 3, 3, 3, 3 }
 	stretch				= TRUE
 	gap_file			= "Tabs/gap-top.png"
 	gap_border     			= { 10, 10, 10, 10 }
