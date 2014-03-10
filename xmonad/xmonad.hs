@@ -54,7 +54,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myManageHook :: ManageHook
 
 myManageHook = composeAll . concat $
-	[ [isFullscreen               --> doFullFloat ]
+	[ [isFullscreen               --> doFullFloat]
 	, [className =? c             --> doFloat | c <- myFloats]
 	, [title     =? t             --> doFloat | t <- myOtherFloats]
 	, [resource  =? r             --> doFloat | r <- myIgnores]
@@ -69,7 +69,7 @@ myManageHook = composeAll . concat $
 	, [className =? "Gimp"        --> doF (W.shift "6")]
 	]
 	where
-	myFloats      = []
+	myFloats      = [ "Dialog" ]
 	myOtherFloats = 
 		[ "Downloads", "Save As...", "Password Required", "Cookies"
 		, "Firefox Preferences", "Firefox Update"

@@ -7,7 +7,7 @@ nm-applet &
 xcompmgr &
 
 # Notifications tray
-( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 14 --widthtype request --margin 95 ) &
+( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 16 --widthtype request --margin 95 ) &
 
 # Volume icon
 volti &

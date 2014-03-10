@@ -1,14 +1,18 @@
-Config { font         = "DejaVu Sans"
-       , border       = NoBorder
-       , borderColor  = ""
-       , bgColor      = "#121212"
-       , fgColor      = "#666"
-       , position     = Top
-       , lowerOnStart = True
-       , commands     = [ Run StdinReader
-                        , Run Com "/home/elbert/bin/datetime.sh" [] "date" 10
-                        ]
-       , sepChar      = "%"
-       , alignSep     = "}{"
-       , template     = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
+Config { font             = "xft:Terminus:size=8:antialias=true"
+			 , allDesktops      = False
+       , border           = NoBorder
+       , borderColor      = ""
+       , bgColor          = "#121212"
+       , fgColor          = "#666"
+       , persistent       = False
+       , position         = Top
+       , hideOnStart      = False
+       , lowerOnStart     = True
+       , overrideRedirect = False
+       , commands         = [ Run StdinReader
+                            , Run Com "/home/elbert/bin/datetime.sh" [] "date" 10
+                            ]
+       , sepChar          = "%"
+       , alignSep         = "}{"
+       , template         = "%StdinReader% }{ <fc=#FFF>%date%</fc>"
        }
