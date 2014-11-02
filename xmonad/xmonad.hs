@@ -8,9 +8,9 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run(spawnPipe)
+import XMonad.Layout
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Grid
-import XMonad.Layout
 import System.IO
 import qualified XMonad.StackSet as W -- to shift and float windows
 
@@ -20,7 +20,8 @@ main = do
 	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
 	xmonad $ ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ workspaces = myWorkspaces
-		, manageHook = manageHook defaultConfig <+> manageDocks <+> myManageHook 
+		-- , manageHook = manageHook defaultConfig <+> manageDocks <+> myManageHook 
+		, manageHook = manageDocks <+> myManageHook 
 		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
 		, logHook    = dynamicLogWithPP $ xmobarPP
 			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
@@ -55,22 +56,24 @@ myManageHook :: ManageHook
 
 myManageHook = composeAll . concat $
 	[ [isFullscreen               --> doFullFloat]
-	, [className =? c             --> doFloat | c <- myFloats]
-	, [title     =? t             --> doFloat | t <- myOtherFloats]
+	, [isDialog                   --> doCenterFloat]
+	, [className =? c             --> doCenterFloat | c <- myFloats]
+	, [title     =? t             --> doCenterFloat | t <- myOtherFloats]
 	, [resource  =? r             --> doFloat | r <- myIgnores]
 	, [className =? r             --> doF W.swapDown | r <- mySwapDowns]
 	, [className =? "Firefox"     --> doF (W.shift "2")]
 	, [className =? "Aurora"      --> doF (W.shift "2")]
 	, [className =? "Gvim"        --> doF (W.shift "3")]
 	, [className =? "Vlc"         --> doF (W.shift "4")]
-	, [title     =? "VLC"         --> doF (W.shift "4")]
+  , [title     =? "VLC"         --> doF (W.shift "4")]
 	, [className =? "Pidgin"      --> doF (W.shift "4")]
+	, [className =? "Skype"       --> doF (W.shift "4")]
 	, [className =? "Thunderbird" --> doF (W.shift "5")]
 	, [className =? "Gimp"        --> doF (W.shift "6")]
 	]
 	where
 	myFloats      = [ "Dialog" ]
-	myOtherFloats = 
+	myOtherFloats = []
 		[ "Downloads", "Save As...", "Password Required", "Cookies"
 		, "Firefox Preferences", "Firefox Update"
 		, "Aurora Preferences", "Aurora Update"
@@ -84,9 +87,10 @@ myManageHook = composeAll . concat $
 myKeys =
 	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
 	, ((mod4Mask, xK_e),       spawn "gvim")
-	, ((mod4Mask, xK_f),       spawn "pcmanfm")
+	, ((mod4Mask, xK_f),       spawn "thunar")
 	, ((mod4Mask, xK_g),       spawn "gimp")
 	, ((mod4Mask, xK_m),       spawn "vlc")
+	, ((mod4Mask, xK_l),       spawn "xscreensaver-command -lock")
 	, ((0,        xK_F1),      spawn "terminator")
 	, ((0,        xK_Print),   spawn "scrot")
 	, ((mod4Mask, xK_F11),     spawn "amixer --quiet set Master 3%-")

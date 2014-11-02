@@ -1,4 +1,4 @@
-"set autochdir                          "Change working directory when opening file
+set autochdir                          "Change working directory when opening file
 set completeopt=menu                   "Autocomplete
 set encoding=utf-8                     "Set encoding to UTF-8
 set history=999                        "Keep a history of commands
@@ -43,17 +43,18 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
 Bundle 'plasticboy/vim-markdown'
-Bundle 'tsaleh/vim-matchit'
+Bundle 'tmhedberg/matchit'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'leafgarland/typescript-vim'
 Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'Valloric/YouCompleteMe'
-Bundle 'joonty/vdebug'
+"Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
+"Bundle 'Valloric/YouCompleteMe'
 
 "Load filetype specific plugins
 filetype plugin indent on
@@ -96,9 +97,9 @@ au Filetype sass setlocal noexpandtab tabstop=2 shiftwidth=2
 "Disable auto-comment
 au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-"PHP OPTIONS
-"let phpHtmlInStrings = 0
-"let php_noShortTags  = 0
+"No folding in Markdown files
+au FileType mkd setlocal nofoldenable
+
 
 "CTAGS OPTIONS
 set tags+=tags;$HOME
@@ -157,9 +158,6 @@ function! MyTabLabel(n)
 	let label     = ''
 	let bufnrlist = tabpagebuflist(a:n)
 
-	"Tab number
-	"let label .= a:n . ': '
-
 	"Buffer name
 	let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
 
@@ -190,8 +188,7 @@ colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
 	"set guifont=DejaVu\ Sans\ Mono\ 10
-	set guifont=DejaVu\ Sans\ Mono\ 10
-	"set guifont=Terminus\ 10
+	set guifont=Terminus\ 12
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
@@ -222,7 +219,7 @@ if has("autocmd")
 	autocmd BufWritePre *.php,*.rb,*.js,*.ts,*.html,*.css,*.sass,*.scss :call StripTrailingWhitespace()
 
 	"Apply .vimrc changes on save
-	"autocmd BufWritePost .vimrc source $MYVIMRC
+	"autocmd BufWritePost .vimrc so %
 
 	"Custom mappings for plugins
 	autocmd VimEnter * call Plugins()
@@ -236,17 +233,6 @@ function! StripTrailingWhitespace()
 	%s/\(\s\|\)\+$//e
 
 	call cursor(l, c)
-endfunction
-
-"Tab to auto-complete only when on a word
-function! InsertTabWrapper()
-	let col = col('.') - 1
-
-	if !col || getline('.')[col - 1] !~ '\k'
-		return "\<tab>"
-	else
-		return "\<c-p>"
-	endif
 endfunction
 
 "PLUGIN OPTIONS
@@ -267,19 +253,14 @@ function! Plugins()
 	endif
 
 	"YouCompleteMe
-	if exists(":YcmCompleter")
-		let g:ycm_collect_identifiers_from_tags_files = 1
-	endif
+	"if exists(":YcmCompleter")
+	"	let g:ycm_collect_identifiers_from_tags_files = 1
+	"endif
 
 	"CtrlP
 	if exists(":CtrlP")
 		let g:ctrlp_map = '<c-p>'
 		let g:ctrlp_cmd = 'CtrlP'
-	endif
-
-	"DetectIndent
-	if exists(":DetectIndent")
-		:autocmd BufReadPost * :DetectIndent
 	endif
 endfunction
 
@@ -308,9 +289,6 @@ nnoremap <silent> <Leader>bd :1,999 bd<CR>
 "Toggle statusline
 nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set laststatus=1"<CR>
 
-"Tab to autocomplete
-"inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-
 "Generate tags list
 nnoremap <Leader>cg :!/usr/bin/ctags -R .<CR>
 
@@ -329,10 +307,6 @@ nnoremap <silent> <C-w>     :tabclose<CR>
 "Shift blocks visually
 vnoremap < <gv
 vnoremap > >gv
-
-"Scroll page (faster) with ctrl+j/k, cursor at edge of screen
-map <C-j> 3<C-e>L
-map <C-k> 3<C-y>H
 
 "Can't touch this
 map <Up>        <nop>
