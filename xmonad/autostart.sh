@@ -7,7 +7,7 @@ nm-applet &
 #xcompmgr &
 
 # Notifications tray
-( sleep 5s && trayer --edge top --align right --transparent true --alpha 0 --tint 0x121212 --height 16 --widthtype request --margin 95 ) &
+trayer --edge top --align center --transparent true --alpha 0 --tint 0x121212 --height 16 --widthtype request --margin 95 --expand true &
 
 # Volume icon
 volti &
@@ -26,13 +26,11 @@ xscreensaver -no-splash &
 /usr/lib/notification-daemon/notification-daemon &
 
 # Set wallpaper
-#feh --bg-scale images/wallpapers/anna_fisher_1920x1800.jpg &
-#feh --bg-max ~/dotfiles/wallpapers/earth.jpg &
 feh --bg-center ~/dotfiles/wallpapers/atom_1600x900_black.png &
 
 terminator &
 
-~/apps/firefox/firefox &
+iceweasel &
 
 ~/apps/thunderbird/thunderbird &
 
@@ -40,6 +38,6 @@ gvim &
 
 skype &
 
-( sleep 10s && pidgin ) &
+(sleep 5 && pidgin ) &
 
-vlc &
+vlc --extraintf http &

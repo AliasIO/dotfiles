@@ -1,115 +1,245 @@
 -- Imports
-import Data.Ratio
 import XMonad
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
+-- Prompt
+import XMonad.Prompt
+import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
+import XMonad.Prompt.AppendFile (appendFilePrompt)
+-- Hooks
+import XMonad.Operations
+ 
+import System.IO
+import System.Exit
+ 
+import XMonad.Util.Run
+ 
+import XMonad.Actions.CycleWS
+ 
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.UrgencyHook
-import XMonad.Util.EZConfig(additionalKeys)
-import XMonad.Util.Run(spawnPipe)
-import XMonad.Layout
-import XMonad.Layout.NoBorders
+import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.EwmhDesktops
+ 
+import XMonad.Layout.NoBorders (smartBorders, noBorders)
+import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
+import XMonad.Layout.Reflect (reflectHoriz)
+import XMonad.Layout.IM
+import XMonad.Layout.Reflect
+import XMonad.Layout.SimpleFloat
+import XMonad.Layout.Spacing
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.LayoutHints
+import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Grid
-import System.IO
-import qualified XMonad.StackSet as W -- to shift and float windows
+ 
+import Data.Ratio ((%))
+ 
+import qualified XMonad.StackSet as W -- To shift and float windows
+import qualified Data.Map as M
+ 
+-- Config
+-- Define modMask
+modMask'     :: KeyMask
+modMask'     = mod4Mask
+-- Define Terminal
+myTerminal   = "terminator"
+-- Define workspaces
+myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+-- Dzen/Conky
+myXmonadBar  = "dzen2 -x '0' -y '0' -h '16' -w '960' -ta 'l' -fg '#FFF' -bg '#000' -fn " ++ xlfdFont
+myStatusBar  = "conky -c /home/elbert/.xmonad/conky_dzen | dzen2 -x '960' -w '960' -h '16' -ta 'r' -bg '#000' -fg '#FFFFFF' -y '0' -fn " ++ xlfdFont
+myBitmapsDir = "/home/elbert/.xmonad/dzen2"
 
--- The main function
+-- Main
 main = do
 	spawn "sh ~/.xmonad/autostart.sh"
-	xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-	xmonad $ ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig
-		{ workspaces = myWorkspaces
-		-- , manageHook = manageHook defaultConfig <+> manageDocks <+> myManageHook 
-		, manageHook = manageDocks <+> myManageHook 
-		, layoutHook = avoidStruts $ smartBorders $ myLayouthook
-		, logHook    = dynamicLogWithPP $ xmobarPP
-			{ ppCurrent         = xmobarColor "#FFF" "" . wrap "[" "]"
-			, ppHidden          = xmobarColor "#FFF" ""
-			, ppHiddenNoWindows = xmobarColor "#666" ""
-			, ppLayout          = xmobarColor "#FFF" ""
-			, ppOutput          = hPutStrLn xmproc
-			, ppSep             = " | "
-			, ppTitle           = xmobarColor "#FFF" "" . shorten 500
-			, ppUrgent          = xmobarColor "#CF0" "" . wrap ">>>" "<<<"
-			, ppVisible         = xmobarColor "#FFF" ""
-			, ppWsSep           = " "
-			}
-		, handleEventHook    = fullscreenEventHook
-		, modMask            = mod4Mask
-		, normalBorderColor  = "#333"
-		, focusedBorderColor = "#FFF"
-		} `additionalKeys` myKeys
+	dzenLeftBar <- spawnPipe myXmonadBar
+	dzenRightBar <- spawnPipe myStatusBar
+	xmonad $ defaultConfig
+		{ terminal            = myTerminal
+		, workspaces          = myWorkspaces
+		, keys                = keys'
+		, modMask             = modMask'
+		, layoutHook          = layoutHook'
+		, manageHook          = manageHook'
+		, logHook             = myLogHook dzenLeftBar >> fadeInactiveLogHook 0xdddddddd
+		, normalBorderColor   = colorNormalBorder
+		, focusedBorderColor  = colorFocusedBorder
+		, borderWidth         = 1
+		}
 
-myLayouthook = Grid ||| Full ||| mySplit
-
-mySplit = Mirror $ Tall nmaster delta ratio
+-- Hooks
+-- ManageHook
+manageHook' :: ManageHook
+manageHook' = manageDocks <+> (composeAll . concat $
+	[ [resource  =? r --> doIgnore       | r <- myIgnores]
+	, [resource  =? r --> doFloat        | r <- myFloats]
+	, [className =? c --> doShift  "1"   | c <- myTerminal]
+	, [className =? c --> doShift  "2"   | c <- myWeb]
+	, [className =? c --> doShift  "3"   | c <- myDev]
+	, [className =? c --> doShift	 "4"   | c <- myChat]
+	, [className =? c --> doShift	 "5"   | c <- myEmail]
+	, [className =? c --> doShift  "6"   | c <- myGraphics]
+	, [className =? c --> doShift  "8"   | c <- myVM]
+	, [className =? c --> doF W.swapDown | c <- mySwapDowns]
+	, [className =? c --> doCenterFloat  | c <- myCenterFloats]
+	, [isDialog       --> doCenterFloat]
+	, [isFullscreen   --> myDoFullFloat]
+	]) 
 	where
-		nmaster = 1      -- The default number of windows in the master pane
-		delta   = 3/100  -- Percent of screen to increment by when resizing panes
-		ratio   = 70/100 -- Default proportion of screen occupied by master pane
+		role       = stringProperty "WM_WINDOW_ROLE"
+		name       = stringProperty "WM_NAME"
 
-myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+		-- classnames
+		myTerminal     = ["terminator"]
+		myWeb          = ["Firefox","Aurora"]
+		myDev          = ["Gvim"]
+		myChat         = ["Pidgin","Skype","Vlc"]
+		myEmail        = ["Thunderbird"]
+		myGraphics     = ["Gimp"]
+		myVM           = ["VirtualBox"]
+		mySwapDowns    = ["Thunar","Pcmanfm"]
+		mySinks        = ["Vlc"]
+		myCenterFloats = []
+		myFloats       = []
+		-- resources   
+		myIgnores      = ["notify-osd","trayer"]
 
--- Organize windows
-myManageHook :: ManageHook
+-- A trick for fullscreen but stil allow focusing of other WSs
+myDoFullFloat :: ManageHook
+myDoFullFloat = doF W.focusDown <+> doFullFloat
 
-myManageHook = composeAll . concat $
-	[ [isFullscreen               --> doFullFloat]
-	, [isDialog                   --> doCenterFloat]
-	, [className =? c             --> doCenterFloat | c <- myFloats]
-	, [title     =? t             --> doCenterFloat | t <- myOtherFloats]
-	, [resource  =? r             --> doFloat | r <- myIgnores]
-	, [className =? r             --> doF W.swapDown | r <- mySwapDowns]
-	, [className =? "Firefox"     --> doF (W.shift "2")]
-	, [className =? "Aurora"      --> doF (W.shift "2")]
-	, [className =? "Gvim"        --> doF (W.shift "3")]
-	, [className =? "Vlc"         --> doF (W.shift "4")]
-  , [title     =? "VLC"         --> doF (W.shift "4")]
-	, [className =? "Pidgin"      --> doF (W.shift "4")]
-	, [className =? "Skype"       --> doF (W.shift "4")]
-	, [className =? "Thunderbird" --> doF (W.shift "5")]
-	, [className =? "Gimp"        --> doF (W.shift "6")]
-	]
-	where
-	myFloats      = [ "Dialog" ]
-	myOtherFloats = []
-		[ "Downloads", "Save As...", "Password Required", "Cookies"
-		, "Firefox Preferences", "Firefox Update"
-		, "Aurora Preferences", "Aurora Update"
-		, "Thunderbird Preferences", "Thunderbird Update"
-		, "Extracting files from archive"
-		]
-	myIgnores     = [ "volumeicon" ]
-	mySwapDowns   = [ "Thunar", "Pcmanfm" ]
+layoutHook' = avoidStruts $ smartBorders $ 
+              onWorkspaces ["3"] devLayout $
+              onWorkspaces ["4"] imLayout $
+              onWorkspaces ["6"] devLayout $
+              myLayout
+ 
+-- Bar
+myLogHook :: Handle -> X ()
+myLogHook h = dynamicLogWithPP $ defaultPP
+	{ ppCurrent         = dzenColor "#FFF" "" . wrap "[" "]"
+	, ppHidden          = dzenColor "#888" ""
+	, ppHiddenNoWindows = dzenColor "#666" ""
+	, ppOutput          = hPutStrLn h
+	, ppTitle           = dzenColor "#FFF" "" . shorten 500 . dzenEscape
+	, ppUrgent          = dzenColor "#CF0" "" . wrap ">>>" "<<<"
+	, ppVisible         = dzenColor "#666" ""
+	, ppWsSep           = " "
+	, ppSep             = " | "
+	, ppLayout          = dzenColor "#FD0" "" .
+		(\x -> case x of
+			"Grid"             -> "^i(" ++ myBitmapsDir ++ "/grid.xbm)"
+			"ReflectX IM Grid" -> "^i(" ++ myBitmapsDir ++ "/imgrid.xbm)"
+			"Mirror Tall"      -> "^i(" ++ myBitmapsDir ++ "/mtall.xbm)"
+			"Full"             -> "^i(" ++ myBitmapsDir ++ "/full.xbm)"
+			"Simple Float"     -> "~"
+			_                  -> x
+		)
+	}
+ 
+-- Layout
+myLayout = Grid ||| Full
+ 
+devLayout = mySplit ||| Full
+  where
+		mySplit = Mirror $ Tall nmaster delta ratio
+			where
+				nmaster = 1      -- The default number of windows in the master pane
+				delta   = 3/100  -- Percent of screen to increment by when resizing panes
+				ratio   = 70/100 -- Default proportion of screen occupied by master pane
+ 
+imLayout = reflectHoriz $ withIM (1%6) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| Grid
 
--- Key bindings
-myKeys =
-	[ ((mod4Mask, xK_w),       spawn "~/apps/firefox/firefox")
-	, ((mod4Mask, xK_e),       spawn "gvim")
-	, ((mod4Mask, xK_f),       spawn "thunar")
-	, ((mod4Mask, xK_g),       spawn "gimp")
-	, ((mod4Mask, xK_m),       spawn "vlc")
-	, ((mod4Mask, xK_l),       spawn "xscreensaver-command -lock")
-	, ((0,        xK_F1),      spawn "terminator")
-	, ((0,        xK_Print),   spawn "scrot")
-	, ((mod4Mask, xK_F11),     spawn "amixer --quiet set Master 3%-")
-	, ((mod4Mask, xK_F12),     spawn "amixer --quiet set Master 3%+")
-	, ((mod4Mask, xK_s),       spawn "amixer --quiet set Master toggle")
-	, ((0,        0x1008ff11), spawn "amixer --quiet set Master 3%-")
-	, ((0,        0x1008ff13), spawn "amixer --quiet set Master 3%+")
-	, ((0,        0x1008ff12), spawn "amixer --quiet set Master toggle")
-	, ((mod4Mask, xK_b),       sendMessage ToggleStruts)
+-- Theme
+colorNormalBorder  = "#333"
+colorFocusedBorder = "#FFF"
+ 
+barFont  = "terminus"
+barXFont = "terminus:size=8"
+xftFont  = "xft:Terminus:size=8:antialias=true"
+xlfdFont = "-*-terminus-*-r-normal-*-*-120-*-*-*-*-*-*"
+ 
+-- Run or Raise Menu
+mXPConfig :: XPConfig
+mXPConfig =
+	defaultXPConfig 
+		{ font              = xftFont
+		, bgColor           = "#000"
+		, fgColor           = "#DF0"
+		, bgHLight          = "#DF0"
+		, fgHLight          = "#000"
+		, promptBorderWidth = 0
+		, height            = 20
+		, historyFilter     = deleteConsecutive
+		}
+ 
+-- Key mapping
+keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
+	[ ((modMask,                 xK_p      ), runOrRaisePrompt mXPConfig)
+	, ((0,                       xK_F1     ), spawn $ XMonad.terminal conf)
+	, ((modMask .|. shiftMask,   xK_c      ), kill)
+	, ((modMask .|. shiftMask,   xK_l      ), spawn "slock")
+	-- Programs
+	, ((0,                       xK_Print  ), spawn "scrot -e 'mv $f ~/screenshots/'")
+	, ((modMask,                 xK_w      ), spawn "iceweasel")
+	, ((modMask,                 xK_e      ), spawn "gvim")
+	, ((modMask,                 xK_f      ), spawn "thunar")
+	, ((modMask,                 xK_g      ), spawn "gimp")
+	, ((modMask,                 xK_m      ), spawn "vlc --extraintf http")
+	, ((modMask,                 xK_f      ), spawn "thunar")
+	-- Media Keys
+	, ((mod4Mask,                xK_s      ), spawn "amixer -q sset Master toggle")
+	, ((mod4Mask,                xK_F11    ), spawn "amixer -q sset Master 3%-")
+	, ((mod4Mask,                xK_F12    ), spawn "amixer -q sset Master 3%+")
+	, ((0,                       0x1008ff12), spawn "amixer -q sset Master toggle") -- XF86AudioMute
+	, ((0,                       0x1008ff11), spawn "amixer -q sset Master 3%-")    -- XF86AudioLowerVolume
+	, ((0,                       0x1008ff13), spawn "amixer -q sset Master 3%+")    -- XF86AudioRaiseVolume
+	, ((0,                       0x1008ff14), spawn "rhythmbox-client --play-pause")
+	, ((0,                       0x1008ff17), spawn "rhythmbox-client --next")
+	, ((0,                       0x1008ff16), spawn "rhythmbox-client --previous")
+
+	-- layouts
+	, ((modMask,                 xK_space  ), sendMessage NextLayout)
+	, ((modMask .|. shiftMask,   xK_space  ), setLayout $ XMonad.layoutHook conf)      -- reset layout on current desktop to default
+	, ((modMask,                 xK_b      ), sendMessage ToggleStruts)
+	, ((modMask,                 xK_n      ), refresh)
+	, ((modMask,                 xK_Tab    ), windows W.focusDown)                     -- move focus to next window
+	, ((modMask,                 xK_j      ), windows W.focusDown)
+	, ((modMask,                 xK_k      ), windows W.focusUp  )
+	, ((modMask .|. shiftMask,   xK_j      ), windows W.swapDown)                      -- swap the focused window with the next window
+	, ((modMask .|. shiftMask,   xK_k      ), windows W.swapUp)                        -- swap the focused window with the previous window
+	, ((modMask,                 xK_Return ), windows W.swapMaster)
+	, ((modMask,                 xK_t      ), withFocused $ windows . W.sink)          -- Push window back into tiling
+	, ((modMask,                 xK_h      ), sendMessage Shrink)                      -- %! Shrink a master area
+	, ((modMask,                 xK_l      ), sendMessage Expand)                      -- %! Expand a master area
+	, ((modMask,                 xK_comma  ), sendMessage (IncMasterN 1))
+	, ((modMask,                 xK_period ), sendMessage (IncMasterN (-1)))
+
+	-- workspaces
+	, ((modMask .|. controlMask, xK_Right  ), nextWS)
+	, ((modMask .|. shiftMask,   xK_Right  ), shiftToNext)
+	, ((modMask .|. controlMask, xK_Left   ), prevWS)
+	, ((modMask .|. shiftMask,   xK_Left   ), shiftToPrev)
+
+	-- quit, or restart
+	, ((modMask .|. shiftMask,   xK_q      ), io (exitWith ExitSuccess))
+	, ((modMask,                 xK_q      ), spawn "killall conky dzen2 && /home/my_user/.cabal/bin/xmonad --recompile && /home/my_user/.cabal/bin/xmonad --restart")
 	]
 	++
-	[ ((m .|. mod4Mask, k), windows $ f i) | (i, k) <- zip myWorkspaces numPadKeys
-	, (f, m)                                        <- [(W.greedyView, 0), (W.shift, shiftMask)]
-	]
+	-- mod-[1..9] %! Switch to workspace N
+	-- mod-shift-[1..9] %! Move client to workspace N
+	[((m .|. modMask, k), windows $ f i)
+		| (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+		, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+	++
 
--- Non-numeric num pad keys, sorted by number
-numPadKeys = 
-	[ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
- 	, xK_KP_Left, xK_KP_Begin, xK_KP_Right     -- 4, 5, 6
- 	, xK_KP_Home, xK_KP_Up,    xK_KP_Page_Up   -- 7, 8, 9
- 	, xK_KP_Insert                             -- 0 
- 	]
+	--
+	-- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+	-- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+	--
+	[((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+		| (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+		, (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]

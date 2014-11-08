@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Start VLC with "vlc -extraintf http"
+# Requires libxml2-utils
+
+url="http://localhost:8080/requests/status.xml"
+
+now_playing=`curl -s $url | xmllint --xpath '//information//info[@name="now_playing"]/text()[1]' - 2>/dev/null`
+title=`curl -s $url | xmllint --xpath '//information//info[@name="title"]/text()[1]' - 2>/dev/null`
+artist=`curl -s $url | xmllint --xpath '//information//info[@name="artist"]/text()[1]' - 2>/dev/null`
+filename=`curl -s $url | xmllint --xpath '//information//info[@name="filename"]/text()[1]' - 2>/dev/null`
+
+if [ "$now_playing" ]
+then
+	echo $now_playing
+elif [ "$title" ]
+then
+	if [ "$artist" ]
+	then
+		echo -n "$artist - "
+	fi
+
+	echo -n $title 
+elif [ "$filename" ]
+then
+	echo -n $filename
+else
+	echo "Silence"
+fi

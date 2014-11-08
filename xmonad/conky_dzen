@@ -1,0 +1,8 @@
+background yes
+out_to_console yes
+out_to_x no
+# Update interval in seconds
+update_interval 1
+TEXT
+^fg(\#390)^i(/home/elbert/.xmonad/dzen2/net_down_02.xbm) ${downspeed eth0}^fg(\#B03)  ^i(/home/elbert/.xmonad/dzen2/net_up_02.xbm) ${upspeed eth0}  ^fg(\#FD0)^i(/home/elbert/.xmonad/dzen2/cpu.xbm) ${cpu}%  ^fg(\#0FD)^i(/home/elbert/.xmonad/dzen2/mem.xbm) ${memperc}% ^fg(\#0DF)^i(/home/elbert/.xmonad/dzen2/mpd.xbm) ${exec sh /home/elbert/.xmonad/vlc_now_playing}  ^fg(\#F0D)^i(/home/elbert/.xmonad/dzen2/spkr_01.xbm) ${exec amixer get Master | egrep -o "[0-9]+%" | head -1 | egrep -o "[0-9]*"}%  ^fg(\#FFF)^i(/home/elbert/.xmonad/dzen2/clock.xbm) ${time %a %b %d %R}
+
