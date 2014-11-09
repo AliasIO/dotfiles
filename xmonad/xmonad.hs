@@ -64,10 +64,10 @@ main = do
 		, modMask             = modMask'
 		, layoutHook          = layoutHook'
 		, manageHook          = manageHook'
-		, logHook             = myLogHook dzenLeftBar >> fadeInactiveLogHook 0xdddddddd
+		, logHook             = myLogHook dzenLeftBar >> fadeInactiveLogHook 1
 		, normalBorderColor   = colorNormalBorder
 		, focusedBorderColor  = colorFocusedBorder
-		, borderWidth         = 1
+		, borderWidth         = 0
 		}
 
 -- Hooks
@@ -101,7 +101,6 @@ manageHook' = manageDocks <+> (composeAll . concat $
 		myGraphics     = ["Gimp"]
 		myVM           = ["VirtualBox"]
 		mySwapDowns    = ["Thunar","Pcmanfm"]
-		mySinks        = ["Vlc"]
 		myCenterFloats = []
 		myFloats       = []
 		-- resources   
@@ -178,7 +177,7 @@ mXPConfig =
  
 -- Key mapping
 keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-	[ ((modMask,                 xK_p      ), runOrRaisePrompt mXPConfig)
+	[ ((modMask,                 xK_F2     ), runOrRaisePrompt mXPConfig)
 	, ((0,                       xK_F1     ), spawn $ XMonad.terminal conf)
 	, ((modMask .|. shiftMask,   xK_c      ), kill)
 	, ((modMask .|. shiftMask,   xK_l      ), spawn "slock")
@@ -194,27 +193,30 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	, ((mod4Mask,                xK_s      ), spawn "amixer -q sset Master toggle")
 	, ((mod4Mask,                xK_F11    ), spawn "amixer -q sset Master 3%-")
 	, ((mod4Mask,                xK_F12    ), spawn "amixer -q sset Master 3%+")
+	, ((0,                       xK_Pause  ), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_pause")
+	, ((mod4Mask,                xK_n      ), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_next")
+	, ((mod4Mask,                xK_p      ), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_previous")
 	, ((0,                       0x1008ff12), spawn "amixer -q sset Master toggle") -- XF86AudioMute
 	, ((0,                       0x1008ff11), spawn "amixer -q sset Master 3%-")    -- XF86AudioLowerVolume
 	, ((0,                       0x1008ff13), spawn "amixer -q sset Master 3%+")    -- XF86AudioRaiseVolume
-	, ((0,                       0x1008ff14), spawn "rhythmbox-client --play-pause")
-	, ((0,                       0x1008ff17), spawn "rhythmbox-client --next")
-	, ((0,                       0x1008ff16), spawn "rhythmbox-client --previous")
+	, ((0,                       0x1008ff14), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_pause")
+	, ((0,                       0x1008ff17), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_next")
+	, ((0,                       0x1008ff16), spawn "curl -s http://127.0.0.1:8080/requests/status.xml?command=pl_previous")
 
 	-- layouts
 	, ((modMask,                 xK_space  ), sendMessage NextLayout)
-	, ((modMask .|. shiftMask,   xK_space  ), setLayout $ XMonad.layoutHook conf)      -- reset layout on current desktop to default
+	, ((modMask .|. shiftMask,   xK_space  ), setLayout $ XMonad.layoutHook conf)   -- reset layout on current desktop to default
 	, ((modMask,                 xK_b      ), sendMessage ToggleStruts)
-	, ((modMask,                 xK_n      ), refresh)
-	, ((modMask,                 xK_Tab    ), windows W.focusDown)                     -- move focus to next window
+	, ((modMask,                 xK_r      ), refresh)
+	, ((modMask,                 xK_Tab    ), windows W.focusDown)                  -- move focus to next window
 	, ((modMask,                 xK_j      ), windows W.focusDown)
 	, ((modMask,                 xK_k      ), windows W.focusUp  )
-	, ((modMask .|. shiftMask,   xK_j      ), windows W.swapDown)                      -- swap the focused window with the next window
-	, ((modMask .|. shiftMask,   xK_k      ), windows W.swapUp)                        -- swap the focused window with the previous window
+	, ((modMask .|. shiftMask,   xK_j      ), windows W.swapDown)                   -- swap the focused window with the next window
+	, ((modMask .|. shiftMask,   xK_k      ), windows W.swapUp)                     -- swap the focused window with the previous window
 	, ((modMask,                 xK_Return ), windows W.swapMaster)
-	, ((modMask,                 xK_t      ), withFocused $ windows . W.sink)          -- Push window back into tiling
-	, ((modMask,                 xK_h      ), sendMessage Shrink)                      -- %! Shrink a master area
-	, ((modMask,                 xK_l      ), sendMessage Expand)                      -- %! Expand a master area
+	, ((modMask,                 xK_t      ), withFocused $ windows . W.sink)       -- Push window back into tiling
+	, ((modMask,                 xK_h      ), sendMessage Shrink)                   -- %! Shrink a master area
+	, ((modMask,                 xK_l      ), sendMessage Expand)                   -- %! Expand a master area
 	, ((modMask,                 xK_comma  ), sendMessage (IncMasterN 1))
 	, ((modMask,                 xK_period ), sendMessage (IncMasterN (-1)))
 

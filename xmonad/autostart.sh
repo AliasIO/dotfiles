@@ -4,7 +4,7 @@
 nm-applet &
 
 # Enable compositing
-#xcompmgr &
+compton -C -o.25 -r10 -l-15 -t-15  --inactive-dim=.1 --no-fading-openclose &
 
 # Notifications tray
 trayer --edge top --align center --transparent true --alpha 0 --tint 0x121212 --height 16 --widthtype request --margin 95 --expand true &
