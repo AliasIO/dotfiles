@@ -40,4 +40,4 @@ skype &
 
 (sleep 5 && pidgin ) &
 
-vlc --extraintf http &
+vlc --extraintf http --http-host localhost:9090 &
