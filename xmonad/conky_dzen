@@ -10,5 +10,4 @@ TEXT
 ^fg(\#0FD)^i(/home/elbert/.xmonad/dzen2/mem.xbm) ${memperc}% \
 ^fg(\#0DF)${exec sh /home/elbert/.xmonad/vlc_now_playing} \
 ^fg(\#F0D)^i(/home/elbert/.xmonad/dzen2/spkr_01.xbm) ${if_match "${exec amixer get Master | egrep -o '\[on\]' | head -1}" == "[on]"}${exec amixer get Master | egrep -o "[0-9]+%" | head -1 | egrep -o "[0-9]*"}%${else}Muted${endif} \
-^fg(\#FFF)^i(/home/elbert/.xmonad/dzen2/clock.xbm) ${time %a %b %d %R} \
-
+^fg(\#FFF)^i(/home/elbert/.xmonad/dzen2/clock.xbm) ${time %a %b %d %R}
