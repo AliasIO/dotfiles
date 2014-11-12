@@ -98,7 +98,7 @@ manageHook' = manageDocks <+> (composeAll . concat $
 		myDev          = ["Gvim"]
 		myChat         = ["Pidgin","Skype","Vlc"]
 		myEmail        = ["Thunderbird"]
-		myGraphics     = ["Gimp"]
+		myGraphics     = ["Gimp", "Gimp-2.8"]
 		myVM           = ["VirtualBox"]
 		mySwapDowns    = ["Thunar","Pcmanfm"]
 		myCenterFloats = []
@@ -187,21 +187,21 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	, ((modMask,                 xK_e      ), spawn "gvim")
 	, ((modMask,                 xK_f      ), spawn "thunar")
 	, ((modMask,                 xK_g      ), spawn "gimp")
-	, ((modMask,                 xK_m      ), spawn "vlc --extraintf http --http-host localhost:9090")
+	, ((modMask,                 xK_m      ), spawn "vlc --extraintf http --http-port 9090")
 	, ((modMask,                 xK_f      ), spawn "thunar")
 	-- Media Keys
 	, ((mod4Mask,                xK_s      ), spawn "amixer -q sset Master toggle")
 	, ((mod4Mask,                xK_F11    ), spawn "amixer -q sset Master 3%-")
 	, ((mod4Mask,                xK_F12    ), spawn "amixer -q sset Master 3%+")
-	, ((0,                       xK_Pause  ), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_pause")
-	, ((mod4Mask,                xK_n      ), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_next")
-	, ((mod4Mask,                xK_p      ), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_previous")
+	, ((0,                       xK_Pause  ), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_pause")
+	, ((mod4Mask,                xK_n      ), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_next")
+	, ((mod4Mask,                xK_p      ), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_previous")
 	, ((0,                       0x1008ff12), spawn "amixer -q sset Master toggle") -- XF86AudioMute
 	, ((0,                       0x1008ff11), spawn "amixer -q sset Master 3%-")    -- XF86AudioLowerVolume
 	, ((0,                       0x1008ff13), spawn "amixer -q sset Master 3%+")    -- XF86AudioRaiseVolume
-	, ((0,                       0x1008ff14), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_pause")
-	, ((0,                       0x1008ff17), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_next")
-	, ((0,                       0x1008ff16), spawn "curl -s http://127.0.0.1:9090/requests/status.xml?command=pl_previous")
+	, ((0,                       0x1008ff14), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_pause")
+	, ((0,                       0x1008ff17), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_next")
+	, ((0,                       0x1008ff16), spawn "curl -s http://localhost:9090/requests/status.xml?command=pl_previous")
 
 	-- layouts
 	, ((modMask,                 xK_space  ), sendMessage NextLayout)

@@ -3,7 +3,7 @@
 # Start VLC with "vlc -extraintf http --http-host localhost:9090"
 # Requires libxml2-utils
 
-url="http://localhost:9090/requests/status.xml"
+url="http://localhost:8080/requests/status.xml"
 
 now_playing=`curl -s $url | xmllint --xpath '//information//info[@name="now_playing"]/text()[1]' - 2>/dev/null`
 title=`curl -s $url | xmllint --xpath '//information//info[@name="title"]/text()[1]' - 2>/dev/null`
