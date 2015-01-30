@@ -30,14 +30,14 @@ feh --bg-center ~/dotfiles/wallpapers/atom_1600x900_black.png &
 
 terminator &
 
-iceweasel &
+/home/elbert/apps/firefox/firefox &
 
-~/apps/thunderbird/thunderbird &
+/home/elbert/apps/thunderbird/thunderbird &
 
 gvim &
 
-skype &
+vlc --extraintf http --http-port 9090 &
 
-(sleep 5 && pidgin ) &
+owncloud &
 
-vlc --extraintf http --http-host localhost:9090 &
+mediatomb &

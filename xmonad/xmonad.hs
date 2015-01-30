@@ -74,7 +74,7 @@ main = do
 -- ManageHook
 manageHook' :: ManageHook
 manageHook' = manageDocks <+> (composeAll . concat $
-	[ [resource  =? r --> doIgnore       | r <- myIgnores]
+	[ [resource  =? r --> doIgnore <+> doF W.focusDown | r <- myIgnores]
 	, [resource  =? r --> doFloat        | r <- myFloats]
 	, [className =? c --> doShift  "1"   | c <- myTerminal]
 	, [className =? c --> doShift  "2"   | c <- myWeb]
@@ -183,7 +183,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	, ((modMask .|. shiftMask,   xK_l      ), spawn "slock")
 	-- Programs
 	, ((0,                       xK_Print  ), spawn "scrot -e 'mv $f ~/screenshots/'")
-	, ((modMask,                 xK_w      ), spawn "iceweasel")
+	, ((modMask,                 xK_w      ), spawn "/home/elbert/apps/firefox/firefox")
 	, ((modMask,                 xK_e      ), spawn "gvim")
 	, ((modMask,                 xK_f      ), spawn "thunar")
 	, ((modMask,                 xK_g      ), spawn "gimp")
