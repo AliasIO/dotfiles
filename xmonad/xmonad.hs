@@ -57,7 +57,7 @@ main = do
 	spawn "sh ~/.xmonad/autostart.sh"
 	dzenLeftBar <- spawnPipe myXmonadBar
 	dzenRightBar <- spawnPipe myStatusBar
-	xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
+	xmonad $ ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig
 		{ terminal            = myTerminal
 		, workspaces          = myWorkspaces
 		, keys                = keys'
