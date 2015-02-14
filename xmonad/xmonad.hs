@@ -68,6 +68,7 @@ main = do
 		, normalBorderColor   = colorNormalBorder
 		, focusedBorderColor  = colorFocusedBorder
 		, borderWidth         = 0
+		, handleEventHook     = handleEventHook defaultConfig <+> fullscreenEventHook
 		}
 
 -- Hooks
@@ -108,7 +109,8 @@ manageHook' = manageDocks <+> (composeAll . concat $
 
 -- A trick for fullscreen but stil allow focusing of other WSs
 myDoFullFloat :: ManageHook
-myDoFullFloat = doF W.focusDown <+> doFullFloat
+-- myDoFullFloat = doF W.focusDown <+> doFullFloat
+myDoFullFloat = doFullFloat
 
 layoutHook' = avoidStruts $ smartBorders $ 
               onWorkspaces ["3"] devLayout $

@@ -55,7 +55,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
 "Bundle 'Valloric/YouCompleteMe'
-Bundle 'ryanss/vim-hackernews'
 
 "Load filetype specific plugins
 filetype plugin indent on
