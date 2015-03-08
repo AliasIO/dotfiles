@@ -21,7 +21,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.EwmhDesktops
- 
+
 import XMonad.Layout.NoBorders (smartBorders, noBorders)
 import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
 import XMonad.Layout.Reflect (reflectHoriz)
@@ -35,21 +35,27 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Grid
  
 import Data.Ratio ((%))
- 
-import qualified XMonad.StackSet as W -- To shift and float windows
+
+import qualified XMonad.StackSet as W
 import qualified Data.Map as M
  
+
 -- Config
+screenHeight = 1080 :: Int
+
 -- Define modMask
 modMask'     :: KeyMask
 modMask'     = mod4Mask
+
 -- Define Terminal
 myTerminal   = "terminator"
+
 -- Define workspaces
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+
 -- Dzen/Conky
-myXmonadBar  = "dzen2 -x '0' -y '0' -h '16' -w '960' -ta 'l' -fg '#FFF' -bg '#000' -fn " ++ xlfdFont
-myStatusBar  = "conky -c /home/elbert/.xmonad/conky_dzen | dzen2 -x '960' -w '960' -h '16' -ta 'r' -bg '#000' -fg '#FFFFFF' -y '0' -fn " ++ xlfdFont
+myXmonadBar  = "dzen2 -x '0' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '960' -h '16' -ta 'l' -fg '#FFF' -bg '#000' -fn " ++ xlfdFont
+myStatusBar  = "conky -c /home/elbert/.xmonad/conky_dzen | dzen2 -x '960' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '960' -h '16' -ta 'r' -bg '#000' -fg '#FFF' -fn " ++ xlfdFont
 myBitmapsDir = "/home/elbert/.xmonad/dzen2"
 
 -- Main
@@ -125,12 +131,12 @@ myLogHook h = dynamicLogWithPP $ defaultPP
 	, ppHidden          = dzenColor "#888" ""
 	, ppHiddenNoWindows = dzenColor "#666" ""
 	, ppOutput          = hPutStrLn h
-	, ppTitle           = dzenColor "#FFF" "" . shorten 500 . dzenEscape
+	, ppTitle           = dzenColor "#FFF" "" . shorten 400 . dzenEscape
 	, ppUrgent          = dzenColor "#CF0" "" . wrap ">>>" "<<<"
 	, ppVisible         = dzenColor "#666" ""
 	, ppWsSep           = " "
 	, ppSep             = " "
-	, ppLayout          = dzenColor "#FD0" "" .
+	, ppLayout          = dzenColor "#FFF" "" .
 		(\x -> case x of
 			"Grid"             -> "^i(" ++ myBitmapsDir ++ "/grid.xbm)"
 			"ReflectX IM Grid" -> "^i(" ++ myBitmapsDir ++ "/imgrid.xbm)"

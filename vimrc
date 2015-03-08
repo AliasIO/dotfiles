@@ -55,6 +55,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
 "Bundle 'Valloric/YouCompleteMe'
+Bundle 'editorconfig/editorconfig-vim'
 
 "Load filetype specific plugins
 filetype plugin indent on
@@ -217,6 +218,9 @@ if has("autocmd")
 
 	"Remove trailing whitespace and DOS line endings on save
 	autocmd BufWritePre *.php,*.rb,*.js,*.ts,*.html,*.css,*.sass,*.scss :call StripTrailingWhitespace()
+	
+	"Vagrant
+	autocmd BufRead,BufNewFile Vagrantfile set filetype=ruby
 
 	"Apply .vimrc changes on save
 	"autocmd BufWritePost .vimrc so %
