@@ -56,6 +56,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
 "Bundle 'Valloric/YouCompleteMe'
 Bundle 'editorconfig/editorconfig-vim'
+Plugin 'ekalinin/Dockerfile.vim'
 
 "Load filetype specific plugins
 filetype plugin indent on
