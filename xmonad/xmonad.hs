@@ -111,7 +111,7 @@ manageHook' = manageDocks <+> (composeAll . concat $
 		myCenterFloats = []
 		myFloats       = []
 		-- resources   
-		myIgnores      = ["notify-osd","trayer"]
+		myIgnores      = ["xfce4-notifyd","notify-osd","trayer"]
 
 -- A trick for fullscreen but stil allow focusing of other WSs
 myDoFullFloat :: ManageHook
