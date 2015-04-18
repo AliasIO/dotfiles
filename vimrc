@@ -41,22 +41,23 @@ Bundle 'gmarik/vundle'
 
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdtree'
+"Bundle 'scrooloose/nerdtree'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'tmhedberg/matchit'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'leafgarland/typescript-vim'
-Bundle 'gorodinskiy/vim-coloresque'
+"Bundle 'gorodinskiy/vim-coloresque'
 "Bundle 'Valloric/YouCompleteMe'
 "Bundle 'joonty/vdebug'
 Bundle 'kien/ctrlp.vim'
-Bundle 'kchmck/vim-coffee-script'
+"Bundle 'kchmck/vim-coffee-script'
 Bundle 'hail2u/vim-css3-syntax'
 "Bundle 'Valloric/YouCompleteMe'
 Bundle 'editorconfig/editorconfig-vim'
-Plugin 'ekalinin/Dockerfile.vim'
+Bundle 'ekalinin/Dockerfile.vim'
+Bundle 'terryma/vim-multiple-cursors'
 
 "Load filetype specific plugins
 filetype plugin indent on
@@ -243,11 +244,11 @@ endfunction
 "PLUGIN OPTIONS
 function! Plugins()
 	"NERDTree
-	if exists(":NERDTree")
-		let NERDTreeQuitOnOpen=1
+	"if exists(":NERDTree")
+	"	let NERDTreeQuitOnOpen=1
 
-		nnoremap <Leader>n :NERDTreeToggle<CR>
-	endif
+	"	nnoremap <Leader>n :NERDTreeToggle<CR>
+	"endif
 
 	"Tabular
 	if exists(":Tabularize")
@@ -323,6 +324,7 @@ map <Home>      <nop>
 map <End>       <nop>
 map <PageUp>    <nop>
 map <PageDown>  <nop>
+
 
 imap <Up>       <nop>
 imap <Down>     <nop>
