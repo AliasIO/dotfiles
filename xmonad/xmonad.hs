@@ -54,8 +54,8 @@ myTerminal   = "terminator"
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 -- Dzen/Conky
-myXmonadBar  = "dzen2 -x '0' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '960' -h '16' -ta 'l' -fg '#FFF' -bg '#000' -fn " ++ xlfdFont
-myStatusBar  = "conky -c /home/elbert/.xmonad/conky_dzen | dzen2 -x '960' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '960' -h '16' -ta 'r' -bg '#000' -fg '#FFF' -fn " ++ xlfdFont
+myXmonadBar  = "dzen2 -x '0' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '900' -h '16' -ta 'l' -fg '#FFF' -bg '#000' -fn " ++ xlfdFont
+myStatusBar  = "conky -c /home/elbert/.xmonad/conky_dzen | dzen2 -x '1020' -y '" ++ show ( screenHeight - 16 ) ++ "' -w '900' -h '16' -ta 'r' -bg '#000' -fg '#FFF' -fn " ++ xlfdFont
 myBitmapsDir = "/home/elbert/.xmonad/dzen2"
 
 -- Main
@@ -165,9 +165,9 @@ colorNormalBorder  = "#333"
 colorFocusedBorder = "#FFF"
  
 barFont  = "terminus"
-barXFont = "terminus:size=8"
-xftFont  = "xft:Terminus:size=8:antialias=true"
-xlfdFont = "-*-terminus-*-r-normal-*-*-120-*-*-*-*-*-*"
+barXFont = "terminus:size=10"
+xftFont  = "xft:Terminus:size=10:antialias=true"
+xlfdFont = "-*-terminus-*-r-normal-*-12-120-*-*-*-*-*-*"
  
 -- Run or Raise Menu
 mXPConfig :: XPConfig
@@ -190,7 +190,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	, ((modMask .|. shiftMask,   xK_c      ), kill)
 	, ((modMask .|. shiftMask,   xK_l      ), spawn "slock")
 	-- Programs
-	, ((0,                       xK_Print  ), spawn "scrot -e 'mv $f ~/screenshots/'")
+	, ((0,                       xK_Print  ), spawn "scrot -se 'mv $f ~/screenshots/'")
 	, ((modMask,                 xK_w      ), spawn "/home/elbert/apps/firefox/firefox")
 	, ((modMask,                 xK_e      ), spawn "gvim")
 	, ((modMask,                 xK_f      ), spawn "thunar")
