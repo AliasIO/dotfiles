@@ -191,7 +191,7 @@ colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
 	"set guifont=DejaVu\ Sans\ Mono\ 10
-	set guifont=Terminus\ 12
+	set guifont=Terminus\ 14
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
