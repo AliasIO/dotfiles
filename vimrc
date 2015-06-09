@@ -209,6 +209,9 @@ if has("autocmd")
 	"Restore cursor position when re-opening file
 	autocmd BufReadPost * normal `"
 	
+	"ActionScript files
+	autocmd BufRead,BufNewFile *.as set filetype=javascript
+	
 	"TypeScript files
 	autocmd BufRead,BufNewFile *.ts set filetype=typescript
 	
