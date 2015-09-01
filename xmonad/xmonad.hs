@@ -103,7 +103,7 @@ manageHook' = manageDocks <+> (composeAll . concat $
 		myTerminal     = ["terminator"]
 		myWeb          = ["Firefox","Aurora"]
 		myDev          = ["Gvim"]
-		myChat         = ["Pidgin","Skype","Vlc"]
+		myChat         = ["Pidgin","Skype","Vlc","Spotify"]
 		myEmail        = ["Thunderbird"]
 		myGraphics     = ["Gimp", "Gimp-2.8"]
 		myVM           = ["VirtualBox"]
@@ -188,7 +188,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	[ ((modMask,                 xK_F2     ), runOrRaisePrompt mXPConfig)
 	, ((0,                       xK_F1     ), spawn $ XMonad.terminal conf)
 	, ((modMask .|. shiftMask,   xK_c      ), kill)
-	, ((modMask .|. shiftMask,   xK_l      ), spawn "slock")
+	, ((modMask .|. shiftMask,   xK_l      ), spawn "xtrlock -b")
 	-- Programs
 	, ((0,                       xK_Print  ), spawn "scrot -se 'mv $f ~/screenshots/'")
 	, ((modMask,                 xK_w      ), spawn "/home/elbert/apps/firefox/firefox")
@@ -236,7 +236,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 	-- quit, or restart
 	, ((modMask .|. shiftMask,   xK_q      ), io (exitWith ExitSuccess))
-	, ((modMask,                 xK_q      ), spawn "killall conky dzen2 && /home/my_user/.cabal/bin/xmonad --recompile && /home/my_user/.cabal/bin/xmonad --restart")
+	, ((modMask,                 xK_q      ), spawn "killall conky dzen2 && xmonad --recompile && xmonad --restart")
 	]
 	++
 	-- mod-[1..9] %! Switch to workspace N
