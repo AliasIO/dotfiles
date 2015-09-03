@@ -188,7 +188,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 	[ ((modMask,                 xK_F2     ), runOrRaisePrompt mXPConfig)
 	, ((0,                       xK_F1     ), spawn $ XMonad.terminal conf)
 	, ((modMask .|. shiftMask,   xK_c      ), kill)
-	, ((modMask .|. shiftMask,   xK_l      ), spawn "xtrlock -b")
+	, ((modMask .|. shiftMask,   xK_l      ), spawn "/home/elbert/bin/i3lock.sh")
 	-- Programs
 	, ((0,                       xK_Print  ), spawn "scrot -se 'mv $f ~/screenshots/'")
 	, ((modMask,                 xK_w      ), spawn "/home/elbert/apps/firefox/firefox")
