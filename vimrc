@@ -15,7 +15,7 @@ set visualbell                         "Visual bell instead of beep on error
 set mouse=a                            "Enable mouse in all modes
 set nowrap                             "Do not wrap lines
 set nowritebackup                      "No backup before overwriting files
-set relativenumber                     "Show relative line numbers
+set norelativenumber                   "Show relative line numbers
 set number                             "Show line numbers
 set omnifunc=syntaxcomplete#Complete   "Enable autocomplete
 set scrolloff=5                        "Vertical scroll offset
@@ -190,8 +190,8 @@ endfunction
 colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
-	"set guifont=DejaVu\ Sans\ Mono\ 10
-	set guifont=Terminus\ 14
+	set guifont=DejaVu\ Sans\ Mono\ 11
+	"set guifont=Terminus\ 14
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
 	set spell                          "Enable spell checking
@@ -293,7 +293,7 @@ nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap <Space> :set list!<CR>
 
 "Delete all buffers
-nnoremap <silent> <Leader>bd :1,999 bd<CR>
+nnoremap <silent> <Leader>bd :bufdo bd<CR>
 
 "Toggle statusline
 nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set laststatus=1"<CR>
