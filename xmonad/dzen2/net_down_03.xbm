@@ -1,4 +1,0 @@
-#define net_down_03_width 8
-#define net_down_03_height 8
-static unsigned char net_down_03_bits[] = {
-   0x1c, 0x1c, 0x1c, 0x1c, 0x7f, 0x3e, 0x1c, 0x08 };

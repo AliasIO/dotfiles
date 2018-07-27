@@ -26,38 +26,38 @@ set t_vb=""                            "No terminal visual bell
 set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
 set t_Co=256                           "Use 256 colours
+set updatetime=250
 
 set wildignore+=*/tmp/*,*/cache/*,*/.git/*,tags,*.jpg,*.png,*.gif
 
 syntax on                              "Turn on syntax highlighting
 
-"VUNDLE
+let mapleader = "\\"                                                                                               
+let g:mapleader = "\\"   
+
+"Plugins
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+"set rtp+=~/.config/nvim/bundle/Vundle.vim
+call plug#begin()
 
-Bundle 'gmarik/vundle'
+Plug 'Valloric/YouCompleteMe'
+Plug 'airblade/vim-rooter'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'evidens/vim-twig'
+Plug 'godlygeek/tabular'
+Plug 'kien/ctrlp.vim'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'mxw/vim-jsx'
+Plug 'posva/vim-vue'
+Plug 'tmhedberg/matchit'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-fugitive'
+Plug 'shougu/unite.vim'
+Plug 'vimlab/neojs'
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/syntastic'
-"Bundle 'scrooloose/nerdtree'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'tmhedberg/matchit'
-Bundle 'vim-scripts/taglist.vim'
-Bundle 'godlygeek/tabular'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'leafgarland/typescript-vim'
-"Bundle 'gorodinskiy/vim-coloresque'
-"Bundle 'Valloric/YouCompleteMe'
-"Bundle 'joonty/vdebug'
-Bundle 'kien/ctrlp.vim'
-"Bundle 'kchmck/vim-coffee-script'
-Bundle 'hail2u/vim-css3-syntax'
-"Bundle 'Valloric/YouCompleteMe'
-Bundle 'editorconfig/editorconfig-vim'
-Bundle 'ekalinin/Dockerfile.vim'
-Bundle 'terryma/vim-multiple-cursors'
+call plug#end()
 
 "Load filetype specific plugins
 filetype plugin indent on
@@ -91,6 +91,9 @@ set indentkeys -=0#
 
 "AUTO COMMANDS
 
+"Indent JavaScript code with two spaces
+au Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2
+
 "Indent ruby code with two spaces
 au Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
 
@@ -102,6 +105,9 @@ au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "No folding in Markdown files
 au FileType mkd setlocal nofoldenable
+
+"VIM-JSX OPTIONS
+let g:jsx_ext_required = 0
 
 
 "CTAGS OPTIONS
@@ -133,8 +139,8 @@ set statusline+=%F
 set statusline+=%(\ [%{fugitive#head()}]%)
 set statusline+=%=
 set statusline+=%#tablinesel#%m%*
-set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
-set statusline+=%#warningmsg#%r%*
+"set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
+"set statusline+=%#warningmsg#%r%*
 set statusline+=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})
 
 function! MyTabLine()
@@ -190,7 +196,7 @@ endfunction
 colorscheme alias                    "Use custom colour scheme
 
 if has("gui_running")
-	set guifont=DejaVu\ Sans\ Mono\ 11
+	set guifont=Monaco:h15
 	"set guifont=Terminus\ 14
 	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
 	set nocursorline                   "Don't highlight the current line
@@ -246,13 +252,6 @@ endfunction
 
 "PLUGIN OPTIONS
 function! Plugins()
-	"NERDTree
-	"if exists(":NERDTree")
-	"	let NERDTreeQuitOnOpen=1
-
-	"	nnoremap <Leader>n :NERDTreeToggle<CR>
-	"endif
-
 	"Tabular
 	if exists(":Tabularize")
 		nnoremap <Leader>t= :Tabularize /=>\?<CR>
@@ -262,9 +261,9 @@ function! Plugins()
 	endif
 
 	"YouCompleteMe
-	"if exists(":YcmCompleter")
-	"	let g:ycm_collect_identifiers_from_tags_files = 1
-	"endif
+	if exists(":YcmCompleter")
+		let g:ycm_collect_identifiers_from_tags_files = 1
+	endif
 
 	"CtrlP
 	if exists(":CtrlP")
@@ -273,10 +272,7 @@ function! Plugins()
 	endif
 endfunction
 
-"Powerline
-"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
-
-"let Powerline_symbols = 'fancy'
+command! -nargs=? -bang -bar E :execute "e<bang> ".fnameescape(system("echo -n ".<q-args>))
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
@@ -284,7 +280,7 @@ noremap ; :
 noremap : ;
 
 "Edit .vimrc
-nnoremap <Leader>v :e ~/.vimrc<CR>
+nnoremap <Leader>v :e ~/.config/nvim/init.vim<CR>
 
 "Stop highlighting search words
 nnoremap <Esc><Esc> :nohlsearch<CR>
@@ -293,7 +289,7 @@ nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap <Space> :set list!<CR>
 
 "Delete all buffers
-nnoremap <silent> <Leader>bd :bufdo bd<CR>
+nnoremap <silent> <Leader>bd :%bd!<CR>
 
 "Toggle statusline
 nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set laststatus=1"<CR>
@@ -338,3 +334,4 @@ imap <Home>     <nop>
 imap <End>      <nop>
 imap <PageUp>   <nop>
 imap <PageDown> <nop>
+
