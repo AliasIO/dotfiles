@@ -1,4 +1,4 @@
-set autochdir                          "Change working directory when opening file
+set noautochdir                        "Change working directory when opening file
 set completeopt=menu                   "Autocomplete
 set encoding=utf-8                     "Set encoding to UTF-8
 set history=999                        "Keep a history of commands
@@ -35,6 +35,8 @@ syntax on                              "Turn on syntax highlighting
 let mapleader = "\\"                                                                                               
 let g:mapleader = "\\"   
 
+let g:rooter_manual_only = 1
+
 "Plugins
 filetype off
 
@@ -56,6 +58,8 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-fugitive'
 Plug 'shougu/unite.vim'
 Plug 'vimlab/neojs'
+Plug 'neomake/neomake'
+Plug 'etdev/vim-hexcolor'
 
 call plug#end()
 
@@ -270,6 +274,11 @@ function! Plugins()
 		let g:ctrlp_map = '<c-p>'
 		let g:ctrlp_cmd = 'CtrlP'
 	endif
+
+	"Rooter
+	if exists(":Rooter")
+		nnoremap <Leader>r :Rooter<CR>
+	endif
 endfunction
 
 command! -nargs=? -bang -bar E :execute "e<bang> ".fnameescape(system("echo -n ".<q-args>))
@@ -334,4 +343,3 @@ imap <Home>     <nop>
 imap <End>      <nop>
 imap <PageUp>   <nop>
 imap <PageDown> <nop>
-
