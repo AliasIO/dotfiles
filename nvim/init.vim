@@ -50,7 +50,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'evidens/vim-twig'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'tmhedberg/matchit'
@@ -60,6 +60,7 @@ Plug 'shougu/unite.vim'
 Plug 'vimlab/neojs'
 Plug 'neomake/neomake'
 Plug 'etdev/vim-hexcolor'
+Plug 'w0rp/ale'
 
 call plug#end()
 
