@@ -60,6 +60,7 @@ Plug 'shougu/unite.vim'
 Plug 'vimlab/neojs'
 Plug 'neomake/neomake'
 Plug 'etdev/vim-hexcolor'
+Plug 'w0rp/ale'
 
 call plug#end()
 
