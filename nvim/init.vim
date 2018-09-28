@@ -25,8 +25,9 @@ set sidescrolloff=5                    "Horizontal scroll offset
 set t_vb=""                            "No terminal visual bell
 set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
-set t_Co=256                           "Use 256 colours
 set updatetime=250
+set nocursorline                       "Don't highlight the current line
+set nospell                            "Disable spell checking
 
 set wildignore+=*/tmp/*,*/cache/*,*/.git/*,tags,*.jpg,*.png,*.gif
 
@@ -50,7 +51,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'evidens/vim-twig'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'tmhedberg/matchit'
@@ -144,9 +145,12 @@ set statusline+=%F
 set statusline+=%(\ [%{fugitive#head()}]%)
 set statusline+=%=
 set statusline+=%#tablinesel#%m%*
-"set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
-"set statusline+=%#warningmsg#%r%*
+set statusline+=(hl:%{SyntaxItem()})
 set statusline+=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})
+
+function! SyntaxItem()
+  return synIDattr(synID(line("."),col("."),1),"name")
+endfunction
 
 function! MyTabLine()
 	let s = ''
@@ -199,21 +203,6 @@ function! MyTabLabel(n)
 endfunction
 
 colorscheme alias                    "Use custom colour scheme
-
-if has("gui_running")
-	set guifont=Monaco:h15
-	"set guifont=Terminus\ 14
-	set guioptions=abirLb              "Cross-app paste, scrollbars, no toolbars
-	set nocursorline                   "Don't highlight the current line
-	set spell                          "Enable spell checking
-
-	if has("autocmd")
-		autocmd GUIEnter * set t_vb=     "No visual bell
-	endif
-else
-	set nocursorline                   "Don't highlight the current line
-	set nospell                        "Disable spell checking
-endif
 
 "MISC
 if has("autocmd")
@@ -308,10 +297,10 @@ nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set l
 nnoremap <Leader>cg :!/usr/bin/ctags -R .<CR>
 
 "Jump to definition in new tab
-nnoremap <CR>       :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+"nnoremap <CR>       :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 "Jump to definition in new split
-nnoremap <Leader>cs :vs       <CR>:exec("tag ".expand("<cword>"))<CR>
+"nnoremap <Leader>cs :vs       <CR>:exec("tag ".expand("<cword>"))<CR>
 
 "Easier tab navigation
 nnoremap <silent> <C-Tab>   :tabnext<CR>
