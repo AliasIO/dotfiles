@@ -26,7 +26,7 @@ set t_vb=""                            "No terminal visual bell
 set wildmenu                           "Show wild menu
 set wildmode=full                      "Complete first match
 set updatetime=250
-set nocursorline                       "Don't highlight the current line
+set cursorline                         "Highlight the current line
 set nospell                            "Disable spell checking
 
 set wildignore+=*/tmp/*,*/cache/*,*/.git/*,tags,*.jpg,*.png,*.gif
@@ -36,8 +36,6 @@ syntax on                              "Turn on syntax highlighting
 let mapleader = "\\"                                                                                               
 let g:mapleader = "\\"   
 
-let g:rooter_manual_only = 1
-
 "Plugins
 filetype off
 
@@ -45,23 +43,20 @@ filetype off
 call plug#begin()
 
 Plug 'Valloric/YouCompleteMe'
-Plug 'airblade/vim-rooter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'evidens/vim-twig'
 Plug 'godlygeek/tabular'
-Plug 'kien/ctrlp.vim'
-"Plug 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'tmhedberg/matchit'
 Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-fugitive'
 Plug 'shougu/unite.vim'
 Plug 'vimlab/neojs'
 Plug 'neomake/neomake'
-Plug 'etdev/vim-hexcolor'
 Plug 'w0rp/ale'
+Plug 'rainglow/vim'
 
 call plug#end()
 
@@ -100,8 +95,8 @@ set indentkeys -=0#
 "Indent JavaScript code with two spaces
 au Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2
 
-"Indent ruby code with two spaces
-au Filetype ruby setlocal expandtab tabstop=2 shiftwidth=2
+"Indent JSON code with two spaces
+au Filetype json setlocal expandtab tabstop=2 shiftwidth=2
 
 "Indent sass code with tabs
 au Filetype sass setlocal noexpandtab tabstop=2 shiftwidth=2
@@ -109,10 +104,7 @@ au Filetype sass setlocal noexpandtab tabstop=2 shiftwidth=2
 "Disable auto-comment
 au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-"No folding in Markdown files
-au FileType mkd setlocal nofoldenable
-
-"VIM-JSX OPTIONS
+" JSX
 let g:jsx_ext_required = 0
 
 
@@ -142,10 +134,9 @@ set tabline=%!MyTabLine()              "Custom tabline
 
 set statusline=                        "Custom statusline
 set statusline+=%F
-set statusline+=%(\ [%{fugitive#head()}]%)
 set statusline+=%=
 set statusline+=%#tablinesel#%m%*
-set statusline+=(hl:%{SyntaxItem()})
+" set statusline+=(hl:%{SyntaxItem()})
 set statusline+=(%{strlen(&ft)?&ft:'?'},%{&fenc},%{&ff})
 
 function! SyntaxItem()
@@ -202,10 +193,12 @@ function! MyTabLabel(n)
 	return label
 endfunction
 
-colorscheme alias                    "Use custom colour scheme
+colorscheme alias
 
 "MISC
 if has("autocmd")
+	autocmd BufEnter * :syntax sync fromstart
+
 	"Restore cursor position when re-opening file
 	autocmd BufReadPost * normal `"
 	
@@ -228,7 +221,7 @@ if has("autocmd")
 	autocmd BufRead,BufNewFile Vagrantfile set filetype=ruby
 
 	"Apply .vimrc changes on save
-	"autocmd BufWritePost .vimrc so %
+	autocmd BufWritePost .vimrc so %
 
 	"Custom mappings for plugins
 	autocmd VimEnter * call Plugins()
@@ -253,25 +246,14 @@ function! Plugins()
 		nnoremap <Leader>t: :Tabularize /:\zs<CR>
 		vnoremap <Leader>t: :Tabularize /:\zs<CR>
 	endif
-
-	"YouCompleteMe
-	if exists(":YcmCompleter")
-		let g:ycm_collect_identifiers_from_tags_files = 1
-	endif
-
-	"CtrlP
-	if exists(":CtrlP")
-		let g:ctrlp_map = '<c-p>'
-		let g:ctrlp_cmd = 'CtrlP'
-	endif
-
-	"Rooter
-	if exists(":Rooter")
-		nnoremap <Leader>r :Rooter<CR>
-	endif
 endfunction
 
-command! -nargs=? -bang -bar E :execute "e<bang> ".fnameescape(system("echo -n ".<q-args>))
+"ESLint
+let g:ale_fixers = {
+ \ 'javascript': ['eslint']
+ \ }
+
+let g:ale_fix_on_save = 1
 
 "CUSTOM COMMANDS & MAPPINGS
 "Avoid holding shift in normal mode
@@ -296,12 +278,6 @@ nnoremap <silent> <Leader>s :exec &laststatus == 1 ? "set laststatus=2" : "set l
 "Generate tags list
 nnoremap <Leader>cg :!/usr/bin/ctags -R .<CR>
 
-"Jump to definition in new tab
-"nnoremap <CR>       :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-
-"Jump to definition in new split
-"nnoremap <Leader>cs :vs       <CR>:exec("tag ".expand("<cword>"))<CR>
-
 "Easier tab navigation
 nnoremap <silent> <C-Tab>   :tabnext<CR>
 nnoremap <silent> <C-S-Tab> :tabprevious<CR>
@@ -311,25 +287,3 @@ nnoremap <silent> <C-w>     :tabclose<CR>
 "Shift blocks visually
 vnoremap < <gv
 vnoremap > >gv
-
-"Can't touch this
-map <Up>        <nop>
-map <Down>      <nop>
-map <Left>      <nop>
-map <Right>     <nop>
-map <Del>       <nop>
-map <Home>      <nop>
-map <End>       <nop>
-map <PageUp>    <nop>
-map <PageDown>  <nop>
-
-
-imap <Up>       <nop>
-imap <Down>     <nop>
-imap <Left>     <nop>
-imap <Right>    <nop>
-imap <Del>      <nop>
-imap <Home>     <nop>
-imap <End>      <nop>
-imap <PageUp>   <nop>
-imap <PageDown> <nop>
