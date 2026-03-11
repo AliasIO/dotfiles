@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wappalyzer Tech"
+  short_description: "Research and add Wappalyzer definitions"
+  default_prompt: "Use $add-wappalyzer-technology to research and add or fix a Wappalyzer browser-extension technology definition."

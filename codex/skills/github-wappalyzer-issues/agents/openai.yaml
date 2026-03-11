@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Wappalyzer Issues"
+  short_description: "Address GitHub detection issues"
+  default_prompt: "Use $github-wappalyzer-issues to review GitHub issues and add or fix Wappalyzer technology definitions."
