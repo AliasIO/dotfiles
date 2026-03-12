@@ -28,6 +28,8 @@ For private repos, prefer a fine-grained token scoped to the target repo with:
 
 If future work should comment on or close issues, add `Issues: Read and write`. For public repos, unauthenticated access may work for a few requests, but expect low rate limits.
 
+If you post a PR body, issue comment, or PR comment under the user's GitHub account, end it with a short `— Codex` signature so the authorship is explicit.
+
 ## Actionability rubric
 
 Before classifying an issue, read `/Users/elbert/Sites/wappalyzer/extension/README.md` and confirm the suggestion fits the extension's scope. Then apply a significance filter: do not spend time adding tiny utility libraries, niche one-off plugins, or similarly low-value technologies that are unlikely to help Wappalyzer's roughly 3 million weekly active users.

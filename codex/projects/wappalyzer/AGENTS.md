@@ -4,6 +4,8 @@
 
 - Make CLI/runtime/browser-behavior changes in `cli/`, especially `cli/index.js`.
 - Make shared API logic changes in `v4/apis-shared/`, not in the `v4/apis/*/shared` submodules.
+- Do not write code directly in `v4/apis/*/wappalyzer` or `v4/apis/shared/nodejs`; update the canonical repo first, then move the submodule pointer in `v4/apis`.
+- Mirror shared-layer changes that affect `/opt/nodejs` into `v4/apis/shared/nodejs/`, because the packaged Lambda layer and compat tests load that copy.
 - Make browser extension technology-definition metadata changes in `extension/src/technologies/*.json`.
 - Keep `extract/shared.js`, `extract/linkedin.js`, and `extract/diallingcodes.json` symlinked to `v4/apis-shared/`.
 - Treat Wappalyzer detection logic as canonical in the upstream extension project (`extension/src/js/wappalyzer.js` there), not in the checked-out submodule copies in this workspace.
@@ -20,6 +22,7 @@
   - `v4/apis`
   - `_other/utils`
 - In `v4/apis/run`, update first-level submodules with `git submodule update --remote`, then run a recursive non-remote update so nested submodules match the updated parent repos.
+- For `v4/apis-shared` deploy work, commit and push `master` first, then let `v4/apis/run` refresh submodules during deploy; do not use temporary branches, cherry-picks, or local submodule checkouts to bypass that sync.
 
 ## Runtime constraints
 
@@ -29,6 +32,8 @@
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
 - GeoIP is standardized on `geoip-lite`; non-container APIs that need local GeoIP data should attach the `dep-geoip` layer, while container builds and the dedicated `geoip` Lambda also use `geoip-lite`.
 - For container API builds that install Puppeteer, set `PUPPETEER_SKIP_DOWNLOAD=true`; `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` alone is not enough for the current Puppeteer release used here.
+- Some legacy standalone Lambda zips from old Serverless Platform deploys bundle `serverless_sdk` wrappers that do not load on modern Node runtimes; for direct runtime-only migrations, rebuild the zip with a plain `s_init.js` passthrough instead of doing a blind runtime flip.
+- When changing `v4/apis-shared/aws.js`, preserve v2-style `error.code` compatibility for AWS SDK v3 service exceptions because shared callers still branch on codes such as `ConditionalCheckFailedException`.
 
 ## Cognito operations
 
@@ -53,13 +58,20 @@
 - For new extension technology definitions, try to find a matching CPE, but only add `cpe` when you are highly confident it is correct.
 - For new extension technology definitions, always check the product website for pricing information before setting `pricing`, especially when `saas` is true, and use `extension/README.md` to map `low`/`mid`/`high` plus any applicable `freemium`, `onetime`, `recurring`, `poa`, or `payg` flags. Base the cost band on the typical paid self-serve plan or average monthly price, not the highest enterprise tier unless that is the only clear paid option.
 - For new extension technology definitions, use a real browser capture with a short post-load observation window so late XHR, async scripts, and DOM mutations are included; do not rely on raw HTTP-only evidence when browser capture is required.
+- The `capture-evidence.js` helper loads technology definitions from the CLI submodule rather than the checked-out `extension/` JSON, so use it for raw evidence capture and verify final detection behavior against `extension/` directly before trusting its technology results.
+- The `capture-evidence.js` helper's final `page.scripts` snapshot reflects browser-collected page script bodies, not the crawler's appended external-script snippets. When validating an external-bundle `scripts` fingerprint, inspect the CLI/runtime path or fetch the public script URLs manually with the same byte cap.
 - For new extension technology definitions, prefer transparent-background square brand-mark icons that remain legible at small sizes like `16x16`; avoid full logos with text when choosing `icon` assets.
 - For new extension technology definitions, strongly prefer SVG icons. Search for a real SVG first, including the product site, upstream repo assets, and reputable brand sources such as `brandsoftheworld.com`, and extract the icon mark from a full logo SVG when needed to remove text.
+- Prefer official-branding SVGs that visibly match the product's current public brand mark; reject off-brand or mismatched vendor assets even if they are first-party, and use PNG only as a fallback after SVG options are exhausted.
+- Do not reject an icon uploaded in a ticket only because it is not first-party. If it clearly matches the product's current branding and is materially better than the available official raster options, treat it as a candidate to compare against the first-party assets instead of dismissing it outright.
+- If the product site, upstream repo, and other brand sources do not yield a usable SVG icon, check Brandfetch using the local credentials in `/Users/elbert/.codex/secrets/brandfetch.toml`. Prefer extracting a square SVG mark from Brandfetch's `logo.svg`; if Brandfetch only provides a full logo or raster icon, use its icon and brand colors as reference for a clean square SVG redraw instead of shipping the raster.
+- If official SVG and PNG assets disagree, prefer the asset that matches the product's current small-icon branding in public use; when that asset is raster-only, redraw it as a clean SVG so the extension keeps SVG delivery without copying the wrong treatment.
 - Always save extension icons in `extension/src/images/icons/`.
 - Never wrap a raster image inside an SVG just to satisfy the icon format preference. If no real SVG is available, either draw a clean SVG based on the official raster mark, use a PNG, or omit the icon.
 - Use PNG only as a last resort after real SVG and clean SVG redraw options are exhausted. If you fall back to PNG, keep it at `32x32` or smaller. Prefer an official square asset around `32x32`; if no better official candidate exists, `16x16` is acceptable.
 - Treat cookies as relatively weak detection signals because `Set-Cookie` is not guaranteed to appear in every response or browsing path. Prefer stronger signals first and use cookies mainly as supporting evidence unless they are unusually specific and repeatable.
 - For client-side SaaS products, inspect runtime network activity early in real browser captures and prefer clean, repeatable vendor-specific `xhr` or request-host signals over bundle-text or cookie-based fingerprints when they are more specific.
+- Treat `scripts` as potentially coming from both inline script bodies and fetched snippets of external scripts. In the browser extension, `content.js` contributes inline bodies while `src/js/index.js` also fetches up to a capped prefix of external script responses for `scripts` analysis; in the CLI crawler, `cli/index.js` similarly appends capped external script bodies. Use bundle-text fingerprints conservatively and confirm they are vendor-specific enough to survive the byte cap and avoid false positives.
 - When an inline bootstrap snippet points to likely runtime globals or methods, verify them in a real browser before promoting them to `js` fingerprints; bootstrap code can expose placeholders that are not the final runtime API.
 - Compare sample captures early enough to notice when a product appears through multiple integration modes, and draft coverage for more than one non-cookie signal before falling back to cookies as the bridge between those modes.
 - Distinguish direct-detection candidates from implied-only backend candidates early. For server-side products that fit the taxonomy but are rarely exposed directly, prefer finding an existing detectable technology that can safely add them to `implies` over forcing a weak standalone fingerprint.
@@ -74,11 +86,18 @@
 - For Salesforce integration support, note that newer Salesforce orgs create new third-party apps under External Client App Manager; existing Connected Apps still work, and new Wappalyzer setups must match our non-PKCE authorization-code flow.
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
 - For `v4/frontend`, default deploys should rebuild the technology pages; use a quick deploy only as an explicit exception when fixing an isolated issue.
+- In `v4/frontend/nuxt.config.js`, functions passed into serialized Nuxt module config such as `axios.retry` callbacks must be self-contained and must not call top-level helpers, because the generated `.nuxt` files do not preserve those closures.
 - Treat GitHub suggestion tickets as user-submitted leads from the Wappalyzer website; verify the stub and all details independently, gate additions against `extension/README.md`, and reject tiny low-value technologies that are unlikely to help the broader user base.
 - Reject new technology suggestions that do not fit an existing category cleanly enough to classify without forcing a poor match, and reject agencies, managed services, or bespoke company-built solutions that are not real software products.
+- Reject template vendors, theme shops, and template families when they do not map to an existing taxonomy category as software on their own; do not force website templates into `CMS` or `Ecommerce` just because they run on or target those platforms.
 - Reject purely server-side APIs, on-prem software, and similar products with no plausible public-facing website integration to fingerprint; products such as CRMs are only acceptable when they expose reliable public web signals like widgets, embeds, or managed pages.
 - When working the Wappalyzer GitHub issue queue, start with the oldest actionable tickets first; the main extension-intake templates are technology bug reports and `Technology suggestion` tickets.
 - For actioned Wappalyzer GitHub tickets, use the same GitHub repo for the issue, labels, closure, and PR; read comments first, then apply the appropriate non-`Acknowledged` label and close the issue after the PR is open.
+- For Wappalyzer queue tickets that are in the normal extension-intake lane but cannot be actioned because they are not eligible or still need more information, apply the matching terminal label such as `Not eligible` or `More info needed` and close the issue instead of leaving it open.
+- When closing a Wappalyzer queue ticket without `Accepted`, leave a short issue comment explaining the reason for closure before applying the label and closing the issue.
+- When posting GitHub issue comments from the shell, do not inline long bodies inside quoted `gh issue comment --body` strings; use `--body-file` or a quoted here-doc instead so apostrophes, backticks, and markdown do not get mangled by shell parsing.
+- When posting GitHub PR bodies or comments under the user's account, end them with a short `— Codex` signature so the authored text is clearly attributed.
+- For actioned Wappalyzer GitHub ticket PRs, explain why each fingerprint and metadata value was chosen, how you arrived at them from the sample and control evidence, why any icon source or fallback was selected, and which meaningful issue-stub suggestions were intentionally rejected or omitted (for example `implies`, categories, metadata, or weaker fingerprints) with a short reason for each.
 - For technology categories, strongly prefer one primary category; add a second only when the classification is genuinely balanced across two categories.
 - For `dom` detections, use the simple selector-string form for existence checks and reserve object notation for `attributes`, `properties`, or `text` matching.
 - Do not add new `html` detections for extension technologies. `html` is deprecated; use `dom` instead.

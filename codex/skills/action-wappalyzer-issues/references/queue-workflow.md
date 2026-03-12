@@ -122,8 +122,14 @@ Common mappings:
 - `Accepted`: a new PR now tracks the work
 - `Already added`: the requested technology or fix already exists, so no new PR is needed
 - `Fixed`: the default branch already contains the needed correction, so no new PR is needed
+- `Not eligible`: the ticket was reviewed as normal extension intake but does not meet the support bar
+- `More info needed`: the ticket could be actionable later but still lacks enough reliable detail to proceed
 
 Do not use `Acknowledged`.
+
+If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure.
+
+Prefer `gh issue comment --body-file /tmp/comment.md` or a quoted here-doc for comment bodies so apostrophes, backticks, and markdown survive shell parsing.
 
 Apply the label before closing:
 
@@ -132,4 +138,4 @@ gh issue edit 12345 --repo owner/repo --add-label 'Accepted'
 gh issue close 12345 --repo owner/repo
 ```
 
-If the ticket is out of scope or otherwise not actioned, do not label or close it.
+If the ticket is normal extension intake but is rejected as `Not eligible` or `More info needed`, apply that label and close it. Leave the ticket untouched only when it is truly outside scope or belongs in another repo.

@@ -16,20 +16,23 @@ Read [queue-workflow.md](./references/queue-workflow.md) before changing GitHub 
 
 1. List open issues in `wappalyzer/wappalyzer` oldest-first and inspect them in that order. Read the full issue body and every comment before deciding whether to act.
 2. Only action tickets that result in either:
-   - `add <technology name>` for a new extension technology definition
-   - `update <technology name>` for an existing extension technology definition or metadata update
+   - `Add <technology name>` for a new extension technology definition
+   - `Update <technology name>` for an existing extension technology definition or metadata update
    Skip tickets that fall outside extension detection work, belong in another repo, or do not justify support.
 3. Do the code change in `/Users/elbert/Sites/wappalyzer/extension` on a fresh `codex/...` branch. Do not leave the result as an unpublished local diff.
 4. Validate with `yarn validate`, then commit with the same subject pattern the PR will use: `add <technology name>` or `update <technology name>`.
 5. Open the PR in the same GitHub repo that owns the issue you are actioning. The PR body must summarize what changed, list the example websites used for evidence, and reference the original GitHub issue so the two are linked.
 6. After the PR exists, apply the most accurate issue label in that same repo, never use `Acknowledged`, and then close the issue.
-7. If no code change is warranted, only close when the issue is already resolved without new work and a terminal non-`Acknowledged` label such as `Already added` or `Fixed` is clearly accurate. Otherwise leave the ticket untouched.
+7. If no code change is warranted, still close extension-intake tickets that are clearly `Not eligible`, `More info needed`, `Already added`, or `Fixed` after applying the matching non-`Acknowledged` label. Before closing any ticket without `Accepted`, post a short issue comment that explains the reason. Leave the ticket untouched only when it is truly outside the extension queue scope or belongs in another repo.
 
 ## Label Rules
 
 - Prefer `Accepted` when a new PR was opened from the current run.
 - Prefer `Already added` when the requested technology or fix is already present and no new PR is needed.
 - Prefer `Fixed` only when the needed change already exists on the default branch and no new PR is needed.
+- Prefer `Not eligible` for extension-intake tickets that were reviewed but rejected on the project eligibility bar.
+- Prefer `More info needed` for extension-intake tickets that could be actionable later but still lack enough reliable information to proceed.
 - Query the live label list before editing labels instead of assuming names beyond these common cases.
 - Never use `Acknowledged`.
-- Do not post issue comments unless the user explicitly asks.
+- Leave a short issue comment when closing with any non-`Accepted` label so the reporter can see why the ticket was closed.
+- For issue comments, prefer `gh issue comment --body-file /tmp/file.md` or a quoted here-doc over inline shell-quoted `--body` strings.
