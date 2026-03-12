@@ -1,0 +1,4 @@
+interface:
+  display_name: "Action Wappalyzer Issues"
+  short_description: "Process Wappalyzer issue queue"
+  default_prompt: "Use $action-wappalyzer-issues to process Wappalyzer GitHub detection issues from oldest to newest, open a PR for each eligible fix, then label and close the issue."

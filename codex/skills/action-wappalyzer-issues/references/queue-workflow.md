@@ -1,0 +1,135 @@
+# Queue Workflow
+
+## Repo Map
+
+- Issues, labels, closure, and PRs: use the same GitHub repo for the current run
+- Code changes: `/Users/elbert/Sites/wappalyzer/extension`
+- Branch names: start with `codex/`
+
+Infer the target repo from the issue URL or the user's explicit repo instruction, then use that same repo for issue operations and `gh pr create`. If the local `extension/` checkout points at a different remote, add or use a remote that can open the PR in the issue repo instead of assuming the current `origin` is correct.
+
+## Oldest-First Intake
+
+List open issues oldest-first:
+
+```bash
+gh issue list \
+  --repo owner/repo \
+  --state open \
+  --limit 100 \
+  --search 'sort:created-asc' \
+  --json number,title,createdAt,labels,url
+```
+
+Read one issue with comments:
+
+```bash
+gh issue view 12345 \
+  --repo owner/repo \
+  --json number,title,body,comments,labels,state,url,createdAt,author
+```
+
+Or use the normalized local helper:
+
+```bash
+node /Users/elbert/Sites/dotfiles/codex/skills/github-wappalyzer-issues/scripts/fetch_issues.mjs \
+  --url https://github.com/owner/repo/issues/12345 \
+  --comments \
+  --pretty
+```
+
+Read comments before classifying the ticket. Later comments can narrow the product name, add example sites, or show that the report was already resolved.
+
+## Action Gate
+
+Action a ticket only when it cleanly maps to one of these outcomes:
+
+- `add <technology name>`: new technology definition
+- `update <technology name>`: detection, metadata, or icon update for an existing definition
+
+Leave the ticket untouched when it is:
+
+- Outside extension detection scope
+- Better handled in `cli/` or another repo
+- Too small, stale, ambiguous, or low-value to justify support
+- Not a real software product
+- A pure server-side or on-prem product with no plausible public-web fingerprint
+
+Treat metadata-only technology-definition edits as `update <technology name>`.
+
+## Branch, Commit, and PR
+
+Create a fresh branch in `extension/`:
+
+```bash
+git -C /Users/elbert/Sites/wappalyzer/extension switch -c codex/update-technology-name-12345
+```
+
+Keep the user-requested subject format exact:
+
+- `add <technology name>`
+- `update <technology name>`
+
+Use that subject for the commit and the PR title unless there is a strong reason to differ.
+
+Validate before opening the PR:
+
+```bash
+cd /Users/elbert/Sites/wappalyzer/extension
+yarn validate
+```
+
+Push and open the PR in the same repo as the issue:
+
+```bash
+git -C /Users/elbert/Sites/wappalyzer/extension push -u origin HEAD
+gh pr create \
+  --repo owner/repo \
+  --base master \
+  --title 'update <technology name>' \
+  --body-file /tmp/wappalyzer-pr.md
+```
+
+Suggested PR body:
+
+```markdown
+## Summary
+- Updated `<technology name>` detection in the extension definitions.
+
+## Example Sites
+- https://example-one.test
+- https://example-two.test
+
+## Validation
+- `yarn validate`
+
+## Issue
+- References owner/repo#12345
+```
+
+Do not rely on the PR to close the issue automatically. Label and close the issue manually after the PR exists.
+
+## Labels and Closure
+
+List labels live before choosing one:
+
+```bash
+gh label list --repo owner/repo
+```
+
+Common mappings:
+
+- `Accepted`: a new PR now tracks the work
+- `Already added`: the requested technology or fix already exists, so no new PR is needed
+- `Fixed`: the default branch already contains the needed correction, so no new PR is needed
+
+Do not use `Acknowledged`.
+
+Apply the label before closing:
+
+```bash
+gh issue edit 12345 --repo owner/repo --add-label 'Accepted'
+gh issue close 12345 --repo owner/repo
+```
+
+If the ticket is out of scope or otherwise not actioned, do not label or close it.

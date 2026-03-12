@@ -78,6 +78,7 @@
 - Reject new technology suggestions that do not fit an existing category cleanly enough to classify without forcing a poor match, and reject agencies, managed services, or bespoke company-built solutions that are not real software products.
 - Reject purely server-side APIs, on-prem software, and similar products with no plausible public-facing website integration to fingerprint; products such as CRMs are only acceptable when they expose reliable public web signals like widgets, embeds, or managed pages.
 - When working the Wappalyzer GitHub issue queue, start with the oldest actionable tickets first; the main extension-intake templates are technology bug reports and `Technology suggestion` tickets.
+- For actioned Wappalyzer GitHub tickets, use the same GitHub repo for the issue, labels, closure, and PR; read comments first, then apply the appropriate non-`Acknowledged` label and close the issue after the PR is open.
 - For technology categories, strongly prefer one primary category; add a second only when the classification is genuinely balanced across two categories.
 - For `dom` detections, use the simple selector-string form for existence checks and reserve object notation for `attributes`, `properties`, or `text` matching.
 - Do not add new `html` detections for extension technologies. `html` is deprecated; use `dom` instead.
