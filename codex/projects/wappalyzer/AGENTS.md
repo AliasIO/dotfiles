@@ -90,6 +90,7 @@
 - If official SVG and PNG assets disagree, prefer the asset that matches the product's current small-icon branding in public use; when that asset is raster-only, redraw it as a clean SVG so the extension keeps SVG delivery without copying the wrong treatment.
 - Extension SVG icons must use a square `viewBox` or canvas; if the official asset is rectangular, pad or redraw it to a square before shipping.
 - Extension SVG icons should not keep unnecessary empty padding inside that square canvas; trim or recenter the artwork so the mark uses the available space at small sizes.
+- After updating an extension SVG icon, render or preview it and verify both that nothing is clipped and that the artwork does not leave avoidable empty padding.
 - Always save extension icons in `extension/src/images/icons/`.
 - Never wrap a raster image inside an SVG just to satisfy the icon format preference. If no real SVG is available, either draw a clean SVG based on the official raster mark, use a PNG, or omit the icon.
 - Use PNG only as a last resort after real SVG sources, Brandfetch, and clean SVG redraw options are exhausted. Do not give up on SVG until Brandfetch has been checked too. If you fall back to PNG, keep it at `32x32` or smaller. Prefer an official square asset around `32x32`; if no better official candidate exists, `16x16` is acceptable.
