@@ -5,9 +5,10 @@
 - Make CLI/runtime/browser-behavior changes in `cli/`, especially `cli/index.js`.
 - Make shared API logic changes in `v4/apis-shared/`, not in the `v4/apis/*/shared` submodules.
 - Do not write code directly in `v4/apis/*/wappalyzer` or `v4/apis/shared/nodejs`; update the canonical repo first, then move the submodule pointer in `v4/apis`.
-- Mirror shared-layer changes that affect `/opt/nodejs` into `v4/apis/shared/nodejs/`, because the packaged Lambda layer and compat tests load that copy.
+- For shared-layer changes that affect `/opt/nodejs`, edit `v4/apis-shared`, commit and push there first, then let the deploy/submodule refresh sync `v4/apis/shared/nodejs/`; do not hand-edit the mirrored copy.
 - Make browser extension technology-definition metadata changes in `extension/src/technologies/*.json`.
 - Keep `extract/shared.js`, `extract/linkedin.js`, and `extract/diallingcodes.json` symlinked to `v4/apis-shared/`.
+- In this workspace, `extract/extract.js` and `v4/apis-shared/extract.js` are hardlinked; make shared extractor edits once and keep the hardlink intact.
 - Treat Wappalyzer detection logic as canonical in the upstream extension project (`extension/src/js/wappalyzer.js` there), not in the checked-out submodule copies in this workspace.
 
 ## Submodule policy
@@ -21,8 +22,10 @@
 - Known parent repos that track the CLI submodule:
   - `v4/apis`
   - `_other/utils`
-- In `v4/apis/run`, update first-level submodules with `git submodule update --remote`, then run a recursive non-remote update so nested submodules match the updated parent repos.
+- Before testing or deploying `cli`, update its nested submodules first; if that moves gitlinks, commit and push the `cli` submodule update before updating any parent repo gitlinks.
+- In `v4/apis/run`, refresh submodules with a recursive `git submodule update --remote` flow so nested submodules move to their latest remote commits too.
 - For `v4/apis-shared` deploy work, commit and push `master` first, then let `v4/apis/run` refresh submodules during deploy; do not use temporary branches, cherry-picks, or local submodule checkouts to bypass that sync.
+- Keep the canonical `master` branches current aggressively. When dependent submodule pointers need newer `cli` or `v4/apis-shared` commits, promote the canonical repos to `master` first; if `v4/apis-shared` has outstanding local changes blocking that sync, commit them on `master` before updating parent gitlinks.
 
 ## Runtime constraints
 
@@ -32,8 +35,22 @@
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
 - GeoIP is standardized on `geoip-lite`; non-container APIs that need local GeoIP data should attach the `dep-geoip` layer, while container builds and the dedicated `geoip` Lambda also use `geoip-lite`.
 - For container API builds that install Puppeteer, set `PUPPETEER_SKIP_DOWNLOAD=true`; `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` alone is not enough for the current Puppeteer release used here.
+- Current `v4/apis` Serverless deploys can warn that `nodejs22.x` is not a supported `provider.runtime` even when the deploy succeeds; treat that as a non-blocking Serverless schema lag unless the deployment itself fails.
 - Some legacy standalone Lambda zips from old Serverless Platform deploys bundle `serverless_sdk` wrappers that do not load on modern Node runtimes; for direct runtime-only migrations, rebuild the zip with a plain `s_init.js` passthrough instead of doing a blind runtime flip.
 - When changing `v4/apis-shared/aws.js`, preserve v2-style `error.code` compatibility for AWS SDK v3 service exceptions because shared callers still branch on codes such as `ConditionalCheckFailedException`.
+- Keep the website lead-list default `subset` behavior aligned at `500000`; unbounded enriched exports (extra sets, industries, company sizes, or from-date filters) must stay capped there to avoid runaway list jobs.
+- When changing `v4/apis-shared/aws.js`, preserve v2-style retry compatibility too: shared callers still set `maxRetries` and `retryDelayOptions.base` via `AWS.config.update()`, so map those onto AWS SDK v3 client retry settings instead of assuming v3-only options.
+- Keep S3 region-redirect handling enabled in `v4/apis-shared/aws.js`; `wappalyzer-bulk-crawl` is in `ap-southeast-2` while the bulk-crawl Lambda runs in `us-east-1`, and disabling redirects breaks the daily cron upload step with `PermanentRedirect`.
+- HubSpot `company.creation` webhooks can arrive before the company `domain` field is populated; guard missing or invalid domains and skip enrichment instead of passing them into dataset or crawl lookups.
+- Salesforce account webhooks and sync rows can have missing, invalid, or unresolvable website values; skip enrichment for those inputs instead of letting URL parsing or crawl validation turn them into hard failures.
+- For `v4/apis/email-verify` async SQS workers, keep the `/opt/email_verify` timeout several seconds below the Lambda timeout and treat expected verifier failures as worker-level results; matching the two causes hard Lambda timeouts and retry churn.
+- Keep `v4/apis/email-verify` `init-async` under explicit concurrency control; uncapped SQS scaling drives avoidable SMTP fan-out, so adjust the reserved-concurrency cap cautiously from the current `64`.
+- For `v4/apis/email-verify-site` public requests, keep Googlebot reverse/forward DNS checks tightly timed and fall back to normal flood control on lookup failure; unbounded bot verification can hang the Lambda before email verification starts.
+- For `v4/apis/email-verify-site` authenticated `init` requests, bound plan, credit, and usage pre-checks to the remaining Lambda budget and return a handled timeout response instead of letting account lookups hit the 30-second Lambda limit.
+- Keep DynamoDB autoscaling minimums for `wappalyzer-flood` and `wappalyzer-plans` above `1`; the signed-in `v4/apis/email-verify-site` `init` path can stall under burst traffic when those tables scale down to the floor.
+- Prefer `PAY_PER_REQUEST` billing for `wappalyzer-flood` and `wappalyzer-plans`; their bursty interactive traffic is a poor fit for low provisioned floors and has caused `v4/apis/email-verify-site` `init` stalls.
+- For shared email verification, prefer a short DNS preflight of MX/A/AAAA records before spawning `/opt/email_verify`; reject non-resolving domains there instead of maintaining a TLD allowlist.
+- For `v4/apis/websites`, the keyword-search page needs exact totals; do not replace them with approximations without updating the caller, and prefer capacity or cached-count fixes when `TABLE_KEYWORDS` throttles.
 
 ## Cognito operations
 
@@ -43,6 +60,8 @@
 
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
+- Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
+- Public `wappalyzer.com` DNS is delegated to Cloudflare; the Route 53 hosted zone in AWS is not authoritative for live hostname changes.
 - Technology descriptions in `extension/src/technologies/*.json` should be neutral, factual, in American English, and no longer than 250 characters.
 - Prefer specific technology descriptions over generic labels, and only add missing descriptions when the product and its function are clear.
 - For new extension technology definitions, confirm fingerprints on multiple live sites when practical, prefer specific JS globals with fallback signals, avoid short or generic variables, and test unrelated control sites before shipping to reduce false positives.
@@ -85,8 +104,14 @@
 - Do not assume the workspace root is a Git checkout; inspect `extension/`, `cli/`, or `extract/` when you need remotes, history, or branch state.
 - For Salesforce integration support, note that newer Salesforce orgs create new third-party apps under External Client App Manager; existing Connected Apps still work, and new Wappalyzer setups must match our non-PKCE authorization-code flow.
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
-- For `v4/frontend`, default deploys should rebuild the technology pages; use a quick deploy only as an explicit exception when fixing an isolated issue.
+- For `v4/frontend`, local `yarn deploy:v2` and `yarn deploy:quick:v2` remain available for explicit manual deploys or fast validation, but default production deploys should still go through the GitHub Actions workflow and should rebuild the technology pages unless a quick deploy is intentionally chosen for an isolated test or fix.
+- The `v4/frontend` production workflow lives at `.github/workflows/deploy-v2.yml`, but GitHub displays the run name as `CI`; when checking runs with `gh`, query by workflow filename rather than display name.
+- The `wappalyzer-on-demand` Batch compute environment is shared by the `v2` and `beta` on-demand queues, so launch-template and disk changes there affect both stages.
+- For manual `wappalyzer-bulk-crawl-v2-batch` validation, avoid default synchronous `aws lambda invoke`; the function can outlive the client's read timeout and duplicate bulk submissions. Use async invoke or raise the client read-timeout first.
+- `v4/apis/run ecs deploy <alias>` only builds and pushes the `ecs` and `ecs-batch` images to ECR; it does not trigger `aws ecs update-service` or force a new ECS rollout.
+- The CloudWatch `Wappalyzer` dashboard is maintained live in AWS rather than in this repo; when Batch compute environments rotate, update Batch widgets that key off autogenerated `AWSBatch-...` ECS cluster names or prefer search expressions so the widgets survive cluster replacement.
 - In `v4/frontend/nuxt.config.js`, functions passed into serialized Nuxt module config such as `axios.retry` callbacks must be self-contained and must not call top-level helpers, because the generated `.nuxt` files do not preserve those closures.
+- For `v4/apis/websites`, keep `results` as the exact total count for the keyword, but cap the returned `websites` list to the first 50 entries unless the caller contract is explicitly changed.
 - Treat GitHub suggestion tickets as user-submitted leads from the Wappalyzer website; verify the stub and all details independently, gate additions against `extension/README.md`, and reject tiny low-value technologies that are unlikely to help the broader user base.
 - Reject new technology suggestions that do not fit an existing category cleanly enough to classify without forcing a poor match, and reject agencies, managed services, or bespoke company-built solutions that are not real software products.
 - Reject template vendors, theme shops, and template families when they do not map to an existing taxonomy category as software on their own; do not force website templates into `CMS` or `Ecommerce` just because they run on or target those platforms.
