@@ -26,6 +26,7 @@
 - In `v4/apis/run`, refresh submodules with a recursive `git submodule update --remote` flow so nested submodules move to their latest remote commits too.
 - For `v4/apis-shared` deploy work, commit and push `master` first, then let `v4/apis/run` refresh submodules during deploy; do not use temporary branches, cherry-picks, or local submodule checkouts to bypass that sync.
 - Keep the canonical `master` branches current aggressively. When dependent submodule pointers need newer `cli` or `v4/apis-shared` commits, promote the canonical repos to `master` first; if `v4/apis-shared` has outstanding local changes blocking that sync, commit them on `master` before updating parent gitlinks.
+- For direct AWS Batch debugging of `v4/apis/ecs` handlers, use the app's `submitBatchJob()` path or clone the source Lambda's full environment into `aws batch submit-job`; passing only `HANDLER` or a few variables produces misleading missing-handler or missing-region failures.
 
 ## Runtime constraints
 
@@ -61,6 +62,8 @@
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
+- For Wappalyzer API testing, use the local key stored in `/Users/elbert/.codex/secrets/wappalyzer-api.toml` instead of putting API credentials in the repo; it is suitable for direct `v2` and `beta` lookup checks.
+- When you make code changes in a git-tracked repo in this workspace, commit them immediately in that owning repo after validation instead of leaving local edits uncommitted.
 - Public `wappalyzer.com` DNS is delegated to Cloudflare; the Route 53 hosted zone in AWS is not authoritative for live hostname changes.
 - Technology descriptions in `extension/src/technologies/*.json` should be neutral, factual, in American English, and no longer than 250 characters.
 - Prefer specific technology descriptions over generic labels, and only add missing descriptions when the product and its function are clear.
@@ -85,12 +88,14 @@
 - Do not reject an icon uploaded in a ticket only because it is not first-party. If it clearly matches the product's current branding and is materially better than the available official raster options, treat it as a candidate to compare against the first-party assets instead of dismissing it outright.
 - If the product site, upstream repo, and other brand sources do not yield a usable SVG icon, check Brandfetch using the local credentials in `/Users/elbert/.codex/secrets/brandfetch.toml`. Prefer extracting a square SVG mark from Brandfetch's `logo.svg`; if Brandfetch only provides a full logo or raster icon, use its icon and brand colors as reference for a clean square SVG redraw instead of shipping the raster.
 - If official SVG and PNG assets disagree, prefer the asset that matches the product's current small-icon branding in public use; when that asset is raster-only, redraw it as a clean SVG so the extension keeps SVG delivery without copying the wrong treatment.
+- Extension SVG icons must use a square `viewBox` or canvas; if the official asset is rectangular, pad or redraw it to a square before shipping.
 - Always save extension icons in `extension/src/images/icons/`.
 - Never wrap a raster image inside an SVG just to satisfy the icon format preference. If no real SVG is available, either draw a clean SVG based on the official raster mark, use a PNG, or omit the icon.
-- Use PNG only as a last resort after real SVG and clean SVG redraw options are exhausted. If you fall back to PNG, keep it at `32x32` or smaller. Prefer an official square asset around `32x32`; if no better official candidate exists, `16x16` is acceptable.
+- Use PNG only as a last resort after real SVG sources, Brandfetch, and clean SVG redraw options are exhausted. Do not give up on SVG until Brandfetch has been checked too. If you fall back to PNG, keep it at `32x32` or smaller. Prefer an official square asset around `32x32`; if no better official candidate exists, `16x16` is acceptable.
 - Treat cookies as relatively weak detection signals because `Set-Cookie` is not guaranteed to appear in every response or browsing path. Prefer stronger signals first and use cookies mainly as supporting evidence unless they are unusually specific and repeatable.
 - For client-side SaaS products, inspect runtime network activity early in real browser captures and prefer clean, repeatable vendor-specific `xhr` or request-host signals over bundle-text or cookie-based fingerprints when they are more specific.
 - Treat `scripts` as potentially coming from both inline script bodies and fetched snippets of external scripts. In the browser extension, `content.js` contributes inline bodies while `src/js/index.js` also fetches up to a capped prefix of external script responses for `scripts` analysis; in the CLI crawler, `cli/index.js` similarly appends capped external script bodies. Use bundle-text fingerprints conservatively and confirm they are vendor-specific enough to survive the byte cap and avoid false positives.
+- For versioned `scriptSrc` detections, do not extract a version from a bare `/<semver>/file.js` path unless the surrounding path also names the product; require a technology-specific segment such as `/jquery/<version>/jquery.min.js` to avoid asset-directory false positives.
 - When an inline bootstrap snippet points to likely runtime globals or methods, verify them in a real browser before promoting them to `js` fingerprints; bootstrap code can expose placeholders that are not the final runtime API.
 - Compare sample captures early enough to notice when a product appears through multiple integration modes, and draft coverage for more than one non-cookie signal before falling back to cookies as the bridge between those modes.
 - Distinguish direct-detection candidates from implied-only backend candidates early. For server-side products that fit the taxonomy but are rarely exposed directly, prefer finding an existing detectable technology that can safely add them to `implies` over forcing a weak standalone fingerprint.
