@@ -137,3 +137,4 @@
 - For technology categories, strongly prefer one primary category; add a second only when the classification is genuinely balanced across two categories.
 - For `dom` detections, use the simple selector-string form for existence checks and reserve object notation for `attributes`, `properties`, or `text` matching.
 - Do not add new `html` detections for extension technologies. `html` is deprecated; use `dom` instead.
+- For extension release prep, `extension/src/manifest.json` is the local, gitignored version source; anchor releases with `Build vX.X.X` commits and matching `vX.X.X` tags, using an empty build commit when no tracked files change.

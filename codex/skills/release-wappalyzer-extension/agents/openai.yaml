@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Wappalyzer Extension"
+  short_description: "Prepare Wappalyzer extension release artifacts"
+  default_prompt: "Use $release-wappalyzer-extension to sync, version, build, tag, and prepare the Wappalyzer extension release handoff."
