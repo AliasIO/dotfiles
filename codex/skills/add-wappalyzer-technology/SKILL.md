@@ -61,7 +61,9 @@ Avoid:
 - Strongly prefer SVG over PNG. If the product site does not expose a usable asset directly, search other reputable brand sources and image indexes such as `brandsoftheworld.com`.
 - Prefer a transparent-background square brand mark over a full wordmark or logo with text, and favor assets that still read cleanly at small sizes such as `16x16`.
 - If the available SVG is a full logo with text, extract the standalone brand mark when practical so the final icon stays compact and legible.
-- Never wrap a raster image inside an SVG just to satisfy the SVG preference. If no real SVG can be sourced, you may draw a simple SVG based on the official raster mark when it is clearly recognizable; otherwise use a PNG or omit `icon`.
+- Never wrap a raster image inside an SVG just to satisfy the SVG preference.
+- Do not draw or trace a new SVG from scratch or from a raster reference.
+- You may edit an existing SVG to remove word marks, improve padding, recenter the artwork, or avoid clipping.
 - If you use a PNG fallback, prefer an official square asset around `32x32` when available. If no better official candidate exists, `16x16` is acceptable.
 - Omit `icon` if you cannot find a suitable asset.
 - Check the product website for pricing information before setting `pricing`, especially when `saas` is `true`. Use the pricing definitions in `/Users/elbert/Sites/wappalyzer/extension/README.md` to choose `low`, `mid`, or `high` and any applicable `freemium`, `onetime`, `recurring`, `poa`, or `payg` flags. Base the cost band on the typical paid self-serve plan or average monthly price, not the highest enterprise tier unless that is the only clear paid option. Omit `pricing` when the public evidence is unclear.
