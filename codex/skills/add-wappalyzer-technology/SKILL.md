@@ -23,7 +23,7 @@ Read these references before making changes:
 ## Workflow
 
 1. Confirm the target technology name, canonical product website, likely category, and rough pricing posture when public. Before doing deeper research, gate the technology against the extension scope and value bar. If it is clearly too small, stale, dead, or lacks a plausible independent public footprint, stop early and report that instead of forcing a definition. If direct public-web detection is unrealistic but the technology fits an existing category cleanly, check whether it is still worth adding as an implied-only technology through an existing detectable definition.
-2. Find 2-3 live sample sites when practical. Prefer real production homepages, but use product-specific flows such as checkout pages when that is where the signal exists. For ubiquitous products such as payment methods, try to include more than one platform or integration family so a single wrapper does not dominate the draft.
+2. Find 3-5 live sample sites when practical. Prefer real production homepages, but use product-specific flows such as checkout pages when that is where the signal exists. For ubiquitous products such as payment methods, try to include more than one platform or integration family so a single wrapper does not dominate the draft.
    If the product is a hosted white-label surface such as a status page, widget, or embedded form, include at least one custom-domain deployment when practical so you do not overfit to the vendor-hosted domain. If it can also load from a vendor CDN or vendor-hosted subdomain, try to include one sample of that mode too.
 3. Find at least 1-2 unrelated control sites to test for false positives.
 4. Capture evidence for each sample and control site with `scripts/capture-evidence.js` in a real browser environment.
@@ -58,13 +58,13 @@ Avoid:
 - Keep descriptions neutral, factual, American English, and under 250 characters.
 - Add `website` for the product homepage or canonical product page.
 - Add `icon` only when you can source a square SVG or a reasonable PNG, ideally from the product site or official branding.
-- Strongly prefer SVG over PNG. If the product site does not expose a usable asset directly, search other reputable brand sources and image indexes such as `brandsoftheworld.com`.
+- Strongly prefer SVG over PNG. If the product site does not expose a usable asset directly, search other reputable brand sources and image indexes such as `brandfetch.com` or `brandsoftheworld.com` or perform a web search.
 - Prefer a transparent-background square brand mark over a full wordmark or logo with text, and favor assets that still read cleanly at small sizes such as `16x16`.
 - If the available SVG is a full logo with text, extract the standalone brand mark when practical so the final icon stays compact and legible.
 - Never wrap a raster image inside an SVG just to satisfy the SVG preference.
 - Do not draw or trace a new SVG from scratch or from a raster reference.
 - You may edit an existing SVG to remove word marks, improve padding, recenter the artwork, or avoid clipping.
-- If you use a PNG fallback, prefer an official square asset around `32x32` when available. If no better official candidate exists, `16x16` is acceptable.
+- If you use a PNG fallback after exhausting all options to find a suitable SVG, prefer an official square asset around `32x32` when available. If no better official candidate exists, `16x16` is acceptable.
 - Omit `icon` if you cannot find a suitable asset.
 - Check the product website for pricing information before setting `pricing`, especially when `saas` is `true`. Use the pricing definitions in `/Users/elbert/Sites/wappalyzer/extension/README.md` to choose `low`, `mid`, or `high` and any applicable `freemium`, `onetime`, `recurring`, `poa`, or `payg` flags. Base the cost band on the typical paid self-serve plan or average monthly price, not the highest enterprise tier unless that is the only clear paid option. Omit `pricing` when the public evidence is unclear.
 - Infer `saas` and `oss` conservatively from public evidence and omit fields when unclear.

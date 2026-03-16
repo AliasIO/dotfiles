@@ -28,6 +28,8 @@
 - For `v4/apis-shared` deploy work, commit and push `master` first, then let `v4/apis/run` refresh submodules during deploy; do not use temporary branches, cherry-picks, or local submodule checkouts to bypass that sync.
 - Keep the canonical `master` branches current aggressively. When dependent submodule pointers need newer `cli` or `v4/apis-shared` commits, promote the canonical repos to `master` first; if `v4/apis-shared` has outstanding local changes blocking that sync, commit them on `master` before updating parent gitlinks.
 - For direct AWS Batch debugging of `v4/apis/ecs` handlers, use the app's `submitBatchJob()` path or clone the source Lambda's full environment into `aws batch submit-job`; passing only `HANDLER` or a few variables produces misleading missing-handler or missing-region failures.
+- Keep dynamic `v4/frontend` result pages under `/websites/*` and non-root `/lookup/*` noindexed; they are useful product pages but should not be treated as index targets or sitemap entries.
+- Keep `v4/frontend` sitemap entries aligned with `static/robots.txt` subtree allow/disallow rules so blocked routes do not reappear in submitted sitemaps.
 
 ## Runtime constraints
 
@@ -38,6 +40,7 @@
 - GeoIP is standardized on `geoip-lite`; non-container APIs that need local GeoIP data should attach the `dep-geoip` layer, while container builds and the dedicated `geoip` Lambda also use `geoip-lite`.
 - For container API builds that install Puppeteer, set `PUPPETEER_SKIP_DOWNLOAD=true`; `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` alone is not enough for the current Puppeteer release used here.
 - Current `v4/apis` Serverless deploys can warn that `nodejs22.x` is not a supported `provider.runtime` even when the deploy succeeds; treat that as a non-blocking Serverless schema lag unless the deployment itself fails.
+- In `v4/apis/webhooks/stripe.js`, read the Stripe signature header case-insensitively and fall back to `multiValueHeaders`; API Gateway can lowercase it, and strict `Stripe-Signature` lookup breaks webhook verification.
 - Some legacy standalone Lambda zips from old Serverless Platform deploys bundle `serverless_sdk` wrappers that do not load on modern Node runtimes; for direct runtime-only migrations, rebuild the zip with a plain `s_init.js` passthrough instead of doing a blind runtime flip.
 - When changing `v4/apis-shared/aws.js`, preserve v2-style `error.code` compatibility for AWS SDK v3 service exceptions because shared callers still branch on codes such as `ConditionalCheckFailedException`.
 - Keep the website lead-list default `subset` behavior aligned at `500000`; unbounded enriched exports (extra sets, industries, company sizes, or from-date filters) must stay capped there to avoid runaway list jobs.
@@ -55,16 +58,24 @@
 - Prefer `PAY_PER_REQUEST` billing for `wappalyzer-flood` and `wappalyzer-plans`; their bursty interactive traffic is a poor fit for low provisioned floors and has caused `v4/apis/email-verify-site` `init` stalls.
 - For shared email verification, prefer a short DNS preflight of MX/A/AAAA records before spawning `/opt/email_verify`; reject non-resolving domains there instead of maintaining a TLD allowlist.
 - For `v4/apis/websites`, the keyword-search page needs exact totals; do not replace them with approximations without updating the caller, and prefer capacity or cached-count fixes when `TABLE_KEYWORDS` throttles.
+- For `v4/apis/categories`, keep the list endpoint off full-table scans; use the precomputed category summary item, and resolve technology-slug redirects via `TABLE_TECHNOLOGIES` instead of scanning category membership.
 
 ## Cognito operations
 
 - Cognito user pool and app client settings are managed in AWS, not as infrastructure code in this workspace. Repo changes here can update triggers and referenced IDs, but auth-flow, MFA, threat-protection, and app-client security changes must be made in Cognito directly.
+- The Google OAuth app client must both allow and request `aws.cognito.signin.user.admin`; the website bootstrap calls Cognito `getUserAttributes()` after hosted OAuth sign-in, and Google sign-in fails with `Access Token does not have required scopes` without it.
+- For Cognito social providers, map `email_verified` alongside `email`; without it, Google users land as unverified external profiles and same-email linking logic can silently fail.
+- The primary shared `wappalyzer` Cognito user pool now lives in `us-east-1`; treat the `ap-southeast-2` pool as legacy-only for migration and lookup compatibility.
+- The shared `wappalyzer` Cognito user pool sends password-reset and verification emails from live AWS user-pool email settings, not repo code; when changing that sender, use a full `update-user-pool` payload because omitted fields reset to defaults.
+- Cognito trigger services in `v4/apis` attach to the shared `wappalyzer` pool with `existing: true`; only one Lambda can be active per trigger, so deploy the intended live stage last or a beta deploy can overwrite the v2 trigger attachment.
+- Cognito `PostConfirmation` triggers run after both signup confirmation and forgot-password confirmation; guard onboarding email handlers on `event.triggerSource` so password resets do not resend welcome mail.
 
 ## Maintenance
 
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
+- For extension release prep, `extension/src/manifest.json` is the local, gitignored version source; anchor releases with `Build vX.X.X` commits and matching `vX.X.X` tags, using an empty build commit when no tracked files change.
 - For Wappalyzer API testing, use the local key stored in `/Users/elbert/.codex/secrets/wappalyzer-api.toml` instead of putting API credentials in the repo; it is suitable for direct `v2` and `beta` lookup checks.
 - When you make code changes in a git-tracked repo in this workspace, commit them immediately in that owning repo after validation instead of leaving local edits uncommitted.
 - When building slug-keyed maps for technologies, categories, or similar synced data, use null-prototype objects instead of plain `{}` because valid slugs such as `constructor` and `prototype` break object-key semantics and DynamoDB marshalling.
@@ -86,6 +97,7 @@
 - For new extension technology definitions, use a real browser capture with a short post-load observation window so late XHR, async scripts, and DOM mutations are included; do not rely on raw HTTP-only evidence when browser capture is required.
 - The `capture-evidence.js` helper loads technology definitions from the CLI submodule rather than the checked-out `extension/` JSON, so use it for raw evidence capture and verify final detection behavior against `extension/` directly before trusting its technology results.
 - The `capture-evidence.js` helper's final `page.scripts` snapshot reflects browser-collected page script bodies, not the crawler's appended external-script snippets. When validating an external-bundle `scripts` fingerprint, inspect the CLI/runtime path or fetch the public script URLs manually with the same byte cap.
+- When `capture-evidence.js` fails on anti-bot or brittle sites before a live snapshot is produced, fall back to local `Google Chrome --headless=new --dump-dom` to confirm browser-rendered DOM and inline-script evidence before rejecting the candidate outright.
 - For new extension technology definitions, prefer transparent-background square brand-mark icons that remain legible at small sizes like `16x16`; avoid full logos with text when choosing `icon` assets.
 - For new extension technology definitions, strongly prefer SVG icons. Search for a real SVG first, including the product site, upstream repo assets, and reputable brand sources such as `brandsoftheworld.com`, and extract the icon mark from a full logo SVG when needed to remove text.
 - Prefer official-branding SVGs that visibly match the product's current public brand mark; reject off-brand or mismatched vendor assets even if they are first-party, and use PNG only as a fallback after SVG options are exhausted.
@@ -116,12 +128,19 @@
 - For Salesforce integration support, note that newer Salesforce orgs create new third-party apps under External Client App Manager; existing Connected Apps still work, and new Wappalyzer setups must match our non-PKCE authorization-code flow.
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
 - For `v4/frontend`, local `yarn deploy:v2` and `yarn deploy:quick:v2` remain available for explicit manual deploys or fast validation, but default production deploys should still go through the GitHub Actions workflow and should rebuild the technology pages unless a quick deploy is intentionally chosen for an isolated test or fix.
+- For `v4/frontend` changes that do not require rebuilding the technology pages, prefer `yarn deploy:quick:v2` once a production deploy has been explicitly approved in the current thread.
 - The `v4/frontend` production workflow lives at `.github/workflows/deploy-v2.yml`, but GitHub displays the run name as `CI`; when checking runs with `gh`, query by workflow filename rather than display name.
+- Public `www.wappalyzer.com` security headers, including CSP, are applied by `v4/apis/headers/headers.js` rather than the frontend bundle; header-source changes there need a `headers` deploy, not just a frontend deploy.
+- The live `www.wappalyzer.com` CloudFront distribution is pinned to an explicit Lambda@Edge version for `v4/apis/headers`; publishing a new `headers` Lambda does not switch the distribution automatically, and Lambda@Edge rejects versions with environment variables or layers.
+- Never deploy to `v2` without explicit user permission in the current thread; always ask before any `v2` deploy.
 - The `wappalyzer-on-demand` Batch compute environment is shared by the `v2` and `beta` on-demand queues, so launch-template and disk changes there affect both stages.
+- Do not deregister ECS task-definition families still referenced in `v4/apis/env.v2.yml` or `v4/apis/env.beta.yml` just because no ECS service is currently using them; many APIs launch them indirectly by family name.
+- Canceling and immediately rerunning a bulk-lookup Batch parent can let the old parent's terminal callback overwrite the order row back to `Failed`; after a manual restart, recheck or re-clear the order status/error while the new parent is active.
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
 - For manual `wappalyzer-bulk-crawl-v2-batch` validation, avoid default synchronous `aws lambda invoke`; the function can outlive the client's read timeout and duplicate bulk submissions. Use async invoke or raise the client read-timeout first.
 - `v4/apis/run ecs deploy <alias>` only builds and pushes the `ecs` and `ecs-batch` images to ECR; it does not trigger `aws ecs update-service` or force a new ECS rollout.
 - The CloudWatch `Wappalyzer` dashboard is maintained live in AWS rather than in this repo; when Batch compute environments rotate, update Batch widgets that key off autogenerated `AWSBatch-...` ECS cluster names or prefer search expressions so the widgets survive cluster replacement.
+- The main live CloudWatch dashboard is named `Wappalyzer-Service-Groups`; update it in AWS directly rather than looking for a repo-managed dashboard JSON.
 - In `v4/frontend/nuxt.config.js`, functions passed into serialized Nuxt module config such as `axios.retry` callbacks must be self-contained and must not call top-level helpers, because the generated `.nuxt` files do not preserve those closures.
 - For `v4/apis/websites`, keep `results` as the exact total count for the keyword, but cap the returned `websites` list to the first 50 entries unless the caller contract is explicitly changed.
 - Treat GitHub suggestion tickets as user-submitted leads from the Wappalyzer website; verify the stub and all details independently, gate additions against `extension/README.md`, and reject tiny low-value technologies that are unlikely to help the broader user base.
@@ -138,4 +157,3 @@
 - For technology categories, strongly prefer one primary category; add a second only when the classification is genuinely balanced across two categories.
 - For `dom` detections, use the simple selector-string form for existence checks and reserve object notation for `attributes`, `properties`, or `text` matching.
 - Do not add new `html` detections for extension technologies. `html` is deprecated; use `dom` instead.
-- For extension release prep, `extension/src/manifest.json` is the local, gitignored version source; anchor releases with `Build vX.X.X` commits and matching `vX.X.X` tags, using an empty build commit when no tracked files change.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wappalyzer Deployments"
+  short_description: "Deploy Wappalyzer services safely"
+  default_prompt: "Use $deploy-wappalyzer to deploy a Wappalyzer target in this workspace and verify the result."
