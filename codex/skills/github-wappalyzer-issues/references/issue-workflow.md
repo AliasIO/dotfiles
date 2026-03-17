@@ -34,6 +34,8 @@ If you post a PR body, issue comment, or PR comment under the user's GitHub acco
 
 Before classifying an issue, read `/Users/elbert/Sites/wappalyzer/extension/README.md` and confirm the suggestion fits the extension's scope. Then apply a significance filter: do not spend time adding tiny utility libraries, niche one-off plugins, or similarly low-value technologies that are unlikely to help Wappalyzer's roughly 3 million weekly active users.
 
+When a user reports that a named technology is missing or misdetected on a live site, investigate that claim on the cited page or a comparable public deployment before deciding the issue lacks information. The burden for the first pass of DOM/script/runtime evidence gathering does not lie with the submitter. A later `More info needed` decision is appropriate only if that investigation still leaves a concrete blocker such as dead sample URLs, anti-bot interstitials, or ambiguous product identity.
+
 Reject purely server-side APIs, on-prem products, and similar software with no plausible public-facing website integration to fingerprint. Some products that are mainly back-office systems, such as CRMs, can still be valid when they expose public live chat widgets, embedded forms, or CMS-managed pages that produce reliable website signals.
 
 When choosing categories, prefer a single primary category. Add a second only when the product truly belongs in two categories of equal weight. Do not spread a technology across multiple adjacent categories just because the marketing copy mentions several features. If a product does not fit an existing category cleanly enough to classify without forcing a poor match, reject it instead of misclassifying it.

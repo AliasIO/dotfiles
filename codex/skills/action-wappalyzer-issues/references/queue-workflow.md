@@ -40,6 +40,8 @@ node /Users/elbert/Sites/dotfiles/codex/skills/github-wappalyzer-issues/scripts/
 
 Read comments before classifying the ticket. Later comments can narrow the product name, add example sites, or show that the report was already resolved.
 
+When a reporter says a known technology is missing or misdetected on a live site, investigate that claim on the cited page or a comparable public deployment before deciding the ticket needs more information. The submitter is not responsible for providing the first round of DOM/script/runtime evidence when you can gather it yourself.
+
 ## Action Gate
 
 Action a ticket only when it cleanly maps to one of these outcomes:
@@ -123,11 +125,11 @@ Common mappings:
 - `Already added`: the requested technology or fix already exists, so no new PR is needed
 - `Fixed`: the default branch already contains the needed correction, so no new PR is needed
 - `Not eligible`: the ticket was reviewed as normal extension intake but does not meet the support bar
-- `More info needed`: the ticket could be actionable later but still lacks enough reliable detail to proceed
+- `More info needed`: the ticket could be actionable later, but only after you investigated it yourself and still hit a concrete blocker that leaves too little reliable detail to proceed
 
 Do not use `Acknowledged`.
 
-If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure.
+If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating.
 
 Prefer `gh issue comment --body-file /tmp/comment.md` or a quoted here-doc for comment bodies so apostrophes, backticks, and markdown survive shell parsing.
 
@@ -138,4 +140,4 @@ gh issue edit 12345 --repo owner/repo --add-label 'Accepted'
 gh issue close 12345 --repo owner/repo
 ```
 
-If the ticket is normal extension intake but is rejected as `Not eligible` or `More info needed`, apply that label and close it. Leave the ticket untouched only when it is truly outside scope or belongs in another repo.
+If the ticket is normal extension intake but is rejected as `Not eligible` or `More info needed`, apply that label and close it. Use `More info needed` only after a reasonable investigation still leaves a concrete blocker. Leave the ticket untouched only when it is truly outside scope or belongs in another repo.
