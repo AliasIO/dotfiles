@@ -37,6 +37,8 @@
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - The extension now uses `extension/src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
+- For `v4/apis-shared` lookup analysis, keep post-crawl hostname and dataset persistence best-effort and time-bounded; slow follow-up writes after a crawl timeout can turn a handled lookup failure into a Lambda 5xx.
+- For live `lookup` browser navigation, keep Puppeteer `page.goto()` explicitly bounded to the crawler `maxWait`; `page.setDefaultTimeout()` alone can still leave navigation waiting long enough to exhaust the 30-second Lambda budget.
 - GeoIP is standardized on `geoip-lite`; non-container APIs that need local GeoIP data should attach the `dep-geoip` layer, while container builds and the dedicated `geoip` Lambda also use `geoip-lite`.
 - For container API builds that install Puppeteer, set `PUPPETEER_SKIP_DOWNLOAD=true`; `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` alone is not enough for the current Puppeteer release used here.
 - Current `v4/apis` Serverless deploys can warn that `nodejs22.x` is not a supported `provider.runtime` even when the deploy succeeds; treat that as a non-blocking Serverless schema lag unless the deployment itself fails.
@@ -77,6 +79,7 @@
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
+- When you update this `AGENTS.md` or a custom skill under `/Users/elbert/Sites/dotfiles/codex/skills`, commit the change in `/Users/elbert/Sites/dotfiles` and push it.
 - For extension release prep, `extension/src/manifest.json` is the local, gitignored version source; anchor releases with `Build vX.X.X` commits and matching `vX.X.X` tags, using an empty build commit when no tracked files change.
 - For Wappalyzer API testing, use the local key stored in `/Users/elbert/.codex/secrets/wappalyzer-api.toml` instead of putting API credentials in the repo; it is suitable for direct `v2` and `beta` lookup checks.
 - When you make code changes in a git-tracked repo in this workspace, commit them immediately in that owning repo after validation instead of leaving local edits uncommitted.
@@ -130,8 +133,8 @@
 - Do not assume the workspace root is a Git checkout; inspect `extension/`, `cli/`, or `extract/` when you need remotes, history, or branch state.
 - For Salesforce integration support, note that newer Salesforce orgs create new third-party apps under External Client App Manager; existing Connected Apps still work, and new Wappalyzer setups must match our non-PKCE authorization-code flow.
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
-- For `v4/frontend`, local `yarn deploy:v2` and `yarn deploy:quick:v2` remain available for explicit manual deploys or fast validation, but default production deploys should still go through the GitHub Actions workflow and should rebuild the technology pages unless a quick deploy is intentionally chosen for an isolated test or fix.
-- For `v4/frontend` changes that do not require rebuilding the technology pages, prefer `yarn deploy:quick:v2` once a production deploy has been explicitly approved in the current thread.
+- For `v4/frontend`, default production deploys should still go through the GitHub Actions workflow, which now uses `yarn deploy:quick:v2`; use full `yarn deploy:v2` only when a change needs a full technology-page rebuild.
+- For `v4/frontend` changes that need refreshed technology, category, or compare pages, prefer the full `yarn deploy:v2` path once a production deploy has been explicitly approved in the current thread.
 - The `v4/frontend` production workflow lives at `.github/workflows/deploy-v2.yml`, but GitHub displays the run name as `CI`; when checking runs with `gh`, query by workflow filename rather than display name.
 - Public `www.wappalyzer.com` security headers, including CSP, are applied by `v4/apis/headers/headers.js` rather than the frontend bundle; header-source changes there need a `headers` deploy, not just a frontend deploy.
 - The live `www.wappalyzer.com` CloudFront distribution is pinned to an explicit Lambda@Edge version for `v4/apis/headers`; publishing a new `headers` Lambda does not switch the distribution automatically, and Lambda@Edge rejects versions with environment variables or layers.
