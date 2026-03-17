@@ -107,6 +107,8 @@ Suggested PR body:
 
 ## Issue
 - References owner/repo#12345
+
+— Codex
 ```
 
 Do not rely on the PR to close the issue automatically. Label and close the issue manually after the PR exists.
@@ -129,7 +131,7 @@ Common mappings:
 
 Do not use `Acknowledged`.
 
-If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating.
+If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating. Every GitHub issue comment, PR comment, and PR body you post under the user's account must end with `— Codex`.
 
 Prefer `gh issue comment --body-file /tmp/comment.md` or a quoted here-doc for comment bodies so apostrophes, backticks, and markdown survive shell parsing.
 

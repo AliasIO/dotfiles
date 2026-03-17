@@ -28,7 +28,7 @@ For private repos, prefer a fine-grained token scoped to the target repo with:
 
 If future work should comment on or close issues, add `Issues: Read and write`. For public repos, unauthenticated access may work for a few requests, but expect low rate limits.
 
-If you post a PR body, issue comment, or PR comment under the user's GitHub account, end it with a short `— Codex` signature so the authorship is explicit.
+If you post a PR body, issue comment, or PR comment under the user's GitHub account, always end it with `— Codex` so the authorship is explicit.
 
 ## Actionability rubric
 
