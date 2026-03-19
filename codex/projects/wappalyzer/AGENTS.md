@@ -55,6 +55,7 @@
 - Keep S3 region-redirect handling enabled in `v4/apis-shared/aws.js`; `wappalyzer-bulk-crawl` is in `ap-southeast-2` while the bulk-crawl Lambda runs in `us-east-1`, and disabling redirects breaks the daily cron upload step with `PermanentRedirect`.
 - HubSpot `company.creation` webhooks can arrive before the company `domain` field is populated; guard missing or invalid domains and skip enrichment instead of passing them into dataset or crawl lookups.
 - Salesforce account webhooks and sync rows can have missing, invalid, or unresolvable website values; skip enrichment for those inputs instead of letting URL parsing or crawl validation turn them into hard failures.
+- For Salesforce, HubSpot, and Pipedrive webhooks and syncs, revalidate saved CRM field mappings against the live schema before updating records; deleted custom fields otherwise turn whole runs into repeated 4xx write failures.
 - Keep CRM `export-events` Lambdas provisioned above the default 30-second/256 MB baseline; large `wappalyzer-integrations-events` partitions can otherwise time out and surface as frontend `Network Error` responses.
 - For `v4/apis/email-verify` async SQS workers, keep the `/opt/email_verify` timeout several seconds below the Lambda timeout and treat expected verifier failures as worker-level results; matching the two causes hard Lambda timeouts and retry churn.
 - Keep `v4/apis/email-verify` `init-async` under explicit concurrency control; uncapped SQS scaling drives avoidable SMTP fan-out, so adjust the reserved-concurrency cap cautiously from the current `64`.
