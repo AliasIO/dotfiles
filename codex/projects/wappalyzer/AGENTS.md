@@ -28,12 +28,14 @@
 - For `v4/apis-shared` deploy work, commit and push `master` first, then let `v4/apis/run` refresh submodules during deploy; do not use temporary branches, cherry-picks, or local submodule checkouts to bypass that sync.
 - Keep the canonical `master` branches current aggressively. When dependent submodule pointers need newer `cli` or `v4/apis-shared` commits, promote the canonical repos to `master` first; if `v4/apis-shared` has outstanding local changes blocking that sync, commit them on `master` before updating parent gitlinks.
 - For direct AWS Batch debugging of `v4/apis/ecs` handlers, use the app's `submitBatchJob()` path or clone the source Lambda's full environment into `aws batch submit-job`; passing only `HANDLER` or a few variables produces misleading missing-handler or missing-region failures.
-- Keep dynamic `v4/frontend` result pages under `/websites/*` and non-root `/lookup/*` noindexed; they are useful product pages but should not be treated as index targets or sitemap entries.
+- Keep dynamic `v4/frontend` result pages under `/websites/*`, non-root `/lookup/*`, and `/verify/*` noindexed; they are useful product pages but should not be treated as index targets or sitemap entries.
 - Keep `v4/frontend` sitemap entries aligned with `static/robots.txt` subtree allow/disallow rules so blocked routes do not reappear in submitted sitemaps.
 
 ## Runtime constraints
 
 - Keep `--single-process`; the crawler must continue to run in Lambda-compatible mode.
+- In `v4/apis-shared/shared.js`, keep shared analyze browser init/restart serialized across concurrent work; overlapping `destroy()` / `init()` calls in Batch workers can create restart storms and amplify memory pressure.
+- In `cli/index.js`, keep browser relaunch serialized on the shared `Driver`, not per `Site`; site-scoped restarts can spawn orphaned Chromium processes and inflate Batch process counts even when cgroup memory is still low.
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - The extension now uses `extension/src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
@@ -52,6 +54,7 @@
 - Keep S3 region-redirect handling enabled in `v4/apis-shared/aws.js`; `wappalyzer-bulk-crawl` is in `ap-southeast-2` while the bulk-crawl Lambda runs in `us-east-1`, and disabling redirects breaks the daily cron upload step with `PermanentRedirect`.
 - HubSpot `company.creation` webhooks can arrive before the company `domain` field is populated; guard missing or invalid domains and skip enrichment instead of passing them into dataset or crawl lookups.
 - Salesforce account webhooks and sync rows can have missing, invalid, or unresolvable website values; skip enrichment for those inputs instead of letting URL parsing or crawl validation turn them into hard failures.
+- Keep CRM `export-events` Lambdas provisioned above the default 30-second/256 MB baseline; large `wappalyzer-integrations-events` partitions can otherwise time out and surface as frontend `Network Error` responses.
 - For `v4/apis/email-verify` async SQS workers, keep the `/opt/email_verify` timeout several seconds below the Lambda timeout and treat expected verifier failures as worker-level results; matching the two causes hard Lambda timeouts and retry churn.
 - Keep `v4/apis/email-verify` `init-async` under explicit concurrency control; uncapped SQS scaling drives avoidable SMTP fan-out, so adjust the reserved-concurrency cap cautiously from the current `64`.
 - For `v4/apis/email-verify-site` public requests, keep Googlebot reverse/forward DNS checks tightly timed and fall back to normal flood control on lookup failure; unbounded bot verification can hang the Lambda before email verification starts.
@@ -148,13 +151,19 @@
 - Shared public API request rates for key-based `v2` and `beta` endpoints are enforced live through API Gateway usage plans `credits` and `credits-beta`, not the per-service `serverless.yml` throttles; when changing the documented requests-per-second limit, update those AWS usage plans and every docs page that references the shared value.
 - Never deploy to `v2` without explicit user permission in the current thread; always ask before any `v2` deploy.
 - The `wappalyzer-on-demand` Batch compute environment is shared by the `v2` and `beta` on-demand queues, so launch-template and disk changes there affect both stages.
+- Custom ECS Batch job definitions here need `containerProperties.jobRoleArn` as well as `executionRoleArn`; without a task role, handlers can start without AWS credentials even when the compute environment and instance profile are otherwise valid.
 - Do not deregister ECS task-definition families still referenced in `v4/apis/env.v2.yml` or `v4/apis/env.beta.yml` just because no ECS service is currently using them; many APIs launch them indirectly by family name.
 - Canceling and immediately rerunning a bulk-lookup Batch parent can let the old parent's terminal callback overwrite the order row back to `Failed`; after a manual restart, recheck or re-clear the order status/error while the new parent is active.
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
+- Active spot Batch job definitions should keep a narrow retry policy in AWS: retry `Host EC2*` terminations once, and exit immediately for crawler or container failures.
+- The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
+- ECS Chromium containers should run behind a real init such as `tini`; running Node directly as PID 1 leaves orphaned Chromium children unreaped and distorts process diagnostics.
 - For manual `wappalyzer-bulk-crawl-v2-batch` validation, avoid default synchronous `aws lambda invoke`; the function can outlive the client's read timeout and duplicate bulk submissions. Use async invoke or raise the client read-timeout first.
 - `v4/apis/run ecs deploy <alias>` only builds and pushes the `ecs` and `ecs-batch` images to ECR; it does not trigger `aws ecs update-service` or force a new ECS rollout.
+- Run the monthly `hostnames-technologies` cron on the storage-extended `ECS_CRON_TECHNOLOGIES_TASK_DEFINITION` family; the default cron Fargate task does not have enough ephemeral disk for the month-stage summary build.
 - The CloudWatch `Wappalyzer` dashboard is maintained live in AWS rather than in this repo; when Batch compute environments rotate, update Batch widgets that key off autogenerated `AWSBatch-...` ECS cluster names or prefer search expressions so the widgets survive cluster replacement.
 - The main live CloudWatch dashboard is named `Wappalyzer-Service-Groups`; update it in AWS directly rather than looking for a repo-managed dashboard JSON.
+- The `wappalyzer-cron-v2-hostnames-technologies` monthly summary schedule is managed live in AWS EventBridge via rule `cron-monthly-1` at `00:15 UTC` on the first day of each month, not in `serverless.yml`.
 - In `v4/frontend/nuxt.config.js`, functions passed into serialized Nuxt module config such as `axios.retry` callbacks must be self-contained and must not call top-level helpers, because the generated `.nuxt` files do not preserve those closures.
 - For `v4/apis/websites`, keep `results` as the exact total count for the keyword, but cap the returned `websites` list to the first 50 entries unless the caller contract is explicitly changed.
 - Treat GitHub suggestion tickets as user-submitted leads from the Wappalyzer website; verify the stub and all details independently, gate additions against `extension/README.md`, and reject tiny low-value technologies that are unlikely to help the broader user base.
