@@ -160,6 +160,7 @@
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
 - Active spot Batch job definitions should keep a narrow retry policy in AWS: retry `Host EC2*` terminations once, and exit immediately for crawler or container failures.
 - The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
+- For lead-list country/language filters, keep frontend and API-side guards aligned with DynamoDB's expression-size limit; oversized OR chains must be rejected before queueing list jobs.
 - ECS Chromium containers should run behind a real init such as `tini`; running Node directly as PID 1 leaves orphaned Chromium children unreaped and distorts process diagnostics.
 - For manual `wappalyzer-bulk-crawl-v2-batch` validation, avoid default synchronous `aws lambda invoke`; the function can outlive the client's read timeout and duplicate bulk submissions. Use async invoke or raise the client read-timeout first.
 - `v4/apis/run ecs deploy <alias>` only builds and pushes the `ecs` and `ecs-batch` images to ECR; it does not trigger `aws ecs update-service` or force a new ECS rollout.
