@@ -16,6 +16,10 @@ DEFAULT_REPO = Path("/Users/elbert/Sites/wappalyzer/extension")
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 
 
+def shell_join(parts: list[str]) -> str:
+    return " ".join(shlex.quote(part) for part in parts)
+
+
 def fail(message: str) -> int:
     print(f"ERROR: {message}", file=sys.stderr)
     return 1
@@ -28,7 +32,7 @@ def run(
     capture: bool = False,
     commands_run: list[str] | None = None,
 ) -> str:
-    command = shlex.join(cmd)
+    command = shell_join(cmd)
     print(f"+ {command}")
 
     if commands_run is not None:
@@ -198,7 +202,7 @@ def ensure_tag_available(repo: Path, version: str, commands_run: list[str]) -> N
         stderr=subprocess.PIPE,
         check=False,
     )
-    commands_run.append(shlex.join(["git", "rev-parse", "--verify", "-q", tag_name]))
+    commands_run.append(shell_join(["git", "rev-parse", "--verify", "-q", tag_name]))
 
     if result.returncode == 0:
         raise RuntimeError(f"Tag v{version} already exists.")
