@@ -29,7 +29,7 @@ python3 /Users/elbert/Sites/dotfiles/codex/skills/release-wappalyzer-extension/s
    - release version
    - sync action taken against `origin/master`
    - commands run
-   - artifact paths
+   - artifact paths for Chrome/Firefox and Edge
    - commit hash and tag
    - Safari status
    - changelog path and entries
@@ -46,7 +46,7 @@ python3 /Users/elbert/Sites/dotfiles/codex/skills/release-wappalyzer-extension/s
 
 ## Guardrails
 
-- Treat `src/manifest.json` as the current release-version source even though it is gitignored.
+- Treat `src/manifest.json` as the current release-version source.
 - Do not switch to `yarn build`, `yarn build:fast`, or a manual build sequence unless the user explicitly changes the release policy.
 - Do not publish to Chrome Web Store, AMO, or Safari from this skill.
 - Generate the changelog from commits since the previous `Build v...` marker, following the formatting rule in `AGENTS.md`.

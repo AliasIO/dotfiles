@@ -293,6 +293,15 @@ def build_changelog_lines(
     return lines
 
 
+def ensure_artifacts_exist(paths: list[Path]) -> None:
+    missing = [str(path) for path in paths if not path.exists()]
+
+    if missing:
+        raise RuntimeError(
+            f"Expected release artifact(s) were not created: {', '.join(missing)}."
+        )
+
+
 def find_safari_outputs(build_dir: Path) -> list[str]:
     return sorted(str(path) for path in build_dir.rglob("*.xcodeproj"))
 
@@ -304,6 +313,8 @@ def print_summary(
     sync_actions: list[str],
     commands_run: list[str],
     release_commit: str,
+    webextension_v3_path: Path,
+    webextension_edge_path: Path,
     changelog_path: Path,
     changelog_lines: list[str],
     safari_requested: bool,
@@ -315,7 +326,8 @@ def print_summary(
     print(f"Version: {version}")
     print(f"Sync: {', '.join(sync_actions)}")
     print(f"Local manifest: {repo / 'src/manifest.json'}")
-    print(f"Artifact: {repo / 'build/webextension-v3.zip'}")
+    print(f"Chrome/Firefox artifact: {webextension_v3_path}")
+    print(f"Edge artifact: {webextension_edge_path}")
     print(f"Changelog: {changelog_path}")
     print(f"Commit: {release_commit}")
     print(f"Tag: v{version}")
@@ -360,6 +372,9 @@ def main() -> int:
         write_manifest(manifest_path, manifest)
 
         run(["yarn", "build:release"], repo, commands_run=commands_run)
+        webextension_v3_path = repo / "build" / "webextension-v3.zip"
+        webextension_edge_path = repo / "build" / "webextension-edge.zip"
+        ensure_artifacts_exist([webextension_v3_path, webextension_edge_path])
 
         safari_outputs: list[str] = []
         if args.safari:
@@ -389,6 +404,8 @@ def main() -> int:
             sync_actions=sync_actions,
             commands_run=commands_run,
             release_commit=release_commit,
+            webextension_v3_path=webextension_v3_path,
+            webextension_edge_path=webextension_edge_path,
             changelog_path=changelog_path,
             changelog_lines=changelog_lines,
             safari_requested=args.safari,

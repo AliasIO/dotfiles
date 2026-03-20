@@ -11,7 +11,7 @@
 - Read the current version from `src/manifest.json`.
 - If no version is provided, patch-bump the current version by one.
 - Require numeric `x.y.z` versions.
-- Keep the bumped version in the local manifest after the build even though that file is ignored by Git.
+- Keep the bumped version in `src/manifest.json` after the build.
 
 ## Build Commands
 
@@ -69,6 +69,7 @@ Write the changelog to `build/changelog-vX.X.X.md`.
 ## Expected Outputs
 
 - `build/webextension-v3.zip`
+- `build/webextension-edge.zip`
 - `build/changelog-vX.X.X.md`
 - optional Safari Xcode project output under `build/`
 
@@ -78,12 +79,13 @@ Report:
 - version used
 - sync action taken
 - commands run
-- artifact paths
+- artifact paths, including which ZIP is for Edge
 - release commit and tag
 - Safari status
 - changelog entries
 
 Manual follow-up stays outside this skill:
-- upload the ZIP to Chrome Web Store
-- upload the ZIP to AMO if needed
+- upload `build/webextension-v3.zip` to Chrome Web Store
+- upload `build/webextension-v3.zip` to AMO if needed
+- upload `build/webextension-edge.zip` to Microsoft Edge Add-ons
 - handle Safari packaging only when the Safari build was explicitly requested
