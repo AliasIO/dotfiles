@@ -34,6 +34,7 @@
 ## Runtime constraints
 
 - Keep `--single-process`; the crawler must continue to run in Lambda-compatible mode.
+- For shared website language demographics, do not use browser HTML-source language guesses from the extension path, and derive technology `topLanguages` from normalized per-hostname `languageHits` rather than raw `languages` membership or page-hit weighting.
 - In `v4/apis-shared/shared.js`, keep shared analyze browser init/restart serialized across concurrent work; overlapping `destroy()` / `init()` calls in Batch workers can create restart storms and amplify memory pressure.
 - In `v4/apis-shared/shared.js`, do not force-destroy the shared analyze browser while other analyze jobs are still active; closing their in-flight pages can surface downstream as `Extract is empty` on otherwise `crawl ok` hostnames.
 - In `cli/index.js`, keep browser relaunch serialized on the shared `Driver`, not per `Site`; site-scoped restarts can spawn orphaned Chromium processes and inflate Batch process counts even when cgroup memory is still low.
