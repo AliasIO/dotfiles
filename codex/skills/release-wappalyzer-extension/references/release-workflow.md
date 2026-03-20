@@ -31,6 +31,7 @@ Do not use `yarn build` or `yarn build:fast` for the default release path.
 
 ## Sync Rules
 
+- Fetch only `origin master` and tags before comparing ahead/behind counts.
 - If tracked files are dirty before sync, stop and ask the user.
 - If `master` is behind `origin/master`, pull with `--ff-only`.
 - If `master` is ahead of `origin/master`, push it before starting the release.

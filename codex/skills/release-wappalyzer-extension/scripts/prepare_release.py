@@ -123,7 +123,11 @@ def ensure_branch(repo: Path, commands_run: list[str]) -> None:
 def sync_origin(repo: Path, commands_run: list[str]) -> list[str]:
     actions: list[str] = []
 
-    run(["git", "fetch", "origin", "--tags"], repo, commands_run=commands_run)
+    run(
+        ["git", "fetch", "origin", "master", "--tags"],
+        repo,
+        commands_run=commands_run,
+    )
 
     counts = run(
         ["git", "rev-list", "--left-right", "--count", "HEAD...origin/master"],
