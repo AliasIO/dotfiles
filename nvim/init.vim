@@ -59,7 +59,6 @@ Plug 'vimlab/neojs'
 Plug 'neomake/neomake'
 Plug 'w0rp/ale'
 Plug 'rainglow/vim'
-Plug 'github/copilot.vim', { 'branch': 'release' }
 
 call plug#end()
 
