@@ -110,9 +110,6 @@ au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " JSX
 let g:jsx_ext_required = 0
 
-" Copilot
-let g:copilot_node_command = "/opt/homebrew/opt/node@16/bin/node"
-
 "CTAGS OPTIONS
 set tags+=tags;$HOME
 
