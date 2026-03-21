@@ -40,6 +40,7 @@
 - In `cli/index.js`, keep browser relaunch serialized on the shared `Driver`, not per `Site`; site-scoped restarts can spawn orphaned Chromium processes and inflate Batch process counts even when cgroup memory is still low.
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - The extension now uses `extension/src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
+- Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
 - New API keys can take several minutes to propagate through API Gateway usage plans; in extension flows, treat fresh `403`/`429` responses as temporary activation lag before telling the user the key is invalid.
 - For `v4/apis-shared` lookup analysis, keep post-crawl hostname and dataset persistence best-effort and time-bounded; slow follow-up writes after a crawl timeout can turn a handled lookup failure into a Lambda 5xx.
