@@ -40,7 +40,13 @@ let g:mapleader = "\\"
 filetype off
 
 "set rtp+=~/.config/nvim/bundle/Vundle.vim
-call plug#begin()
+if has('nvim')
+	let s:plug_dir = stdpath('data') . '/plugged'
+else
+	let s:plug_dir = expand('~/.vim/plugged')
+endif
+
+call plug#begin(s:plug_dir)
 
 " Plug 'Valloric/YouCompleteMe'
 Plug 'editorconfig/editorconfig-vim'
@@ -118,7 +124,6 @@ let Tlist_File_Fold_Auto_Close = 1
 
 "Make tlist pane active when opened
 let Tlist_GainFocus_On_ToggleOpen = 1
-o
 "Width of window
 let Tlist_WinWidth = 40
 
@@ -167,7 +172,7 @@ function! MyTabLabel(n)
 	let bufnrlist = tabpagebuflist(a:n)
 
 	"Buffer name
-	let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
+	let name = bufname(bufnrlist[tabpagewinnr(a:n) - 1])
 
 	if name == ''
 		if &buftype == 'quickfix'
