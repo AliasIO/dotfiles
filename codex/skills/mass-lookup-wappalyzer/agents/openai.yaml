@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mass Lookup Wappalyzer"
+  short_description: "Run and troubleshoot Wappalyzer mass lookups"
+  default_prompt: "Use $mass-lookup-wappalyzer to run or troubleshoot a Wappalyzer AWS Batch mass lookup."

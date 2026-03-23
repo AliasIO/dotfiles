@@ -165,6 +165,7 @@
 - Do not deregister ECS task-definition families still referenced in `v4/apis/env.v2.yml` or `v4/apis/env.beta.yml` just because no ECS service is currently using them; many APIs launch them indirectly by family name.
 - Canceling and immediately rerunning a bulk-lookup Batch parent can let the old parent's terminal callback overwrite the order row back to `Failed`; after a manual restart, recheck or re-clear the order status/error while the new parent is active.
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
+- Mass-lookup Batch completion summaries should send from `SES_SYSTEMS_EMAIL` (currently `systems@wappalyzer.com`), and the dedicated `wappalyzer-mass-lookup-beta-task` role must keep SES send permission for the `wappalyzer.com` identities.
 - Active spot Batch job definitions should keep a narrow retry policy in AWS: retry `Host EC2*` terminations once, and exit immediately for crawler or container failures.
 - The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
 - For lead-list country/language filters, keep frontend and API-side guards aligned with DynamoDB's expression-size limit; oversized OR chains must be rejected before queueing list jobs.
