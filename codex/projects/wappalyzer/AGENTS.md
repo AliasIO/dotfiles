@@ -5,6 +5,7 @@
 - Make CLI/runtime/browser-behavior changes in `cli/`, especially `cli/index.js`.
 - Make browserless single-URL crawler changes in `static/`.
 - Make shared API logic changes in `v4/apis-shared/`, not in the `v4/apis/*/shared` submodules.
+- For ECS Batch crawl/runtime behavior that depends on the shared extractor path, make the canonical change in `v4/apis-shared/extract.js` even if matching CLI behavior in `cli/index.js` also needs to stay aligned.
 - Do not write code directly in `v4/apis/*/wappalyzer` or `v4/apis/shared/nodejs`; update the canonical repo first, then move the submodule pointer in `v4/apis`.
 - For shared-layer changes that affect `/opt/nodejs`, edit `v4/apis-shared`, commit and push there first, then let the deploy/submodule refresh sync `v4/apis/shared/nodejs/`; do not hand-edit the mirrored copy.
 - Make browser extension technology-definition metadata changes in `extension/src/technologies/*.json`.
