@@ -39,10 +39,12 @@
 - In `v4/apis-shared/shared.js`, keep shared analyze browser init/restart serialized across concurrent work; overlapping `destroy()` / `init()` calls in Batch workers can create restart storms and amplify memory pressure.
 - In `v4/apis-shared/shared.js`, do not force-destroy the shared analyze browser while other analyze jobs are still active; closing their in-flight pages can surface downstream as `Extract is empty` on otherwise `crawl ok` hostnames.
 - In `cli/index.js`, keep browser relaunch serialized on the shared `Driver`, not per `Site`; site-scoped restarts can spawn orphaned Chromium processes and inflate Batch process counts even when cgroup memory is still low.
+- When `cli/index.js` or the shared extractor starts requiring a new local helper module, update `v4/apis/ecs/Dockerfile.batch` to copy it into the batch image too; otherwise Batch technology lookups can fail at startup with `MODULE_NOT_FOUND`.
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - The extension now uses `extension/src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
 - Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
+- In `v4/apis/crawl-async/crawl-async.js`, rethrow unexpected init/analyze errors after logging them; only swallow handled site-level crawl failures, or broken deploys can look healthy in Lambda `Errors` while durations collapse.
 - New API keys can take several minutes to propagate through API Gateway usage plans; in extension flows, treat fresh `403`/`429` responses as temporary activation lag before telling the user the key is invalid.
 - For `v4/apis-shared` lookup analysis, keep post-crawl hostname and dataset persistence best-effort and time-bounded; slow follow-up writes after a crawl timeout can turn a handled lookup failure into a Lambda 5xx.
 - For live `lookup` browser navigation, keep Puppeteer `page.goto()` explicitly bounded to the crawler `maxWait`; `page.setDefaultTimeout()` alone can still leave navigation waiting long enough to exhaust the 30-second Lambda budget.
