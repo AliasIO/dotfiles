@@ -96,6 +96,7 @@
 - Cognito `PostConfirmation` triggers run after both signup confirmation and forgot-password confirmation; guard onboarding email handlers on `event.triggerSource` so password resets do not resend welcome mail.
 - In `v4/apis-shared/user.js`, write Cognito's standard `name` field as `name`, not `custom:name`; the shared pool schema does not define a custom `name` attribute.
 - Hosted MCP auth should use the dedicated Cognito app client `Wappalyzer MCP Hosted` and the custom domain `mcp-auth.wappalyzer.com`; do not repoint it at the website's `Sign in with Google` client.
+- Hosted MCP tools intended for ChatGPT review should explicitly set `readOnlyHint`, `destructiveHint`, and `openWorldHint` on every tool, and the hosted OAuth metadata should advertise `offline_access` alongside `mcp:tools` so ChatGPT can keep refresh-token access.
 
 ## Maintenance
 
