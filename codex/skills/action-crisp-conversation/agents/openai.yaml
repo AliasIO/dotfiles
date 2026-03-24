@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read-Only Crisp Triage"
+  short_description: "Inspect Crisp links without ticket writes"
+  default_prompt: "Use $action-crisp-conversation to inspect a Crisp inbox session URL in read-only mode, summarize the issue, and investigate the underlying Wappalyzer problem without changing the ticket."
