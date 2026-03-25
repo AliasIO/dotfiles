@@ -90,6 +90,7 @@
 - For account emails that Cognito can initiate (`SignUp`, `ForgotPassword`, `ResendConfirmationCode`), keep the browser on throttled `v4/apis/user` endpoints rather than calling those initiation APIs directly from the frontend; public app clients otherwise let attackers spray auth emails outside API flood controls.
 - For Google Hosted UI flood control, limit only first-time accounts by starting OAuth and exchanging the callback through our API, then use a `PreSignUp_ExternalProvider` marker to detect brand-new Cognito users; throttling raw Google sign-in initiations will also throttle returning users.
 - In the shared `us-east-1` Cognito pool, allow local `PreSignUp_SignUp` only from the `wappalyzer.com` app client; other app clients should fail with `Sign-up unavailable, please use the main website`, while external-provider signups stay on their existing path.
+- In `v4/apis/pre-signup`, treat matching emails in the legacy Cognito pool as existing accounts for both local sign-up and Google external-provider flows; do not let shared-pool sign-up create a second free user just because the email is absent from the current pool.
 - For ECS tasks launched via Lambda `runEcsTask()` wrappers, the container only receives env vars that are both present on the wrapper Lambda and whitelisted in shared `shared.js`; when ECS user lookups still need legacy Cognito fallback, include `LEGACY_COGNITO_REGION` and `LEGACY_COGNITO_USER_POOL_ID` in both places.
 - The shared `wappalyzer` Cognito user pool sends password-reset and verification emails from live AWS user-pool email settings, not repo code; when changing that sender, use a full `update-user-pool` payload because omitted fields reset to defaults.
 - Cognito trigger services in `v4/apis` attach to the shared `wappalyzer` pool with `existing: true`; only one Lambda can be active per trigger, so deploy the intended live stage last or a beta deploy can overwrite the v2 trigger attachment.
@@ -97,11 +98,14 @@
 - In `v4/apis-shared/user.js`, write Cognito's standard `name` field as `name`, not `custom:name`; the shared pool schema does not define a custom `name` attribute.
 - Hosted MCP auth should use the dedicated Cognito app client `Wappalyzer MCP Hosted` and the custom domain `mcp-auth.wappalyzer.com`; do not repoint it at the website's `Sign in with Google` client.
 - Hosted MCP tools intended for ChatGPT review should explicitly set `readOnlyHint`, `destructiveHint`, and `openWorldHint` on every tool, and the hosted OAuth metadata should advertise `offline_access` alongside `mcp:tools` so ChatGPT can keep refresh-token access.
+- For migrated shared-pool accounts, if the same email has both the paid canonical `wappalyzer-users` record and a newer free row keyed by the current Cognito `sub`, authorizer lookups resolve the duplicate free row first; repair or remove the duplicate row, not just the canonical record's `cognitoSub`.
 
 ## Maintenance
 
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
+- When a `v4/apis` cron or other coordinator submits and waits on AWS Batch from inside an ECS task, the live `ECS_TASK_ROLE` also needs the required Batch actions (`batch:SubmitJob`, `batch:DescribeJobs`, `batch:ListJobs`); updating only the calling Lambda role in `v4/apis/iam.yml` is not enough.
+- For `v4/frontend` changes, prefer existing Vuetify 2 primitives where they fit, account for both SSR and client hydration behavior, and do not run `nuxt build` when the local frontend dev server is already running unless explicitly requested.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
 - When you update this `AGENTS.md` or a custom skill under `/Users/elbert/Sites/dotfiles/codex/skills`, commit the change in `/Users/elbert/Sites/dotfiles` and push it.
 - For extension release prep, treat `extension/src/manifest.json` as the current release-version source. In this checkout it is tracked, so include the version bump in the committed release state when it is dirty; still anchor releases with `Build vX.X.X` commits and matching `vX.X.X` tags, using an empty build commit when no tracked files change.
