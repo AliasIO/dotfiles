@@ -165,6 +165,7 @@
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
 - For `v4/frontend`, default production deploys should still go through the GitHub Actions workflow, which now uses `yarn deploy:quick:v2`; use full `yarn deploy:v2` only when a change needs a full technology-page rebuild.
 - For `v4/frontend` changes that need refreshed technology, category, or compare pages, prefer the full `yarn deploy:v2` path once a production deploy has been explicitly approved in the current thread.
+- After dispatching a `v4/frontend` GitHub Actions deploy, do not monitor or wait on the run unless the user explicitly asks for run tracking.
 - The `v4/frontend` production workflow lives at `.github/workflows/deploy-v2.yml`, but GitHub displays the run name as `CI`; when checking runs with `gh`, query by workflow filename rather than display name.
 - Public `www.wappalyzer.com` security headers, including CSP, are applied by `v4/apis/headers/headers.js` rather than the frontend bundle; header-source changes there need a `headers` deploy, not just a frontend deploy.
 - The live `www.wappalyzer.com` CloudFront distribution is pinned to an explicit Lambda@Edge version for `v4/apis/headers`; publishing a new `headers` Lambda does not switch the distribution automatically, and Lambda@Edge rejects versions with environment variables or layers.
