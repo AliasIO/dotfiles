@@ -48,6 +48,7 @@
 - New API keys can take several minutes to propagate through API Gateway usage plans; in extension flows, treat fresh `403`/`429` responses as temporary activation lag before telling the user the key is invalid.
 - For `v4/apis-shared` lookup analysis, keep post-crawl hostname and dataset persistence best-effort and time-bounded; slow follow-up writes after a crawl timeout can turn a handled lookup failure into a Lambda 5xx.
 - For live `lookup` browser navigation, keep Puppeteer `page.goto()` explicitly bounded to the crawler `maxWait`; `page.setDefaultTimeout()` alone can still leave navigation waiting long enough to exhaust the 30-second Lambda budget.
+- In `v4/apis-shared/extract.js`, keep `certInfo` populated from `response.securityDetails()` even when `Network.getCertificate` fails, and read subject country/state from standard X.509 subject fields with jurisdiction fields only as fallback.
 - GeoIP is standardized on `geoip-lite`; non-container APIs that need local GeoIP data should attach the `dep-geoip` layer, while container builds and the dedicated `geoip` Lambda also use `geoip-lite`.
 - For container API builds that install Puppeteer, set `PUPPETEER_SKIP_DOWNLOAD=true`; `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` alone is not enough for the current Puppeteer release used here.
 - Current `v4/apis` Serverless deploys can warn that `nodejs22.x` is not a supported `provider.runtime` even when the deploy succeeds; treat that as a non-blocking Serverless schema lag unless the deployment itself fails.
