@@ -189,6 +189,7 @@
 - The main live CloudWatch dashboard is named `Wappalyzer-Service-Groups`; update it in AWS directly rather than looking for a repo-managed dashboard JSON.
 - The `wappalyzer-cron-v2-hostnames-technologies` monthly summary schedule is managed live in AWS EventBridge via rule `cron-monthly-1` at `00:15 UTC` on the first day of each month, not in `serverless.yml`.
 - In `v4/frontend/nuxt.config.js`, functions passed into serialized Nuxt module config such as `axios.retry` callbacks must be self-contained and must not call top-level helpers, because the generated `.nuxt` files do not preserve those closures.
+- In `v4/frontend/nuxt.config.js`, retry `429` responses only for safe read methods; mutating requests can use `429` for deliberate business-rule limits such as list-creation caps and should surface immediately.
 - For `v4/apis/websites`, keep `results` as the exact total count for the keyword, but cap the returned `websites` list to the first 50 entries unless the caller contract is explicitly changed.
 - Treat GitHub suggestion tickets as user-submitted leads from the Wappalyzer website; verify the stub and all details independently, gate additions against `extension/README.md`, and reject tiny low-value technologies that are unlikely to help the broader user base.
 - Reject new technology suggestions that do not fit an existing category cleanly enough to classify without forcing a poor match, and reject agencies, managed services, or bespoke company-built solutions that are not real software products.
