@@ -40,7 +40,7 @@ node /Users/elbert/Sites/dotfiles/codex/skills/github-wappalyzer-issues/scripts/
 
 Read comments before classifying the ticket. Later comments can narrow the product name, add example sites, or show that the report was already resolved.
 
-When a reporter says a known technology is missing or misdetected on a live site, investigate that claim on the cited page or a comparable public deployment before deciding the ticket needs more information. The submitter is not responsible for providing the first round of DOM/script/runtime evidence when you can gather it yourself.
+When a reporter says a known technology is missing or misdetected on a live site, investigate that claim on the cited page first, and only use a comparable public deployment when the provided page is unreachable. If the technology is present but not detected, attempt a fingerprint improvement before classifying the ticket for closure. The submitter is not responsible for providing the first round of DOM/script/runtime evidence when you can gather it yourself.
 
 ## Action Gate
 
