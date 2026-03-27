@@ -22,14 +22,14 @@ Read these references before making changes:
 
 ## Workflow
 
-1. Confirm the target technology name, canonical product website, likely category, and rough pricing posture when public. Before doing deeper research, gate the technology against the extension scope and value bar. If it is clearly too small, stale, dead, niche, single-purpose, or lacks a plausible independent public footprint, stop early and report that instead of forcing a definition, even when sample sites or plausible fingerprints are available. If direct public-web detection is unrealistic but the technology fits an existing category cleanly, check whether it is still worth adding as an implied-only technology through an existing detectable definition.
+1. Confirm the target technology name, canonical product website, likely category, and rough pricing posture when public. Before doing deeper research, gate the technology against the extension scope and value bar. Do not reject a technology only because it is single-purpose; substantial single-purpose products are acceptable when they meet the normal support bar. Prefer early rejection for tiny low-effort libraries/plugins or products that are clearly too small, stale, dead, or lack a plausible independent public footprint. If direct public-web detection is unrealistic but the technology fits an existing category cleanly, check whether it is still worth adding as an implied-only technology through an existing detectable definition.
 2. Find 3-5 live sample sites when practical. Prefer real production homepages, but use product-specific flows such as checkout pages when that is where the signal exists. For ubiquitous products such as payment methods, try to include more than one platform or integration family so a single wrapper does not dominate the draft.
    If the product is a hosted white-label surface such as a status page, widget, or embedded form, include at least one custom-domain deployment when practical so you do not overfit to the vendor-hosted domain. If it can also load from a vendor CDN or vendor-hosted subdomain, try to include one sample of that mode too.
 3. Find at least 1-2 unrelated control sites to test for false positives.
 4. Capture evidence for each sample and control site with `scripts/capture-evidence.js` in a real browser environment.
 5. Keep a short post-load observation window so late XHR, async scripts, and DOM mutations are included in the evidence.
 6. Compare the captures manually or with `scripts/compare-captures.js` to identify sample-only signals. Do this early enough to notice when different samples expose different integration modes. For client-side SaaS products, inspect runtime network activity early and prefer vendor-specific `xhr` or request-host signals when they are cleaner and more repeatable than bundle-text or cookies. When inline bootstrap code suggests likely globals or methods, verify them in a real browser before using them as `js` fingerprints.
-7. Choose 2-3 complementary fingerprints when possible, with the strongest rule first. If the product shows up through multiple integration modes, try to cover at least two non-cookie signals before treating cookies as the bridge between them. Distinguish product signals from platform-wrapper signals, and either scope the detection or keep it conservative when the public evidence mostly reflects a wrapper. If the technology is a valid server-side or backend concept but does not have a realistic standalone browser fingerprint, look for existing detectable technologies that can safely add it to `implies` instead of forcing a weak direct rule, and check more than one plausible implying technology when practical. Always try to extract a version when the technology is client-side and the public signal supports it, especially for JavaScript libraries, but only use values that clearly represent the shipped library or SDK version a user would recognize. Treat API, schema, protocol, snippet, and wrapper version fields as non-version metadata unless you can verify they track the actual client software version. Also try to find a matching CPE, but only add `cpe` when you are highly confident it is correct.
+7. Choose 2-3 complementary fingerprints when possible, with the strongest rule first. If the product shows up through multiple integration modes, try to cover at least two non-cookie signals before treating cookies as the bridge between them. Distinguish product signals from platform-wrapper signals, and either scope the detection or keep it conservative when the public evidence mostly reflects a wrapper. If the technology is a valid server-side or backend concept but does not have a realistic standalone browser fingerprint, look for existing detectable technologies that can safely add it to `implies` instead of forcing a weak direct rule, and check more than one plausible implying technology when practical. Always try to extract a version when the technology is client-side and the public signal supports it, especially for JavaScript libraries, but only use values that clearly represent the shipped library or SDK version a user would recognize. Treat API, schema, protocol, snippet, and wrapper version fields as non-version metadata unless you can verify they track the actual client software version. Also try to find a matching CPE, but only add `cpe` when you are highly confident it is correct. For `scriptSrc` version extraction, ignore bare `/<semver>/file.js` paths unless surrounding path segments also identify the product.
 8. Add or update the definition, icon, and metadata in `extension/`.
 9. Validate with `yarn validate` in `extension/`.
 10. Re-test the sample and control sites. If you are not confident in the fingerprint, say so instead of shipping it.
@@ -45,6 +45,8 @@ Prefer these signals in roughly this order:
 
 Avoid:
 - Very short `js` globals such as 2-3 character names unless there is strong supporting evidence and no realistic false-positive risk.
+- `js` fallback globals that are not safe on their own. `js` rules are OR-based inside one technology, so any single matched chain can trigger detection.
+- For `core-js`, prefer `__core-js_shared__` and avoid treating bare `core` or `_babelPolyfill` as strong standalone signals.
 - Generic names like `ecommerce`, `config`, `version`, or browser-built-ins.
 - Generic CDN or vendor hosts unless the pattern is clearly unique to the technology.
 - New `html` detections. `html` is deprecated for extension definitions; use `dom` instead.
@@ -57,13 +59,18 @@ Avoid:
 
 - Keep descriptions neutral, factual, American English, and under 250 characters.
 - Add `website` for the product homepage or canonical product page.
+- Prefer one primary category; add a second only when the classification is genuinely balanced across two categories.
+- For `dom` detections, use plain selector-string form for existence checks and reserve object form for `attributes`, `properties`, or `text` matching.
 - Add `icon` only when you can source a square SVG or a reasonable PNG, ideally from the product site or official branding.
 - Strongly prefer SVG over PNG. If the product site does not expose a usable asset directly, search other reputable brand sources and image indexes such as `brandfetch.com` or `brandsoftheworld.com` or perform a web search.
 - Prefer a transparent-background square brand mark over a full wordmark or logo with text, and favor assets that still read cleanly at small sizes such as `16x16`.
+- Prefer official-branding assets that match the product's current public brand mark. If official SVG and PNG disagree, prefer the one that best matches current small-icon branding in public use.
+- Do not reject a user-provided ticket icon only because it is not first-party. Compare it against first-party options and keep it when it better matches the current public mark.
 - If the available SVG is a full logo with text, extract the standalone brand mark when practical so the final icon stays compact and legible.
 - Never wrap a raster image inside an SVG just to satisfy the SVG preference.
 - Do not draw or trace a new SVG from scratch or from a raster reference.
 - You may edit an existing SVG to remove word marks, improve padding, recenter the artwork, or avoid clipping.
+- Keep SVG icons square and visually centered. Ensure the square canvas/viewBox does not leave avoidable empty padding, and preview the icon to confirm nothing is clipped.
 - If you use a PNG fallback after exhausting all options to find a suitable SVG, prefer an official square asset around `32x32` when available. If no better official candidate exists, `16x16` is acceptable.
 - Omit `icon` if you cannot find a suitable asset.
 - Check the product website for pricing information before setting `pricing`, especially when `saas` is `true`. Use the pricing definitions in `/Users/elbert/Sites/wappalyzer/extension/README.md` to choose `low`, `mid`, or `high` and any applicable `freemium`, `onetime`, `recurring`, `poa`, or `payg` flags. Base the cost band on the typical paid self-serve plan or average monthly price, not the highest enterprise tier unless that is the only clear paid option. Omit `pricing` when the public evidence is unclear.
@@ -72,6 +79,11 @@ Avoid:
 - Put the technology in the JSON file that matches the first character of the technology name; use `_.json` for non-letter initials.
 
 ## Commands
+
+Capture tool notes:
+- `capture-evidence.js` loads definitions from the CLI submodule, not the checked-out `extension/` JSON. Use it for raw evidence capture, then validate final detection behavior against `extension/`.
+- The helper's `page.scripts` output reflects browser-collected script content and does not fully represent crawler-appended external-script snippets; when validating `scripts` fingerprints, confirm behavior against runtime byte-cap constraints too.
+- If `capture-evidence.js` is blocked by anti-bot or brittle pages before producing a usable snapshot, fall back to `Google Chrome --headless=new --dump-dom` to verify browser-rendered DOM/script evidence before rejecting the candidate.
 
 Capture one site:
 
