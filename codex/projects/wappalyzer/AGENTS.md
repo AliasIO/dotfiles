@@ -108,6 +108,7 @@
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
 - When a `v4/apis` cron or other coordinator submits and waits on AWS Batch from inside an ECS task, the live `ECS_TASK_ROLE` also needs the required Batch actions (`batch:SubmitJob`, `batch:DescribeJobs`, `batch:ListJobs`); updating only the calling Lambda role in `v4/apis/iam.yml` is not enough.
+- When `v4/apis` cron or other ECS-run tasks publish custom CloudWatch metrics, the live `ECS_TASK_ROLE` also needs `cloudwatch:PutMetricData`; updating only the Lambda role in `v4/apis/iam.yml` leaves the ECS path logging `AccessDenied` after the main work succeeds.
 - For `v4/frontend` changes, prefer existing Vuetify 2 primitives where they fit, account for both SSR and client hydration behavior, and do not run `nuxt build` when the local frontend dev server is already running unless explicitly requested.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
 - When you update this `AGENTS.md` or a custom skill under `/Users/elbert/Sites/dotfiles/codex/skills`, commit the change in `/Users/elbert/Sites/dotfiles` and push it.
