@@ -108,6 +108,7 @@
 ## Maintenance
 
 - When you learn a durable project-specific rule that is not obvious from the codebase or general context, update this `AGENTS.md` in the same turn.
+- When a durable rule applies mainly to a specific workflow (for example GitHub issue handling), save it in the relevant skill and keep `AGENTS.md` as a pointer to that canonical skill rule to avoid duplication or conflicting guidance.
 - Keep additions short and practical. Prefer stable workflow/location rules over temporary debugging notes.
 - When a `v4/apis` cron or other coordinator submits and waits on AWS Batch from inside an ECS task, the live `ECS_TASK_ROLE` also needs the required Batch actions (`batch:SubmitJob`, `batch:DescribeJobs`, `batch:ListJobs`); updating only the calling Lambda role in `v4/apis/iam.yml` is not enough.
 - When `v4/apis` cron or other ECS-run tasks publish custom CloudWatch metrics, the live `ECS_TASK_ROLE` also needs `cloudwatch:PutMetricData`; updating only the Lambda role in `v4/apis/iam.yml` leaves the ECS path logging `AccessDenied` after the main work succeeds.
@@ -177,6 +178,7 @@
 - The live `www.wappalyzer.com` CloudFront distribution is pinned to an explicit Lambda@Edge version for `v4/apis/headers`; publishing a new `headers` Lambda does not switch the distribution automatically, and Lambda@Edge rejects versions with environment variables or layers.
 - In `v4/apis`, bumping `LAYER_SHARED`, `LAYER_DEPENDENCIES`, or similar layer ARNs in `env.v2.yml` / `env.beta.yml` does not update existing Lambdas by itself; redeploy each consuming service and, when debugging stale behavior, compare the function's attached layer ARN with the env file.
 - For `v4/apis` services on Serverless Framework v3, `custom.enterprise.collectLambdaLogs: false` does not disable the Dashboard exec wrapper; use `dashboard.disableMonitoring: true` when you need the live Lambda free of `AWS_LAMBDA_EXEC_WRAPPER` and the `sls-sdk-node` layer.
+- When removing the Serverless Dashboard AWS observability integration for this account, flip live functions to `instrument_mode: none` first; if `Serverless-Inc-Role-Stack` lands in `DELETE_FAILED` after the integration record is gone and the `Serverless*` IAM roles have already disappeared, retry `aws cloudformation delete-stack` on `Serverless-Inc-Role-Stack` to finish the teardown.
 - Shared public API request rates for key-based `v2` and `beta` endpoints are enforced live through API Gateway usage plans `credits` and `credits-beta`, not the per-service `serverless.yml` throttles; when changing the documented requests-per-second limit, update those AWS usage plans and every docs page that references the shared value.
 - Never deploy to `v2` without explicit user permission in the current thread; always ask before any `v2` deploy.
 - The `wappalyzer-on-demand` Batch compute environment is shared by the `v2` and `beta` on-demand queues, so launch-template and disk changes there affect both stages.
