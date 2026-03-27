@@ -44,6 +44,7 @@
 - The extension now uses `extension/src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
 - Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
+- For async `ping` compaction, keep `receivedAt` server-authoritative and make daily dataset applies idempotent by day; do not trust client timestamps for partitioning or rely on blind additive reruns.
 - In `v4/apis/crawl-async/crawl-async.js`, rethrow unexpected init/analyze errors after logging them; only swallow handled site-level crawl failures, or broken deploys can look healthy in Lambda `Errors` while durations collapse.
 - New API keys can take several minutes to propagate through API Gateway usage plans; in extension flows, treat fresh `403`/`429` responses as temporary activation lag before telling the user the key is invalid.
 - For subscription-driven plan logic such as `v4/apis/apikey/apikey.js` and `v4/apis/plan/plan.js`, require a non-null top-level Stripe `subscription.plan.id`; treat a missing plan ID as a billing configuration error and do not infer plan type from subscription items.
