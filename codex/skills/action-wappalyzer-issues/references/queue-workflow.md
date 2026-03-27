@@ -111,6 +111,8 @@ Suggested PR body:
 — Codex
 ```
 
+In actioned ticket PRs, also explain why each fingerprint and metadata choice was made from the gathered evidence, and call out any meaningful issue-stub suggestions you intentionally rejected or omitted (for example `implies`, categories, metadata, or weaker fingerprints) with a short reason.
+
 Do not rely on the PR to close the issue automatically. Label and close the issue manually after the PR exists.
 
 ## Labels and Closure
