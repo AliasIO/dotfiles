@@ -8,10 +8,11 @@
 
 ## Versioning
 
+- Treat `src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
 - Read the current version from `src/manifest.json`.
 - If no version is provided, patch-bump the current version by one.
 - Require numeric `x.y.z` versions.
-- Keep the bumped version in `src/manifest.json` after the build.
+- Keep the bumped version in tracked `src/manifest.json` after the build so it lands in the release commit when it changes.
 
 ## Build Commands
 
@@ -28,6 +29,8 @@ yarn build:safari
 ```
 
 Do not use `yarn build` or `yarn build:fast` for the default release path.
+
+Keep the canonical `src/manifest.json` background block compatible with Chrome and Firefox. For Microsoft Edge uploads, use `build/webextension-edge.zip` because its packaged manifest omits `background.scripts`.
 
 ## Sync Rules
 
@@ -47,6 +50,8 @@ Do not use `yarn build` or `yarn build:fast` for the default release path.
 ## Changelog
 
 Generate the changelog from the previous `Build v...` commit to the new release commit.
+
+For standalone changelog requests outside an in-progress release, compare the latest two `Build v...` commits and ignore newer HEAD commits.
 
 Rules:
 - use non-merge commit subjects only
