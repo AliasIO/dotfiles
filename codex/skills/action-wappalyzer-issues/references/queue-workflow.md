@@ -54,8 +54,11 @@ Leave the ticket untouched when it is:
 - Outside extension detection scope
 - Better handled in `cli/` or another repo
 - Too small, stale, ambiguous, or low-value to justify support
+- A tiny single-purpose library/component/plugin with limited independent detection value
 - Not a real software product
 - A pure server-side or on-prem product with no plausible public-web fingerprint
+
+Single-purpose products are not automatically rejected: substantial single-purpose technologies (for example major CDNs, live chat platforms, or scheduling products) are still eligible when they show broad independent adoption and reliable website-facing fingerprints.
 
 Treat metadata-only technology-definition edits as `update <technology name>`.
 

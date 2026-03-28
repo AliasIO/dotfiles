@@ -32,7 +32,7 @@ If you post a PR body, issue comment, or PR comment under the user's GitHub acco
 
 ## Actionability rubric
 
-Before classifying an issue, read `/Users/elbert/Sites/wappalyzer/extension/README.md` and confirm the suggestion fits the extension's scope. Then apply a significance filter: do not spend time adding tiny utility libraries, niche one-off plugins, or similarly low-value technologies that are unlikely to help Wappalyzer's roughly 3 million weekly active users.
+Before classifying an issue, read `/Users/elbert/Sites/wappalyzer/extension/README.md` and confirm the suggestion fits the extension's scope. Then apply a significance filter: do not spend time adding tiny utility libraries, UI components, niche one-off plugins, or similarly low-value technologies that are unlikely to help Wappalyzer's roughly 3 million weekly active users. Single-purpose alone is not a rejection reason; substantial single-purpose products such as broadly deployed CDNs, live chat platforms, or scheduling products remain in scope when they provide strong independent detection value.
 
 When a user reports that a named technology is missing or misdetected on a live site, investigate that claim on the cited page first. Use a comparable public deployment only if the provided site is unreachable. If the technology is present on that site but current detection misses it, treat the issue as `FIX` and attempt a fingerprint improvement before deciding to close it. The burden for the first pass of DOM/script/runtime evidence gathering does not lie with the submitter. A later `More info needed` decision is appropriate only if that investigation and fix attempt still leave a concrete blocker such as dead sample URLs, anti-bot interstitials, or ambiguous product identity.
 
