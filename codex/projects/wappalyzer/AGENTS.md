@@ -43,6 +43,7 @@
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
+- In `v4/apis-shared/shared.js`, keep `validateUrl()` tolerant of transient or technical DNS failures; only reject hostnames when A/AAAA resolution definitively yields no public records or only non-public IPs.
 - For async `ping` compaction, keep `receivedAt` server-authoritative and make daily dataset applies idempotent by day; do not trust client timestamps for partitioning or rely on blind additive reruns.
 - For async `ping` compare mode, normalize hostnames the same way live hostname/dataset writes do, including stripping a leading `www.`, and treat hostname `https` drift as informational rather than rollout-blocking because `touchHostname()` does not backfill that flag on every ping.
 - For Batch `ping` compaction control rows, keep `snapshotAvailable` false until the daily `run.json` snapshot is written; failed initializations with only a planned `snapshotKey` must start a new attempt, not resume a missing snapshot.
