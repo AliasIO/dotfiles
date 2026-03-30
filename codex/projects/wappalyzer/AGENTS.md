@@ -45,6 +45,7 @@
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
 - In `v4/apis-shared/shared.js`, keep `validateUrl()` tolerant of transient or technical DNS failures; only reject hostnames when A/AAAA resolution definitively yields no public records or only non-public IPs.
 - For async `ping` compaction, keep `receivedAt` server-authoritative and make daily dataset applies idempotent by day; do not trust client timestamps for partitioning or rely on blind additive reruns.
+- For Batch `ping` compaction S3 access, retry transient endpoint/network failures such as `EAI_AGAIN`, `ECONNRESET`, and `ETIMEDOUT`; do not fail a slice on the first temporary S3 transport error.
 - For Batch `ping` compaction control rows, use a dedicated `expiresAt` DynamoDB TTL field; keep `staleAt` reserved for lock recovery and heartbeat reclamation.
 - For async `ping` compare mode, normalize hostnames the same way live hostname/dataset writes do, including stripping a leading `www.`, and treat hostname `https` drift as informational rather than rollout-blocking because `touchHostname()` does not backfill that flag on every ping.
 - For Batch `ping` compaction cron emails, send a terminal completion/failure mail only on the reconcile pass that actually transitions the run to a terminal state; later reconcile polls of already-terminal rows must stay silent.
