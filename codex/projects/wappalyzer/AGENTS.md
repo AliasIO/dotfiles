@@ -116,6 +116,7 @@
 - Cognito `PostConfirmation` triggers run after both signup confirmation and forgot-password confirmation; guard onboarding email handlers on `event.triggerSource` so password resets do not resend welcome mail.
 - In `v4/apis-shared/user.js`, write Cognito's standard `name` field as `name`, not `custom:name`; the shared pool schema does not define a custom `name` attribute.
 - Hosted MCP auth should use the dedicated Cognito app client `Wappalyzer MCP Hosted` and the custom domain `mcp-auth.wappalyzer.com`; do not repoint it at the website's `Sign in with Google` client.
+- The Gmail add-on still emits the legacy Cognito `google.com` client ID from Google Apps Script, but live `auth.wappalyzer.com` now fronts an API Gateway proxy that rewrites that legacy client to the shared `us-east-1` Gmail client before forwarding to Cognito; keep the Gmail API on the shared `us-east-1` authorizer unless the add-on itself is updated to stop needing the proxy.
 - Hosted MCP tools intended for ChatGPT review should explicitly set `readOnlyHint`, `destructiveHint`, and `openWorldHint` on every tool, and the hosted OAuth metadata should advertise `offline_access` alongside `mcp:tools` so ChatGPT can keep refresh-token access.
 - For migrated shared-pool accounts, if the same email has both the paid canonical `wappalyzer-users` record and a newer free row keyed by the current Cognito `sub`, authorizer lookups resolve the duplicate free row first; repair or remove the duplicate row, not just the canonical record's `cognitoSub`.
 
@@ -138,6 +139,7 @@
 - For extension technology-definition research and authoring rules (fingerprint strategy, metadata, categories, icon sourcing, and evidence capture), treat the `add-wappalyzer-technology` skill as canonical and keep those workflow details there to avoid duplication or conflicting guidance in this file.
 - Do not assume the workspace root is a Git checkout; inspect `extension/`, `cli/`, or `extract/` when you need remotes, history, or branch state.
 - For Salesforce integration support, note that newer Salesforce orgs create new third-party apps under External Client App Manager; existing Connected Apps still work, and new Wappalyzer setups must match our non-PKCE authorization-code flow.
+- Keep personal/disposable email-domain filtering centralized in `Shared.emailBlacklist`; Gmail cards, Salesforce lead email-domain fallback, and verified-email persistence should reuse that helper instead of copying mailbox-domain regexes.
 - For `v4/frontend` production deploys, push the frontend Git repo and let its GitHub Actions workflow handle deployment instead of running the manual website deploy script locally.
 - For `v4/frontend`, default production deploys should still go through the GitHub Actions workflow, which now uses `yarn deploy:quick:v2`; use full `yarn deploy:v2` only when a change needs a full technology-page rebuild.
 - For `v4/frontend` changes that need refreshed technology, category, or compare pages, prefer the full `yarn deploy:v2` path once a production deploy has been explicitly approved in the current thread.
