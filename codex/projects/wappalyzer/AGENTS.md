@@ -174,6 +174,7 @@
 - The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
 - For lead-list country/language filters, keep frontend and API-side guards aligned with DynamoDB's expression-size limit; oversized OR chains must be rejected before queueing list jobs.
 - For lead-list and dataset language filters, preserve base-language codes during normalization/denoising and canonicalize locale casing (for example `en-us` to `en-US`) so API callers using base codes or docs-style lowercase locales still match stored language values.
+- Lead-list recalculation runs in the ECS `list` handler and consumes `v4/apis/ecs/shared`; deploying `lists`, `lists-site`, or the shared Lambda layer alone does not update the live list calculator, so shared dataset fixes that affect list generation need an `./run ecs deploy <stage>` rollout before reprocessing existing lists.
 - ECS Chromium containers should run behind a real init such as `tini`; running Node directly as PID 1 leaves orphaned Chromium children unreaped and distorts process diagnostics.
 - For manual `wappalyzer-bulk-crawl-v2-batch` validation, avoid default synchronous `aws lambda invoke`; the function can outlive the client's read timeout and duplicate bulk submissions. Use async invoke or raise the client read-timeout first.
 - `v4/apis/run ecs deploy <alias>` only builds and pushes the `ecs` and `ecs-batch` images to ECR; it does not trigger `aws ecs update-service` or force a new ECS rollout.
