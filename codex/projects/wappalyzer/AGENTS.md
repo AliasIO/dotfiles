@@ -59,6 +59,7 @@
 - In `v4/apis/crawl-async/crawl-async.js`, rethrow unexpected init/analyze errors after logging them; only swallow handled site-level crawl failures, or broken deploys can look healthy in Lambda `Errors` while durations collapse.
 - New API keys can take several minutes to propagate through API Gateway usage plans; in extension flows, treat fresh `403`/`429` responses as temporary activation lag before telling the user the key is invalid.
 - For subscription-driven plan logic such as `v4/apis/apikey/apikey.js` and `v4/apis/plan/plan.js`, require a non-null top-level Stripe `subscription.plan.id`; treat a missing plan ID as a billing configuration error and do not infer plan type from subscription items.
+- For Stripe subscription cancellation surfaces such as `v4/apis/plan/plan.js`, treat `cancel_at_period_end` as a scheduled cancellation at `current_period_end`; standard end-of-period cancellations do not reliably populate `cancel_at`.
 - For `v4/apis-shared` lookup analysis, keep post-crawl hostname and dataset persistence best-effort and time-bounded; slow follow-up writes after a crawl timeout can turn a handled lookup failure into a Lambda 5xx.
 - For live `lookup` browser navigation, keep Puppeteer `page.goto()` explicitly bounded to the crawler `maxWait`; `page.setDefaultTimeout()` alone can still leave navigation waiting long enough to exhaust the 30-second Lambda budget.
 - Keep Puppeteer `protocolTimeout` bounded to the crawler budget too; stuck DevTools commands such as page creation or `setUserAgentOverride` can otherwise outlive `page.goto()` and still burn the full lookup timeout across Lambda and ECS environments.
@@ -166,6 +167,7 @@
 - Do not deregister ECS task-definition families still referenced in `v4/apis/env.v2.yml` or `v4/apis/env.beta.yml` just because no ECS service is currently using them; many APIs launch them indirectly by family name.
 - Canceling and immediately rerunning a bulk-lookup Batch parent can let the old parent's terminal callback overwrite the order row back to `Failed`; after a manual restart, recheck or re-clear the order status/error while the new parent is active.
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
+- The daily bulk-crawl spot schedule is managed live in AWS EventBridge via rule `wappalyzer-bulk-crawl-v2`; `v4/apis/bulk-crawl/serverless.yml` does not carry that timer, and fixed UTC cron changes shift across Melbourne DST.
 - Mass-lookup Batch completion summaries should send from `SES_SYSTEMS_EMAIL` (currently `systems@wappalyzer.com`), and the dedicated `wappalyzer-mass-lookup-beta-task` role must keep SES send permission for the `wappalyzer.com` identities.
 - Active spot Batch job definitions should keep a narrow retry policy in AWS: retry `Host EC2*` terminations once, and exit immediately for crawler or container failures.
 - The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
