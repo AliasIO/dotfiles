@@ -42,6 +42,7 @@
 - When `cli/index.js` or the shared extractor starts requiring a new local helper module, update `v4/apis/ecs/Dockerfile.batch` to copy it into the batch image too; otherwise Batch technology lookups can fail at startup with `MODULE_NOT_FOUND`.
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
+- In `extension/src/js/index.js`, treat hosts filtered by the extension `hostnameIgnoreList` ping regex as transient results: show detections in the current tab popup/icon, but do not persist them in the hostname cache.
 - `lookup` and `crawl-async` stay container-based because they bundle the browser runtime; `ping` and `lookup-site` use Lambda handlers with the shared and dependencies layers.
 - In `v4/apis-shared/shared.js`, keep `validateUrl()` tolerant of transient or technical DNS failures; only reject hostnames when A/AAAA resolution definitively yields no public records or only non-public IPs.
 - In `v4/apis-shared/shared.js`, treat `.ai`, `.am`, `.co`, `.fm`, `.io`, `.me`, and `.tv` as generic TLDs for country inference; do not short-circuit them to country codes before cert, phone, or IP-based signals.
