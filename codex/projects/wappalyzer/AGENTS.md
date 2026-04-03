@@ -148,6 +148,7 @@
 - When you update this `AGENTS.md` or a custom skill under `/Users/elbert/Sites/dotfiles/codex/skills`, commit the change in `/Users/elbert/Sites/dotfiles` and push it.
 - For Wappalyzer API testing, use the local key stored in `/Users/elbert/.codex/secrets/wappalyzer-api.toml` instead of putting API credentials in the repo; it is suitable for direct `v2` and `beta` lookup checks.
 - When you make code changes in a git-tracked repo in this workspace, commit them immediately in that owning repo after validation instead of leaving local edits uncommitted.
+- After finishing work on a git branch in this workspace, switch that repo back to `master` before leaving it.
 - When building slug-keyed maps for technologies, categories, or similar synced data, use null-prototype objects instead of plain `{}` because valid slugs such as `constructor` and `prototype` break object-key semantics and DynamoDB marshalling.
 - Public `wappalyzer.com` DNS is delegated to Cloudflare; the Route 53 hosted zone in AWS is not authoritative for live hostname changes.
 - For extension release, build, store-submission, and changelog workflow rules, treat the `release-wappalyzer-extension` skill as canonical and keep those details there to avoid duplication or conflicting guidance in this file.
