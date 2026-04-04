@@ -185,6 +185,7 @@
 - Canceling and immediately rerunning a bulk-lookup Batch parent can let the old parent's terminal callback overwrite the order row back to `Failed`; after a manual restart, recheck or re-clear the order status/error while the new parent is active.
 - The bulk-crawl spot Batch job definition sizing and `wappalyzer-spot-3` instance-type mix are managed live in AWS; `v4/apis` only carries the queue and job-definition names, not those resource settings.
 - The daily bulk-crawl spot schedule is managed live in AWS EventBridge via rule `wappalyzer-bulk-crawl-v2`; `v4/apis/bulk-crawl/serverless.yml` does not carry that timer, and fixed UTC cron changes shift across Melbourne DST.
+- The live `wappalyzer-bulk-crawl-v2` EventBridge rule targets `wappalyzer-bulk-crawl-v2-batch` directly with no separate dataset-capacity prewarm step; bulk-crawl write-floor changes must be added in the bulk-crawl path or by adding another scheduled target.
 - Mass-lookup Batch completion summaries should send from `SES_SYSTEMS_EMAIL` (currently `systems@wappalyzer.com`), and the dedicated `wappalyzer-mass-lookup-beta-task` role must keep SES send permission for the `wappalyzer.com` identities.
 - Active spot Batch job definitions should keep a narrow retry policy in AWS: retry `Host EC2*` terminations once, and exit immediately for crawler or container failures.
 - The recursive crawler `batchSize` in `cli/index.js` is sequential link chunking, not true parallel page fan-out; tune the outer Batch queue for real bulk-crawl concurrency.
