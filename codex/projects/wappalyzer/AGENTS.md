@@ -83,6 +83,7 @@
 - Current `v4/apis` Serverless deploys can warn that `nodejs22.x` is not a supported `provider.runtime` even when the deploy succeeds; treat that as a non-blocking Serverless schema lag unless the deployment itself fails.
 - In `v4/apis/webhooks/stripe.js`, read the Stripe signature header case-insensitively and fall back to `multiValueHeaders`; API Gateway can lowercase it, and strict `Stripe-Signature` lookup breaks webhook verification.
 - For public `v4/apis` endpoints behind Cloudflare, prefer `cf-connecting-ip` or the first `x-forwarded-for` value over `event.requestContext.identity.sourceIp` for flood checks; otherwise API Gateway can collapse clients onto proxy IPs.
+- For self-service account deletion from `v4/frontend/pages/account.vue`, delete through the authenticated `v4/apis/user` route; do not rely on browser-only Cognito `deleteUser()` calls because client/session mismatches can sign the user out without removing the account.
 - For the hosted MCP custom domain `mcp.wappalyzer.com`, do not point Cloudflare directly at the raw Lambda Function URL; put CloudFront in front of the Function URL and point Cloudflare at the CloudFront hostname, because proxied custom `Host` headers are rejected by Lambda Function URLs.
 - In `v4/apis/authorizer/authorizer.js`, keep localhost origin matching broad enough for `localhost`/`127.0.0.1`, HTTP/HTTPS, and arbitrary dev ports, and resolve signed-in users from canonical ID, Cognito sub, `cognito:username`, or email instead of `sub` alone; otherwise localhost account pages can 403 before the API handler runs.
 - The `v4/apis/cron` plans sync repopulates `wappalyzer-plans` from live Stripe subscriptions but does not reconcile the originating order rows; if checkout webhooks fail, a subscription can look active while the related order remains `Pending`.
@@ -115,6 +116,7 @@
 - For shared email verification, prefer a short DNS preflight of MX/A/AAAA records before spawning `/opt/email_verify`; reject non-resolving domains there instead of maintaining a TLD allowlist.
 - For `v4/apis/websites`, the keyword-search page needs exact totals; do not replace them with approximations without updating the caller, and prefer capacity or cached-count fixes when `TABLE_KEYWORDS` throttles.
 - For `v4/apis/categories`, keep the list endpoint off full-table scans; use the precomputed category summary item, and resolve technology-slug redirects via `TABLE_TECHNOLOGIES` instead of scanning category membership.
+- For the public `v4/apis/technologies` list endpoint, serve lightweight results from a refreshed compressed `__technologies-summary` item in `TABLE_TECHNOLOGIES`; do not scan the full technologies table on interactive requests.
 
 ## Cognito operations
 
