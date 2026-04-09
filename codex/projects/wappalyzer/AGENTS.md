@@ -146,6 +146,7 @@
 - Hosted MCP tools intended for ChatGPT review should explicitly set `readOnlyHint`, `destructiveHint`, and `openWorldHint` on every tool, and the hosted OAuth metadata should advertise `offline_access` alongside `mcp:tools` so ChatGPT can keep refresh-token access.
 - For migrated shared-pool accounts, if the same email has both the paid canonical `wappalyzer-users` record and a newer free row keyed by the current Cognito `sub`, authorizer lookups resolve the duplicate free row first; repair or remove the duplicate row, not just the canonical record's `cognitoSub`.
 - When repairing a migrated shared-pool duplicate-user collision, also set the shared-pool Cognito user's `custom:canonicalUserId` to the paid canonical `userId`; otherwise `user-sync` can recreate the free duplicate row on the next sync.
+- In `v4/apis/user-sync/user-sync.js`, if a shared-pool user reaches PreTokenGeneration without `custom:canonicalUserId`, recover the canonical user ID from `TABLE_USERS` by email or the legacy Cognito pool before saving the row; otherwise first-login Google migrations can create duplicate `wappalyzer-users` rows keyed by the new Cognito `sub`.
 
 ## Maintenance
 
