@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wappalyzer Frontend"
+  short_description: "Nuxt 2 and Vuetify 2 frontend work"
+  default_prompt: "Use $wappalyzer-frontend to modify the Nuxt 2 and Vuetify 2 frontend in `v4/frontend` with documented Vuetify 2 patterns."
