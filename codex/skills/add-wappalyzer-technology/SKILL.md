@@ -51,7 +51,7 @@ Avoid:
 - Generic names like `ecommerce`, `config`, `version`, or browser-built-ins.
 - Generic CDN or vendor hosts unless the pattern is clearly unique to the technology.
 - Broad vendor-marketing link/logo matches (for example generic `a[href*='vendor-dashboard']` or `img[src*='vendor-logo']`) because unrelated sites can include those assets.
-- New `html` detections. `html` is deprecated for extension definitions; use `dom` instead.
+- Any `html` fingerprint pattern. `html` is deprecated for extension definitions and must never be used; use `dom` instead.
 - Assuming a version can be found for every product. For server-side technologies, public version evidence is often unavailable; omit `version` rather than guessing.
 - Treating API, schema, protocol, snippet, or wrapper version fields as the product version without verifying that they map to the actual shipped client library or SDK version.
 - CPE guesses. Try to find a matching CPE, but add `cpe` only when it is high confidence.
