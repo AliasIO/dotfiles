@@ -14,6 +14,8 @@ from pathlib import Path
 
 DEFAULT_REPO = Path("/Users/elbert/Sites/wappalyzer/extension")
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+DETECTION_SUBJECT_RE = re.compile(r"^(add|update|fix)\b", re.IGNORECASE)
+TECHNOLOGY_PATH_PREFIX = "src/technologies/"
 
 
 def shell_join(parts: list[str]) -> str:
@@ -242,29 +244,79 @@ def commit_release(repo: Path, version: str, commands_run: list[str]) -> str:
     )
 
 
-def normalize_detection_subject(subject: str) -> str | None:
-    subject = subject.strip()
-    if not subject:
-        return None
+def get_detection_commit_subjects(
+    repo: Path,
+    previous_build: str | None,
+    commands_run: list[str],
+) -> list[tuple[str, str]]:
+    log_range = f"{previous_build}..HEAD" if previous_build else "HEAD"
+    rows = run(
+        ["git", "log", "--no-merges", "--format=%H%x09%s", log_range],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    ).splitlines()
 
-    if subject.startswith("Add "):
-        label = "ADD"
-        name = subject[4:]
-    elif subject.startswith("Update "):
-        label = "FIX"
-        name = subject[7:]
-    elif subject.startswith("Fix "):
-        label = "FIX"
-        name = subject[4:]
-    else:
-        return None
+    commit_subjects: list[tuple[str, str]] = []
 
-    name = re.sub(r"\s*/\s*.+$", "", name).strip()
+    for row in rows:
+        if "\t" not in row:
+            continue
 
-    if not name:
-        return None
+        commit, subject = row.split("\t", 1)
 
-    return f"* `{label}` {name} detection"
+        if DETECTION_SUBJECT_RE.match(subject.strip()):
+            commit_subjects.append((commit, subject))
+
+    return commit_subjects
+
+
+def get_commit_parent(
+    repo: Path,
+    commit: str,
+    commands_run: list[str],
+) -> str:
+    return run(
+        ["git", "rev-parse", f"{commit}^"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+
+
+def get_changed_technology_paths_for_commit(
+    repo: Path,
+    commit: str,
+    commands_run: list[str],
+) -> list[str]:
+    changed_paths = run(
+        ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit, "--", "src/technologies"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    ).splitlines()
+
+    return [
+        path
+        for path in changed_paths
+        if path.startswith(TECHNOLOGY_PATH_PREFIX) and path.endswith(".json")
+    ]
+
+
+def load_json_at_revision(
+    repo: Path,
+    revision: str,
+    relative_path: str,
+    commands_run: list[str],
+) -> dict:
+    return json.loads(
+        run(
+            ["git", "show", f"{revision}:{relative_path}"],
+            repo,
+            capture=True,
+            commands_run=commands_run,
+        )
+    )
 
 
 def build_changelog_lines(
@@ -272,25 +324,36 @@ def build_changelog_lines(
     previous_build: str | None,
     commands_run: list[str],
 ) -> list[str]:
-    log_range = f"{previous_build}..HEAD" if previous_build else "HEAD"
-    subjects = run(
-        ["git", "log", "--no-merges", "--format=%s", log_range],
-        repo,
-        capture=True,
-        commands_run=commands_run,
-    ).splitlines()
+    entries: list[dict[str, str]] = []
+    entry_indexes: dict[str, int] = {}
 
-    lines: list[str] = []
-    seen: set[str] = set()
+    for commit, _subject in get_detection_commit_subjects(repo, previous_build, commands_run):
+        parent = get_commit_parent(repo, commit, commands_run)
 
-    for subject in subjects:
-        line = normalize_detection_subject(subject)
+        for relative_path in get_changed_technology_paths_for_commit(repo, commit, commands_run):
+            previous_data = load_json_at_revision(repo, parent, relative_path, commands_run)
+            current_data = load_json_at_revision(repo, commit, relative_path, commands_run)
 
-        if line and line not in seen:
-            seen.add(line)
-            lines.append(line)
+            for technology_name, current_definition in current_data.items():
+                if technology_name not in previous_data:
+                    label = "ADD"
+                elif previous_data[technology_name] != current_definition:
+                    label = "FIX"
+                else:
+                    continue
 
-    return lines
+                key = technology_name.casefold()
+                existing_index = entry_indexes.get(key)
+
+                if existing_index is None:
+                    entry_indexes[key] = len(entries)
+                    entries.append({"label": label, "name": technology_name})
+                    continue
+
+                if label == "ADD" and entries[existing_index]["label"] != "ADD":
+                    entries[existing_index] = {"label": label, "name": technology_name}
+
+    return [f"* `{entry['label']}` {entry['name']} detection" for entry in entries]
 
 
 def ensure_artifacts_exist(paths: list[Path]) -> None:

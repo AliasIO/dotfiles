@@ -54,12 +54,11 @@ Generate the changelog from the previous `Build v...` commit to the new release 
 For standalone changelog requests outside an in-progress release, compare the latest two `Build v...` commits and ignore newer HEAD commits.
 
 Rules:
-- use non-merge commit subjects only
-- keep only `Add`, `Update`, and `Fix` detection subjects
-- drop any trailing ` / <category>` suffix
-- dedupe repeated technologies
-- map `Add` to `ADD`
-- map both `Update` and `Fix` to `FIX`
+- scan non-merge commits between the previous release marker and the new release whose subjects begin with `add`, `update`, or `fix`, matched case-insensitively
+- derive affected technologies from each matching commit's `src/technologies/*.json` diff
+- emit `ADD` when a technology key is new in that commit
+- emit `FIX` when an existing technology key changed in that commit
+- ignore removed technologies and non-technology changes
 - format each line exactly as `* \`ADD\` Name detection` or `* \`FIX\` Name detection`
 
 Example:
