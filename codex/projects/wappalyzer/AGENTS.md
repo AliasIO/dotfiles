@@ -40,6 +40,7 @@
 - In `v4/apis-shared/shared.js`, do not force-destroy the shared analyze browser while other analyze jobs are still active; closing their in-flight pages can surface downstream as `Extract is empty` on otherwise `crawl ok` hostnames.
 - In `cli/index.js`, keep browser relaunch serialized on the shared `Driver`, not per `Site`; site-scoped restarts can spawn orphaned Chromium processes and inflate Batch process counts even when cgroup memory is still low.
 - In `cli/index.js`, keep the final `Site.analyze()` return aligned with the object passed through the `analyze` event so listener-attached fields such as shared `extract` data survive to CLI and API callers.
+- In `v4/apis-shared/extract.js`, keep `inferredCompanyName` using schema.org/copyright-weighted heuristics, preserve display casing, and do not promote the inferred brand into `keywords`.
 - When `cli/index.js` or the shared extractor starts requiring a new local helper module, update `v4/apis/ecs/Dockerfile.batch` to copy it into the batch image too; otherwise Batch technology lookups can fail at startup with `MODULE_NOT_FOUND`.
 - HTML support was deprecated and removed. Do not reintroduce deprecated HTML-support code paths.
 - Credits are legacy; new `plan_` subscriptions use quota limits instead. In extension and similar lookup flows, keep `plan_` products on usage/quota checks and reserve credit spending for legacy credit-bearing products.
