@@ -178,6 +178,7 @@
 - In `v4/apis-shared/hostname.js`, keep `updateHostname()` from overriding hostname company or LinkedIn summary fields from crawl extract data; preserve existing hostname values there and rely on firmographics imports for authoritative company writes.
 - When enabling the 10-minute `ping-apply` reconcile schedule, suppress non-terminal reconcile cron emails or routine `idle` / `lease-busy` / in-progress polls will spam `SES_SYSTEMS_EMAIL`.
 - For `v4/frontend` changes, prefer existing Vuetify 2 primitives where they fit, account for both SSR and client hydration behavior, and do not run `nuxt build` when the local frontend dev server is already running unless explicitly requested.
+- In `v4/frontend`, keep Stripe.js loading on all pages; Stripe fraud detection depends on sitewide bootstrap, so do not defer the script only to checkout or payment routes.
 - For `v4/frontend` Nuxt 2 / Vuetify 2 workflow rules, documented component composition, helper-class usage, and SASS-variable override guidance, treat the `wappalyzer-frontend` skill as canonical and keep those details there to avoid duplication or conflicting guidance in this file.
 - Store custom Codex skills canonically in `/Users/elbert/Sites/dotfiles/codex/skills` and expose them in `/Users/elbert/.codex/skills` via symlinks; leave the built-in `.system` tree in place under `~/.codex/skills`.
 - When you update this `AGENTS.md` or a custom skill under `/Users/elbert/Sites/dotfiles/codex/skills`, commit the change in `/Users/elbert/Sites/dotfiles` and push it.
