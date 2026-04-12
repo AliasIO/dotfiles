@@ -8,6 +8,7 @@
 - For ECS Batch crawl/runtime behavior that depends on the shared extractor path, make the canonical change in `v4/apis-shared/extract.js` even if matching CLI behavior in `cli/index.js` also needs to stay aligned.
 - Do not write code directly in `v4/apis/*/wappalyzer` or `v4/apis/shared/nodejs`; update the canonical repo first, then move the submodule pointer in `v4/apis`.
 - For shared-layer changes that affect `/opt/nodejs`, edit `v4/apis-shared`, commit and push there first, then let the deploy/submodule refresh sync `v4/apis/shared/nodejs/`; do not hand-edit the mirrored copy.
+- When a `v4/apis` handler starts using a new `/opt/nodejs/shared` export, make sure the matching shared-layer version is live on that stage before deploying the handler, or guard the helper at runtime; layer skew can otherwise surface as `TypeError: <helper> is not a function` `5xx`s.
 - Make browser extension technology-definition metadata changes in `extension/src/technologies/*.json`.
 - Keep `extract/shared.js`, `extract/linkedin.js`, and `extract/diallingcodes.json` symlinked to `v4/apis-shared/`.
 - In this workspace, `extract/extract.js` and `v4/apis-shared/extract.js` are hardlinked; make shared extractor edits once and keep the hardlink intact.
