@@ -130,13 +130,15 @@ Common mappings:
 
 - `Accepted`: a new PR now tracks the work
 - `Already added`: the requested technology or fix already exists, so no new PR is needed
-- `Fixed`: the default branch already contains the needed correction, so no new PR is needed
+- `Fixed`: only when the default branch already contains a concrete code fix (commit/PR) for the reported issue
+- `Works as intended`: current behavior is correct or the report is not reproducible with current rules
+- `Won't fix`: behavior is reproducible but intentionally not supported or not feasible to implement safely
 - `Not eligible`: the ticket was reviewed as normal extension intake but does not meet the support bar
 - `More info needed`: the ticket could be actionable later, but only after you investigated it yourself and still hit a concrete blocker that leaves too little reliable detail to proceed
 
 Do not use `Acknowledged`.
 
-If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating. Every GitHub issue comment, PR comment, and PR body you post under the user's account must end with `— Codex`.
+If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating. Do not use `Fixed` unless an actual code change resolved the issue. Every GitHub issue comment, PR comment, and PR body you post under the user's account must end with `— Codex`.
 
 Prefer `gh issue comment --body-file /tmp/comment.md` or a quoted here-doc for comment bodies so apostrophes, backticks, and markdown survive shell parsing.
 
