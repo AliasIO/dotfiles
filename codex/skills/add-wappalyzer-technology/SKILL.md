@@ -51,6 +51,7 @@ Avoid:
 - Generic names like `ecommerce`, `config`, `version`, or browser-built-ins.
 - Generic CDN or vendor hosts unless the pattern is clearly unique to the technology.
 - Broad vendor-marketing link/logo matches (for example generic `a[href*='vendor-dashboard']` or `img[src*='vendor-logo']`) because unrelated sites can include those assets.
+- Bare third-party booking/widget host matches in link or iframe selectors (for example only `a[href*='vendor-domain']`), unless the rule also requires a product-specific path/signature or is paired with a second independent product signal.
 - Any `html` fingerprint pattern. `html` is deprecated for extension definitions and must never be used; use `dom` instead.
 - Assuming a version can be found for every product. For server-side technologies, public version evidence is often unavailable; omit `version` rather than guessing.
 - Treating API, schema, protocol, snippet, or wrapper version fields as the product version without verifying that they map to the actual shipped client library or SDK version.
