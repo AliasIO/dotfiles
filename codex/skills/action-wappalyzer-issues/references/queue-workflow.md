@@ -138,7 +138,7 @@ Common mappings:
 
 Do not use `Acknowledged`.
 
-If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating. Do not use `Fixed` unless an actual code change resolved the issue. Every GitHub issue comment, PR comment, and PR body you post under the user's account must end with `— Codex`.
+If the outcome is anything other than `Accepted`, leave a short issue comment first that explains the reason for closure. For `More info needed`, name the concrete blocker you hit after investigating. Treat the comment as an internal triage note rather than a reply to the submitter: no thank-yous, no direct address, just the reason for the applied label. Do not use `Fixed` unless an actual code change resolved the issue. Every GitHub issue comment, PR comment, and PR body you post under the user's account must end with `— Codex`.
 
 Prefer `gh issue comment --body-file /tmp/comment.md` or a quoted here-doc for comment bodies so apostrophes, backticks, and markdown survive shell parsing.
 
