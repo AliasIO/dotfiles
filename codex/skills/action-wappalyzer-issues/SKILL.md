@@ -15,6 +15,7 @@ Read [queue-workflow.md](./references/queue-workflow.md) before changing GitHub 
 ## Workflow
 
 1. List open issues in `wappalyzer/wappalyzer` oldest-first and inspect them in that order. Read the full issue body and every comment before deciding whether to act.
+   For queue polling, treat `wappalyzer/wappalyzer` as the only source of open issues; do not run open-issue queue checks against `AliasIO/wappalyzer` unless the user explicitly provides an issue URL there.
 2. Only action tickets that result in either:
    - `Add <technology name>` for a new extension technology definition
    - `Update <technology name>` for an existing extension technology definition or metadata update
