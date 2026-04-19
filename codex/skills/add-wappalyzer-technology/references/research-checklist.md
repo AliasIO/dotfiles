@@ -32,6 +32,7 @@
 - Avoid short or generic `js` variables.
 - Avoid browser-built-ins and common framework globals.
 - Avoid generic words like `ecommerce`, `tracking`, `widget`, or `version`.
+- Avoid `scripts` regexes that match plain vendor CDN hostnames or lightweight marker tokens; search, chat, and other dynamic pages can echo those strings in bootstrap data or user content and poison hostname-level ping datasets.
 - Do not treat API, schema, protocol, snippet, or wrapper version fields as `version` unless you can verify they map to the actual client software version users would expect to see.
 - Avoid generic third-party hosts unless they are unique to the product.
 - Test on unrelated control sites before shipping.
