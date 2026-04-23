@@ -40,6 +40,7 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
 
 6. Validate behavior and time:
    - Rebuild and run the simulator after app code changes.
+   - Always reload/relaunch the simulator app after a code change and reopen or restart the single-player game so the user can continue testing against the latest build.
    - Check the relevant AI decision log for selected reason, candidate groups, missed candidate tags, phase timings, and `exceededDeadline`.
    - Keep hard AI response time practical. Current hard config is `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`; expensive shortcuts must cap candidates and respect `shouldStop()`.
 
@@ -79,6 +80,7 @@ Use the XcodeBuildMCP iOS workflow when app code changes:
 - `list_schemes` for `Pente.xcodeproj`.
 - `session_set_defaults` with project, scheme `Pente`, simulator, configuration `Debug`, and bundle id `io.alias.pente`.
 - `build_run_sim`
+- After `build_run_sim`, leave the simulator ready for manual testing: if a game is open, tap `Reset game`; otherwise navigate back into `Single player` and start or resume the intended advanced game.
 - `snapshot_ui` / `screenshot` for screen state.
 - `start_sim_log_cap` with `captureConsole: true`, reproduce, then `stop_sim_log_cap`.
 

@@ -46,10 +46,11 @@ With XcodeBuildMCP:
 3. `list_schemes` with `/Users/elbert/Sites/pente/Pente.xcodeproj`; scheme is `Pente`.
 4. `session_set_defaults` with project, scheme, simulator, `configuration: Debug`, `bundleId: io.alias.pente`.
 5. `build_run_sim`.
-6. `snapshot_ui` and `screenshot`.
-7. `start_sim_log_cap` with `captureConsole: true`; reproduce; `stop_sim_log_cap`.
+6. Reload/relaunch the simulator app after every code change, then reopen or restart the single-player game so manual testing continues against the newest build. If already in a game, use the `Reset game` toolbar button; otherwise navigate into `Single player` and choose the intended difficulty/opening.
+7. `snapshot_ui` and `screenshot`.
+8. `start_sim_log_cap` with `captureConsole: true`; reproduce; `stop_sim_log_cap`.
 
-Project instruction: after iOS app code changes, rebuild and run the active simulator before handing work back.
+Project instruction: after iOS app code changes, rebuild and run the active simulator, reload the app, and leave a freshly opened/restarted game ready before handing work back.
 
 ## Log Forensics
 
