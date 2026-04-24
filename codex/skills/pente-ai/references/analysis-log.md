@@ -42,3 +42,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: move 38 selected `(14,7)#147` as `safeFourBuilding` before calculating and resolving existing human open-four creation defenses. The engine probe showed move-38 defenses existed at `(10,11)#219` and `(6,7)#139`; after the selected attacking move, human had open-four creation replies `(10,11)#219`, `(6,7)#139`, and `(6,11)#215`, leading to a no-defense vertical fork.
 - Fix or decision: `safeFourBuilding` should not preempt opponent open-four creation defense work unless the chosen move also resolves the active defensive burden or wins immediately.
 - Regression probe: from the move-38 compact board, hard AI must not choose `(14,7)#147` while `openFourCreationDefenseMoves(for: computer)` is non-empty; the move-42 compact board should be treated as already unwinnable, not as a one-move missed block.
+
+## 2026-04-24 - Counter-fork must beat passive soft fork defense
+
+- Game: `local-ai-e655bd1e-d17b-4c98-b7a3-529c109a907a`, move 16.
+- Symptom: computer chose passive `(8,15)#293` with `deadlineBeforeShortcutSearch`, letting human take `(8,14)#274`; the stronger move was the computer's own open-three fork at `(7,11)#216`.
+- Root cause: `safeOpenThreeForkMoves` used the stricter `openThreeForkLineCount` detector, so it missed a live fork already found by `PenteEngine.forkSetupMoves`; it also ran after expensive compound placement, leaving the AI near deadline.
+- Fix or decision: classify safe open-three forks with robust `openThreeCount`, check them before compound placement, and accept verified forks that create multiple open-four follow-ups without the generic reply-risk probe.
+- Regression probe: from compact board `...........................................................................................................................1..................0..................0.............0...10..............1.1.0...............1..1..............0.10..................0.........................................................................................................`, hard AI should choose `(7,11)#216` as `safeOpenThreeFork` within the normal 4s budget; `(8,15)#293` and `(8,14)#274` are weaker fallback defenses.
