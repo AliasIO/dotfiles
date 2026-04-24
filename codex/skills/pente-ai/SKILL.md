@@ -116,7 +116,7 @@ There are no dedicated AI unit tests in the repo currently; use compile/build, s
 Run the recorded compact-board regression bench after Pente AI code changes:
 
 ```bash
-swiftc Scripts/PenteAISupport/Support.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench
+swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench
 ```
 
 Use the log-to-fixture helper to convert suspect simulator moves into regression snippets:
@@ -134,7 +134,7 @@ python3 Scripts/pente_ai_export_game.py --device booted --latest --output-dir /t
 Run the headless pressure bench for smoke checks and longer self-play batches:
 
 ```bash
-swiftc Scripts/PenteAISupport/Support.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
+swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
 ```
 
 For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates only after confirming the root position was not already lost: if the opponent already had immediate wins and `instantLossDefenseMoves` is empty, move one or more plies earlier. Treat warning findings as suspicious positions to inspect before adding a regression. Use `--replay generated-1:17 --emit-fixtures --verbose` or `--replay self-play-1:22 --emit-fixtures --verbose` to reproduce a reported source/ply and print a candidate fixture. Low-budget timeout warnings are noisy; only treat timeout output as a code fix candidate when it reproduces near the Advanced 4s budget.

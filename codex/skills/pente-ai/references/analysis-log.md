@@ -162,3 +162,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: the pressure bench judged the selected move from the after-state only. It flagged capture or instant-loss failures even when the root position had no full legal defense, which made already-lost positions look like current-move tactical misses.
 - Fix or decision: update `Scripts/PenteAIPressureBench/main.swift` to compute opponent immediate wins before the move and skip current-move fatal blame when the root is already lost. Future analysis should move one or more plies earlier in that case.
 - Regression probe: pressure smoke passed; larger run `--games 4 --positions 32 --max-moves 70 --time-limit-ms 1200 --depth 4 --max-candidate-moves 16 --max-seconds 600` finished with `fatal=0 warnings=139` in 611s.
+
+## 2026-04-24 - WPente opening book fast path
+
+- Game: architecture follow-up after comparing Mark Mammel's WPente.
+- Symptom: WPente plays early moves virtually instantly, while the app still spent search time in familiar opening shapes and sometimes reached bad early structures before tactics were visible.
+- Root cause: the app had no opening book; every early move went through the same tactical search and shortcut cascade. The WPente package included `OPNGBK.PEN`, which decodes as 397 16-bit Pente opening lines.
+- Fix or decision: add `PenteOpeningBookData.swift` from the local WPente Pente book and a fast no-capture, first-10-ply symmetric matcher in `PenteOpeningBook.swift`. `PenteAI` now checks safe book moves after immediate wins and before search, rejecting book moves that leave immediate line or winning-capture replies. Keep captured/replayed book-line support as a future enhancement, and verify redistribution rights before shipping the imported data publicly.
+- Regression probe: opening probe selected book moves in 5-30ms; compact regression bench still passed all 9 fixtures; pressure smoke passed with `fatal=0 warnings=0`; a modest run `--games 2 --positions 8 --max-moves 40 --time-limit-ms 700 --depth 4 --max-candidate-moves 16 --max-seconds 180` finished with `fatal=0 warnings=81`.
