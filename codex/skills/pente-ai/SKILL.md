@@ -55,7 +55,7 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
 
 ## Parallel Debugging With Subagents
 
-When the user explicitly asks to use subagents for a Pente AI debugging/fixing pass, split independent work while keeping the main agent on the critical path:
+When subagent use is permitted or has been authorized for a Pente AI debugging/fixing pass, use it whenever it is likely to shorten the investigation. Split independent work while keeping the main agent on the critical path:
 
 - Main agent: pull the latest simulator logs, identify the suspect move sequence, own the final code patch, run final validation, update the analysis log, and commit.
 - Explorer 1: reconstruct the suspect board from logs and report tactical facts only: active threats, capture vulnerabilities, expected move, candidate groups, and compact board.
