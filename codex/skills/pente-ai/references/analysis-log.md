@@ -154,3 +154,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: with no stable direct open-four defense, the AI valued the temporary capture reset over a safe four-building counter-threat. Candidate `(11,5)#106` created an immediate computer win at `(12,4)#88`; after the human's forced block, the original open-four pressure remained defendable instead of being handed back with initiative.
 - Fix or decision: add `activeOpenFourCounterWinMoves` before open-four capture defenses. It only runs when multiple open-four creation defenses exist, no stable open-four defense exists, the counter-win point does not overlap the opponent's open-four points, and every forced response leaves no immediate loss and a defendable residual position.
 - Regression probe: compact-board fixture `counter-win beats temporary open-four capture reset` should choose `(11,5)#106` and create a computer immediate win; prior risky single open-four defense fixture must still choose the direct block `(11,7)#144`.
+
+## 2026-04-24 - Pressure bench must not blame already-lost roots
+
+- Game: headless pressure batch, not a simulator game.
+- Symptom: the larger batch reported four fatal findings, but fixture probes showed the printed boards already had opponent immediate wins with `instantLossDefenseMoves` empty. Example: the `captureThreat` board had opponent line wins `(7,8)#159` / `(12,8)#164` plus capture win `(11,11)#220`; choosing `(11,11)` only removed the capture threat and still lost to the line wins.
+- Root cause: the pressure bench judged the selected move from the after-state only. It flagged capture or instant-loss failures even when the root position had no full legal defense, which made already-lost positions look like current-move tactical misses.
+- Fix or decision: update `Scripts/PenteAIPressureBench/main.swift` to compute opponent immediate wins before the move and skip current-move fatal blame when the root is already lost. Future analysis should move one or more plies earlier in that case.
+- Regression probe: pressure smoke passed; larger run `--games 4 --positions 32 --max-moves 70 --time-limit-ms 1200 --depth 4 --max-candidate-moves 16 --max-seconds 600` finished with `fatal=0 warnings=139` in 611s.
