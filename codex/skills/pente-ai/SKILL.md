@@ -33,11 +33,13 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
    - Step backward through committed moves and AI decision events until the side to move had no plausible defense against the winning sequence.
    - Keep going backward to find the earlier computer move that first allowed that unwinnable position.
    - Distinguish "already lost, no defense existed" from "defense existed but was not generated, ranked, searched, or selected."
+   - When a credible code-level solution is identified, implement it in the app in the same turn unless the user explicitly asked for analysis only or the fix is still speculative.
 
 5. Patch narrowly and symmetrically:
    - Prefer player-relative helpers in `PenteEngine` so the same pattern supports computer attack and human-threat defense.
    - Use the detector in candidate generation, shortcut attack paths, forced defense paths, and evaluation/order scoring as appropriate.
    - Add the new behavior alongside existing defenses. Do not "fix" one tactical failure by simply demoting another already-working defense.
+   - Do not hand back only a diagnosis after finding the missing detector, ordering guard, or tactical scoring rule; patch the code, validate the specific board, and record the regression probe.
 
 6. Validate behavior and time:
    - Rebuild and run the simulator after app code changes.
@@ -69,6 +71,8 @@ When the user says they beat the advanced computer, do this before coding:
 The target fix is usually the first earlier computer move where a player-relative detector should have generated, preferred, or searched a move that both handled the human threat and advanced the computer's own forcing plan.
 
 Before finalizing a diagnosis or patch, compare the suspected failure against `references/analysis-log.md`; repeated patterns such as shortcut deadline fallback, compound-defense preemption, and capture-refuted blocks should be tested explicitly.
+
+If the reverse analysis identifies a non-speculative implementation fix, apply it before final response. Only stop at analysis when the user explicitly asks for no code changes or when the evidence does not yet support a concrete patch.
 
 ## Implementation Rules
 
