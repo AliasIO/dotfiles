@@ -122,3 +122,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: the first practical error was computer move 22. The AI chose capture `(6,6)#120` as `forkCaptureDefense`, but that left two human fork setup replies, including the played `(8,11)#217`; direct fork defense `(9,11)#218` reduced the pressure to one line. The capture bonus in `forkResolutionOrderingScore` overpowered residual fork pressure.
 - Fix or decision: penalize residual fork pressure for fork-resolving capture defenses so a capture does not beat a cleaner direct fork defense when it leaves multiple fork setups.
 - Regression probe: add the move-22 compact board to `Scripts/PenteAIRegressionBench/main.swift`; hard AI should choose `(9,11)#218`, with no immediate human win or open-four creation after the move.
+
+## 2026-04-24 - Keep 4s timeout but reserve time to return tactical shortcuts
+
+- Game: timeout-policy follow-up after repeated `exceededDeadline` phases.
+- Symptom: several advanced moves ran beyond the nominal 4s budget. In the active-open-three regression, the AI had `(8,7)#141` first in `shortcutRootMoves` at about 3.9s, then started `shortcutSearch` anyway and finished around 6.9s with a different move.
+- Root cause: deadline checks used only `shouldStop()`, so expensive shortcut search, full search, and reply probes could start with too little time left to return cleanly.
+- Fix or decision: keep the default Advanced timeout at 4s, add deadline-reserve helpers, return pre-ranked shortcut/root moves inside the reserve, trust active risky open-four defenses inside the reserve, and cap late reply/tactical detector starts.
+- Regression probe: compact-board bench must still pass all recorded fixtures; the active-open-three board should choose `(8,7)#141` instead of starting late shortcut search.

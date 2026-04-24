@@ -47,6 +47,7 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
    - Check the relevant AI decision log for selected reason, candidate groups, missed candidate tags, phase timings, and `exceededDeadline`.
    - Run the compact-board regression bench so a local fix does not reintroduce an older tactical failure.
    - Keep hard AI response time practical. Current hard config is `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`; expensive shortcuts must cap candidates and respect `shouldStop()`.
+   - Do not raise the default 4s Advanced timeout to mask bad choices. Preserve a return-time reserve: once the AI is inside that reserve, return the best pre-ranked tactical shortcut or fallback instead of starting shortcut/full search or another expensive reply probe.
 
 7. Preserve learnings:
    - After each game analysis, append a concise entry to `references/analysis-log.md`.
