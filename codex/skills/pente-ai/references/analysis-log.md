@@ -146,3 +146,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: DEBUG logs lacked build/launch metadata and terminal session markers, there was no one-command game export bundle, and pressure-bench replay filtered findings without first making generated position construction deterministic.
 - Fix or decision: add DEBUG build metadata and `sessionEnded` events to game/decision logs, add `Scripts/pente_ai_export_game.py`, add pressure-bench `--replay`, `--emit-fixtures`, categorized findings, per-move duration reporting, shared run deadline, and sort generated candidate pools before seeded sampling. Treat low-budget timeout warnings as noise unless they reproduce near the Advanced 4s budget.
 - Regression probe: run the compact bench, the pressure smoke, and an export smoke against the booted simulator. A modest longer pressure batch should have zero fatal findings; warning-only output is triage material, not an automatic AI patch.
+
+## 2026-04-24 - Counter-win should beat temporary open-four capture reset
+
+- Game: `local-ai-e734ebb4-eb0b-4604-90c6-d56afedaad64`, move 16 after human `(7,10)#197`.
+- Symptom: computer chose capture `(9,12)#237` as `openFourCaptureDefense`; human immediately replayed `(7,10)#197`, restoring the same two open-four creation points and pushing the computer into a losing defensive loop.
+- Root cause: with no stable direct open-four defense, the AI valued the temporary capture reset over a safe four-building counter-threat. Candidate `(11,5)#106` created an immediate computer win at `(12,4)#88`; after the human's forced block, the original open-four pressure remained defendable instead of being handed back with initiative.
+- Fix or decision: add `activeOpenFourCounterWinMoves` before open-four capture defenses. It only runs when multiple open-four creation defenses exist, no stable open-four defense exists, the counter-win point does not overlap the opponent's open-four points, and every forced response leaves no immediate loss and a defendable residual position.
+- Regression probe: compact-board fixture `counter-win beats temporary open-four capture reset` should choose `(11,5)#106` and create a computer immediate win; prior risky single open-four defense fixture must still choose the direct block `(11,7)#144`.
