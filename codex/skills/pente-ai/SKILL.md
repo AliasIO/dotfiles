@@ -134,6 +134,12 @@ Use the export helper to persist the latest DEBUG single-player game bundle and 
 python3 Scripts/pente_ai_export_game.py --device booted --latest --output-dir /tmp/pente-ai-game --emit-fixture --show-board
 ```
 
+Use the triage orchestrator as the default first pass after a real human win. It exports or reads the game bundle, prints the reverse timeline, runs Mmai teacher comparisons on logged AI turns, optionally seeds the exploit bench from the real game, and writes a report plus fixture candidates:
+
+```bash
+python3 Scripts/pente_ai_triage_game.py --device booted --work-dir /tmp/pente-ai-triage --run-exploit
+```
+
 Run the headless pressure bench for smoke checks and longer self-play batches:
 
 ```bash
