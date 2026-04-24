@@ -34,3 +34,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: `compoundThreatDefense` ran before the hard open-four/open-three defense return and counted a move as handling the compound threat even though it left the active open-four creation move available.
 - Fix or decision: a compound defense may not handle an active open-four creation threat unless it directly reduces that threat, except for an immediate counter-win.
 - Regression probe: from the move-26 compact board, hard AI should choose `(4,10)#194`; non-blocking compound moves such as `(4,11)#213`, `(7,10)#197`, and `(10,13)#257` leave human `(4,10)#194` into double immediate wins.
+
+## 2026-04-24 - Safe four shortcut must defer to opponent open-four creation defenses
+
+- Game: `local-ai-10e0b66b-7280-474a-b8f9-bdb7951977a7`.
+- Symptom: the final move looked like a missed block at `(6,13)#253`, but the move-42 root was already lost: human had immediate wins at `(6,13)#253` and `(6,8)#158`, and blocking `(6,13)` still allowed capture/line win `(5,14)#271`.
+- Root cause: move 38 selected `(14,7)#147` as `safeFourBuilding` before calculating and resolving existing human open-four creation defenses. The engine probe showed move-38 defenses existed at `(10,11)#219` and `(6,7)#139`; after the selected attacking move, human had open-four creation replies `(10,11)#219`, `(6,7)#139`, and `(6,11)#215`, leading to a no-defense vertical fork.
+- Fix or decision: `safeFourBuilding` should not preempt opponent open-four creation defense work unless the chosen move also resolves the active defensive burden or wins immediately.
+- Regression probe: from the move-38 compact board, hard AI must not choose `(14,7)#147` while `openFourCreationDefenseMoves(for: computer)` is non-empty; the move-42 compact board should be treated as already unwinnable, not as a one-move missed block.
