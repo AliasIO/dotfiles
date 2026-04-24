@@ -194,3 +194,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: fatal findings only covered immediate win/loss and winning capture misses. Open-four pressure, fork pressure, non-winning capture pressure, teacher disagreements, and ignored forcing attacks were warning-only or invisible.
 - Fix or decision: extend `Scripts/PenteAIPressureBench/main.swift` with `--strict-pressure`, `--teacher`, `--strict-teacher`, and `--jsonl`; add `Scripts/pente_ai_findings_summary.py` to cluster JSONL findings into replay commands. Keep default pressure smoke backward-compatible, but use strict/teacher JSONL mode for discovery batches.
 - Regression probe: compile the pressure bench, run a default smoke, run a JSONL smoke, then run strict discovery such as `--strict-pressure --teacher --teacher-depth 3 --teacher-time-limit-ms 700 --strict-teacher --jsonl /tmp/pente_pressure_findings_strict.jsonl`; summarize with `python3 Scripts/pente_ai_findings_summary.py /tmp/pente_pressure_findings_strict.jsonl`.
+
+## 2026-04-25 - Human-style exploit bench
+
+- Game: workflow/tooling follow-up after observing that the user's manual play found stronger weaknesses than neutral headless discovery.
+- Symptom: manual wins still produced better tactical failures, but a full reverse analysis could take around 40 minutes.
+- Root cause: generated positions were tactical but not adversarial enough; they did not intentionally steer into the user's recurring motifs or continue from proven weak real-game boards.
+- Fix or decision: add `Scripts/PenteAIExploitBench/main.swift`. It runs the real computer config against a hostile human-side policy, supports `--seed-game-log` from exported simulator games, writes JSONL findings, and reuses `Scripts/pente_ai_findings_summary.py` for clustering.
+- Regression probe: compile the exploit bench, run a fresh-game smoke with reduced computer settings, export a simulator game with `Scripts/pente_ai_export_game.py`, run a seed-log smoke, and summarize the JSONL output.

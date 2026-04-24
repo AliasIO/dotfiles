@@ -144,6 +144,8 @@ For deeper self-play outside the simulator, pass explicit knobs such as `--games
 
 When ordinary long pressure batches produce many warnings but no fatal findings, switch to discovery mode instead of extending the same run. Use `--strict-pressure` to promote unresolved capture/fork/open-four pressure without a forcing counter, `--teacher` plus explicit teacher depth/time/candidate knobs to compare against a deeper search, and `--jsonl /tmp/<name>.jsonl` to persist every finding. Summarize those files with `python3 Scripts/pente_ai_findings_summary.py /tmp/<name>.jsonl` and replay the top clusters before coding.
 
+When human games are clearly stronger than generated pressure positions, run the exploit bench instead of waiting for more manual games. Compile `Scripts/PenteAIExploitBench/main.swift`, optionally export the latest real game with `Scripts/pente_ai_export_game.py`, pass the exported `ai-game-log.jsonl` via `--seed-game-log`, and write `--jsonl` findings. The exploit bench uses a hostile human-side policy and can continue from real-game boards, so it should be used to convert the user's winning motifs into repeatable headless failures.
+
 When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
 
 ## Bundled Script
