@@ -195,6 +195,14 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Fix or decision: extend `Scripts/PenteAIPressureBench/main.swift` with `--strict-pressure`, `--teacher`, `--strict-teacher`, and `--jsonl`; add `Scripts/pente_ai_findings_summary.py` to cluster JSONL findings into replay commands. Keep default pressure smoke backward-compatible, but use strict/teacher JSONL mode for discovery batches.
 - Regression probe: compile the pressure bench, run a default smoke, run a JSONL smoke, then run strict discovery such as `--strict-pressure --teacher --teacher-depth 3 --teacher-time-limit-ms 700 --strict-teacher --jsonl /tmp/pente_pressure_findings_strict.jsonl`; summarize with `python3 Scripts/pente_ai_findings_summary.py /tmp/pente_pressure_findings_strict.jsonl`.
 
+## 2026-04-25 - Mmai teacher catches quiet book move
+
+- Game: Mmai teacher exact-history replay, history `180,160,184,198,182`.
+- Symptom: the computer chose quiet opening-book move `(10,9)#181`; Mark Mammel's level-12 AI preferred `(8,9)#179`, which immediately created two computer open-four creation follow-ups without an immediate human win or winning capture reply.
+- Root cause: the opening book returned before active tactical open-three/open-four setup checks, and an expensive reply probe could spend the whole 4s budget before the stronger tactical move survived selection.
+- Fix or decision: add a local Mmai WASM teacher bench that treats Mmai as an external move oracle, add exact-history replay, and allow quiet opening-book positions to be overridden by safety-filtered moves that create multiple open-four follow-ups. Keep the override disabled when there is active human capture or open-four pressure.
+- Regression probe: compact-board fixture `Mmai open-four creation beats quiet opening book move` should choose `(8,9)#179`; `pente-mmai-teacher-bench --history 180,160,184,198,182` should report local and Mmai agreement with zero findings.
+
 ## 2026-04-25 - Human-style exploit bench
 
 - Game: workflow/tooling follow-up after observing that the user's manual play found stronger weaknesses than neutral headless discovery.
@@ -202,3 +210,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: generated positions were tactical but not adversarial enough; they did not intentionally steer into the user's recurring motifs or continue from proven weak real-game boards.
 - Fix or decision: add `Scripts/PenteAIExploitBench/main.swift`. It runs the real computer config against a hostile human-side policy, supports `--seed-game-log` from exported simulator games, writes JSONL findings, and reuses `Scripts/pente_ai_findings_summary.py` for clustering.
 - Regression probe: compile the exploit bench, run a fresh-game smoke with reduced computer settings, export a simulator game with `Scripts/pente_ai_export_game.py`, run a seed-log smoke, and summarize the JSONL output.
+
+## 2026-04-25 - Capture race must not bypass active open-four defense
+
+- Game: `local-ai-23dad006-3118-427c-bafe-0954c880f367`, first practical error at computer move 42 after human `(11,9)#182`.
+- Symptom: computer chose capture `(11,6)#125` as `captureRace`, reaching four captures but leaving human `(11,11)#220`; after that, human had two immediate line wins and move 44 was already lost.
+- Root cause: `captureRace` returned before `openFourCreationDefenses` ran. The existing engine already detected human open-four creation points `(11,7)#144` and `(11,11)#220`, but the capture-race shortcut only checked immediate wins/capture wins and accepted a capture that resolved one endpoint while leaving the other.
+- Fix or decision: compute active open-four creation defenses before capture race and reject non-winning capture-race moves unless they reduce the open-four burden at least as well as the best available defense. The move-42 board now chooses `(11,11)#220` or `(11,7)#144` instead of `(11,6)#125`.
+- Regression probe: compact-board fixture `capture race must resolve active open-four creation` rejects `(11,6)#125`, accepts `(11,7)#144` or `(11,11)#220`, and asserts no human immediate win/open-four creation after the selected move. Serial compact bench passed 12/12 in 74.90s; short pressure smoke passed with `fatal=0 warnings=24`.
