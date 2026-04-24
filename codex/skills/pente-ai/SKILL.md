@@ -20,6 +20,7 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
 2. Load the detailed references only as needed:
    - For Pente concepts and tactical priorities, read `references/strategy.md`.
    - For code paths, simulator commands, and log formats, read `references/codebase.md`.
+   - Before analyzing or patching AI behavior, read `references/analysis-log.md` and treat it as a regression checklist.
 
 3. If debugging a human win against the computer, start from evidence:
    - Build/run the debug app on the active simulator if needed.
@@ -42,7 +43,13 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
    - Rebuild and run the simulator after app code changes.
    - Always reload/relaunch the simulator app after a code change and reopen or restart the single-player game so the user can continue testing against the latest build.
    - Check the relevant AI decision log for selected reason, candidate groups, missed candidate tags, phase timings, and `exceededDeadline`.
+   - Re-check any relevant scenarios from `references/analysis-log.md` so a local fix does not reintroduce an older tactical failure.
    - Keep hard AI response time practical. Current hard config is `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`; expensive shortcuts must cap candidates and respect `shouldStop()`.
+
+7. Preserve learnings:
+   - After each game analysis, append a concise entry to `references/analysis-log.md`.
+   - Include the date, game id when available, symptom, root cause, fix or decision, and any regression probe that should be reused.
+   - If a durable lesson changes how future analyses should be run, update this skill in the same turn.
 
 ## Reverse-Loss Analysis
 
@@ -60,6 +67,8 @@ When the user says they beat the advanced computer, do this before coding:
 6. Continue one or more ply earlier when the current position was already losing.
 
 The target fix is usually the first earlier computer move where a player-relative detector should have generated, preferred, or searched a move that both handled the human threat and advanced the computer's own forcing plan.
+
+Before finalizing a diagnosis or patch, compare the suspected failure against `references/analysis-log.md`; repeated patterns such as shortcut deadline fallback, compound-defense preemption, and capture-refuted blocks should be tested explicitly.
 
 ## Implementation Rules
 
@@ -85,6 +94,8 @@ Use the XcodeBuildMCP iOS workflow when app code changes:
 - `start_sim_log_cap` with `captureConsole: true`, reproduce, then `stop_sim_log_cap`.
 
 There are no dedicated AI unit tests in the repo currently; use compile/build, simulator logs, targeted reproduced games, and code-level tactical probes as the validation surface.
+
+When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
 
 ## Bundled Script
 
