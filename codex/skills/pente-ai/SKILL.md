@@ -95,6 +95,7 @@ If the reverse analysis identifies a non-speculative implementation fix, apply i
 - Prefer additive tactical buckets and ordering terms over broad reprioritization.
 - Guard against capture refutations: open-three, stretch-four, and fork moves are not good if the played stone or key support stones can be captured immediately into a loss.
 - Keep broad proof-style forced-threat solvers behind concrete tactical shortcuts such as immediate capture, fork defense, capture response, and active open-three creation; pure capture-setup moves are too soft to seed a proof shortcut unless a later validated regression says otherwise.
+- If a single urgent tactical response starts reply checking but overruns the deadline, keep that response as unrefuted rather than discarding it and falling through to a softer fallback.
 - Avoid global legal-move scans in normal paths. Use neighborhood/contact candidates, prefix limits, cached summaries, and early exits.
 - Log new tactical groups in DEBUG so future regressions are inspectable.
 - Preserve existing public behavior and opening rules.
