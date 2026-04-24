@@ -53,6 +53,17 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
    - Include the date, game id when available, symptom, root cause, fix or decision, and any regression probe that should be reused.
    - If a durable lesson changes how future analyses should be run, update this skill in the same turn.
 
+## Parallel Debugging With Subagents
+
+When the user explicitly asks to use subagents for a Pente AI debugging/fixing pass, split independent work while keeping the main agent on the critical path:
+
+- Main agent: pull the latest simulator logs, identify the suspect move sequence, own the final code patch, run final validation, update the analysis log, and commit.
+- Explorer 1: reconstruct the suspect board from logs and report tactical facts only: active threats, capture vulnerabilities, expected move, candidate groups, and compact board.
+- Explorer 2: inspect the relevant `PenteAI.swift` / `PenteEngine.swift` paths and compare the failure against `references/analysis-log.md`.
+- Worker/verifier: run focused probes and prior regression probes while the main agent integrates the fix.
+
+Prefer delegating bounded read-only analysis or probe execution. Keep edits in one place unless the fix naturally has disjoint file ownership.
+
 ## Reverse-Loss Analysis
 
 When the user says they beat the advanced computer, do this before coding:
