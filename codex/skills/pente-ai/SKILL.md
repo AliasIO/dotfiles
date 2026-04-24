@@ -125,13 +125,19 @@ Use the log-to-fixture helper to convert suspect simulator moves into regression
 python3 Scripts/pente_ai_fixture_from_log.py --device booted --latest --move-number <n> --expected <x,y> --name "<short failure name>" --show-board
 ```
 
+Use the export helper to persist the latest DEBUG single-player game bundle and optionally print a fixture candidate for the latest AI move:
+
+```bash
+python3 Scripts/pente_ai_export_game.py --device booted --latest --output-dir /tmp/pente-ai-game --emit-fixture --show-board
+```
+
 Run the headless pressure bench for smoke checks and longer self-play batches:
 
 ```bash
 swiftc Scripts/PenteAISupport/Support.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
 ```
 
-For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates; treat warning findings as suspicious positions to inspect before adding a regression.
+For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates; treat warning findings as suspicious positions to inspect before adding a regression. Use `--replay generated-1:17 --emit-fixtures --verbose` or `--replay self-play-1:22 --emit-fixtures --verbose` to reproduce a reported source/ply and print a candidate fixture. Low-budget timeout warnings are noisy; only treat timeout output as a code fix candidate when it reproduces near the Advanced 4s budget.
 
 When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
 
