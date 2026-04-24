@@ -93,7 +93,8 @@ Use the XcodeBuildMCP iOS workflow when app code changes:
 - `list_schemes` for `Pente.xcodeproj`.
 - `session_set_defaults` with project, scheme `Pente`, simulator, configuration `Debug`, and bundle id `io.alias.pente`.
 - `build_run_sim`
-- After `build_run_sim`, leave the simulator ready for manual testing: if a game is open, tap `Reset game`; otherwise navigate back into `Single player` and start or resume the intended advanced game.
+- For fresh Advanced single-player testing, prefer launching with the debug shortcut argument `-PenteDebugStartSinglePlayer` after the build. It jumps straight into a new single-player game with Advanced difficulty, Tournament rules, and Player starting, avoiding menu navigation with Computer Use.
+- After `build_run_sim`, leave the simulator ready for manual testing: use the debug launch shortcut when starting a fresh game; use Computer Use only as a fallback when you need to inspect or control an already-open simulator UI.
 - `snapshot_ui` / `screenshot` for screen state.
 - `start_sim_log_cap` with `captureConsole: true`, reproduce, then `stop_sim_log_cap`.
 
