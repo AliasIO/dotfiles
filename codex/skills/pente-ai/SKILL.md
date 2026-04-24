@@ -140,6 +140,12 @@ Use the triage orchestrator as the default first pass after a real human win. It
 python3 Scripts/pente_ai_triage_game.py --device booted --work-dir /tmp/pente-ai-triage --run-exploit
 ```
 
+Use the long-run supervisor for overnight/headless discovery loops. It compiles benches once, cycles bounded exploit/pressure/teacher-pressure batches, writes per-batch logs plus `findings-all.jsonl`, and keeps `summary.md` updated with replay commands:
+
+```bash
+python3 Scripts/pente_ai_long_run.py --latest-from-simulator --out /tmp/pente-ai-long-run --hours 8
+```
+
 Run the headless pressure bench for smoke checks and longer self-play batches:
 
 ```bash
