@@ -114,3 +114,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: normal negamax leaves stopped at static evaluation in tactically noisy positions, while the persistent regression set lived only in prose and temporary probes.
 - Fix or decision: add a bounded quiescence extension at search leaves. It searches one extra ply over at most four forcing moves and only while more than 500ms remains, using existing player-relative tactical helpers. Add `Scripts/PenteAIRegressionBench/main.swift` so compact boards from this log are executable.
 - Regression probe: from `/Users/elbert/Sites/pente`, run `swiftc Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench`; all recorded fixtures should pass before handing back Pente AI changes.
+
+## 2026-04-24 - Fork capture must not leave extra fork pressure
+
+- Game: `local-ai-43454efa-396c-4d74-b6f0-72391190a378`.
+- Symptom: human won at move 29 after restoring an open four. The final `partialInstantLossDefense` was already lost: both endpoints could not be blocked.
+- Root cause: the first practical error was computer move 22. The AI chose capture `(6,6)#120` as `forkCaptureDefense`, but that left two human fork setup replies, including the played `(8,11)#217`; direct fork defense `(9,11)#218` reduced the pressure to one line. The capture bonus in `forkResolutionOrderingScore` overpowered residual fork pressure.
+- Fix or decision: penalize residual fork pressure for fork-resolving capture defenses so a capture does not beat a cleaner direct fork defense when it leaves multiple fork setups.
+- Regression probe: add the move-22 compact board to `Scripts/PenteAIRegressionBench/main.swift`; hard AI should choose `(9,11)#218`, with no immediate human win or open-four creation after the move.
