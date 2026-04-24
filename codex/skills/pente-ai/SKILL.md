@@ -46,6 +46,7 @@ Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`
    - Always reload/relaunch the simulator app after a code change and reopen or restart the single-player game so the user can continue testing against the latest build.
    - Check the relevant AI decision log for selected reason, candidate groups, missed candidate tags, phase timings, and `exceededDeadline`.
    - Run the compact-board regression bench so a local fix does not reintroduce an older tactical failure.
+   - Use headless scripts outside the iOS simulator for volume testing. The simulator is for manual play/log capture; self-play and generated-position pressure tests should run directly against `PenteEngine`/`PenteAI`.
    - Keep hard AI response time practical. Current hard config is `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`; expensive shortcuts must cap candidates and respect `shouldStop()`.
    - Do not raise the default 4s Advanced timeout to mask bad choices. Preserve a return-time reserve: once the AI is inside that reserve, return the best pre-ranked tactical shortcut or fallback instead of starting shortcut/full search or another expensive reply probe.
 
@@ -115,8 +116,22 @@ There are no dedicated AI unit tests in the repo currently; use compile/build, s
 Run the recorded compact-board regression bench after Pente AI code changes:
 
 ```bash
-swiftc Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench
+swiftc Scripts/PenteAISupport/Support.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench
 ```
+
+Use the log-to-fixture helper to convert suspect simulator moves into regression snippets:
+
+```bash
+python3 Scripts/pente_ai_fixture_from_log.py --device booted --latest --move-number <n> --expected <x,y> --name "<short failure name>" --show-board
+```
+
+Run the headless pressure bench for smoke checks and longer self-play batches:
+
+```bash
+swiftc Scripts/PenteAISupport/Support.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
+```
+
+For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates; treat warning findings as suspicious positions to inspect before adding a regression.
 
 When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
 

@@ -130,3 +130,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: deadline checks used only `shouldStop()`, so expensive shortcut search, full search, and reply probes could start with too little time left to return cleanly.
 - Fix or decision: keep the default Advanced timeout at 4s, add deadline-reserve helpers, return pre-ranked shortcut/root moves inside the reserve, trust active risky open-four defenses inside the reserve, and cap late reply/tactical detector starts.
 - Regression probe: compact-board bench must still pass all recorded fixtures; the active-open-three board should choose `(8,7)#141` instead of starting late shortcut search.
+
+## 2026-04-24 - Move from human-only losses to headless pressure testing
+
+- Game: workflow/tooling follow-up, not a single loss.
+- Symptom: relying only on human wins was too slow and produced one-off fixes; the compact bench also exposed that deadline-sensitive fixtures could regress when expensive phases preempted already-known tactical moves.
+- Root cause: regression fixtures could only assert exact moves, simulator logs still required manual fixture transcription, and there was no headless self-play/generated-position harness to find objective tactical misses outside the UI.
+- Fix or decision: add shared Swift support for AI scripts, extend `PenteAIRegressionBench` with property assertions/acceptable/rejected moves and deterministic `topMoveRandomization: 1`, add `Scripts/pente_ai_fixture_from_log.py`, and add `PenteAIPressureBench` for headless generated-position and self-play checks. While validating, also keep safe counter-forks ahead of soft deadline fallback, prefer unrefuted capture-compatible defenses, and prevent soft-fork/compound-placement fallback from preempting active open-four creation defenses.
+- Regression probe: compact-board bench must pass all fixtures; pressure bench default should complete outside the simulator with zero fatal findings, with warning findings treated as inspection candidates.
