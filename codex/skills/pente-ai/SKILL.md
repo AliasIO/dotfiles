@@ -142,6 +142,8 @@ swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pen
 
 For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates only after confirming the root position was not already lost: if the opponent already had immediate wins and `instantLossDefenseMoves` is empty, move one or more plies earlier. Treat warning findings as suspicious positions to inspect before adding a regression. Use `--replay generated-1:17 --emit-fixtures --verbose` or `--replay self-play-1:22 --emit-fixtures --verbose` to reproduce a reported source/ply and print a candidate fixture. Low-budget timeout warnings are noisy; only treat timeout output as a code fix candidate when it reproduces near the Advanced 4s budget.
 
+When ordinary long pressure batches produce many warnings but no fatal findings, switch to discovery mode instead of extending the same run. Use `--strict-pressure` to promote unresolved capture/fork/open-four pressure without a forcing counter, `--teacher` plus explicit teacher depth/time/candidate knobs to compare against a deeper search, and `--jsonl /tmp/<name>.jsonl` to persist every finding. Summarize those files with `python3 Scripts/pente_ai_findings_summary.py /tmp/<name>.jsonl` and replay the top clusters before coding.
+
 When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
 
 ## Bundled Script
