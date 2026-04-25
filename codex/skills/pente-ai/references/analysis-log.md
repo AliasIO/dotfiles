@@ -226,3 +226,19 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: `rankedOpeningTacticalOverrideMoves` was disabled whenever the human already had an open-four creation move, so the AI blindly took the first safe book block. The triage tool also initially missed this because it ignored `sessionRestarted` and dropped the center stone from exact histories.
 - Fix or decision: allow opening tactical overrides under active open-four pressure only when the candidate fully resolves the human open-four creation moves, still creates at least two computer open-four creation moves, and passes the existing immediate-win/capture safety checks. Also treat `sessionRestarted` like `sessionStarted` when deriving teacher histories.
 - Regression probe: compact-board fixture `opening override may resolve human open-four pressure` should choose `(9,8)#161` and reject `(9,11)#218`; focused Mmai history `180,160,237,162,199` should report zero findings. Serial compact bench passed 13/13 in 69.14s; short pressure smoke passed with `fatal=0 warnings=3`.
+
+## 2026-04-25 - Capture pressure must not preempt forcing counter-threats
+
+- Game: first `pente_ai_long_run.py --hours 23` batch seeded from `/tmp/pente-ai-triage-current/export/ai-game-log.jsonl`.
+- Symptom: exploit batch stopped on five fatal findings. Two were oracle false positives after the computer had already won; the real seed-3 branch showed the computer choosing passive capture/open-four responses such as `(12,11)#221` and `(11,11)#220` while stronger moves created forcing counter-threats.
+- Root cause: open-four defense mixed temporary capture resets with stable direct defenses, four-building shortcuts ignored active capture pressure, and capture-compatible defenses were ordered below soft deflections even when they created multiple own open-four or immediate-win follow-ups.
+- Fix or decision: ignore exploit findings after a computer-winning move; prefer stable open-four defenses over temporary capture resets; require four-building shortcuts to resolve active capture pressure; prefer forcing capture-compatible defenses; and add a narrow active-open-four/capture/fork counter-win shortcut for moves such as `(9,8)#161` that create multiple immediate computer wins while reducing fork pressure.
+- Regression probe: compact-board fixtures `four building must resolve active capture pressure` should choose `(7,8)#159` and reject `(12,11)#221`; `late capture defense must reduce fork pressure` should choose `(9,8)#161` and reject `(11,11)#220`. Serial compact bench passed 15/15 in 58.73s after the patch.
+
+## 2026-04-25 - Remaining exploit branch starts before the double-loss position
+
+- Game: same seeded exploit batch as above, seed-1/seed-2 replay branch.
+- Symptom: after the first patch, seed 3 was clean but seed 1/2 still reports repeated `forkPressure`, `captureThreat`, and final `humanWin` findings. By ply 20 the human has immediate wins at both `(12,7)#145` and `(7,7)#140`, with `instantLossDefenseMoves` empty, so that position is already lost.
+- Root cause: the current first suspect is earlier, around ply 16/18. The computer chooses `(12,9)#183` to remove open-four pressure while leaving the same fork pressure; alternative `(8,9)#179` resolves a different burden but creates a non-winning capture race. This branch needs replayed line analysis before turning it into a rule.
+- Fix or decision: do not patch this branch yet. Restart long-run discovery with `--no-stop-on-fatal` so known seed-1/seed-2 failures are accumulated into clusters instead of stopping the 23-hour loop immediately.
+- Regression probe: summarize `/tmp/pente-ai-long-run-23h-rerun/findings-all.jsonl` with `python3 Scripts/pente_ai_findings_summary.py` and replay the largest seed-1/seed-2 clusters before adding another compact fixture.
