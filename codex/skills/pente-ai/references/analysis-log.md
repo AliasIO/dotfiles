@@ -242,3 +242,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: the current first suspect is earlier, around ply 16/18. The computer chooses `(12,9)#183` to remove open-four pressure while leaving the same fork pressure; alternative `(8,9)#179` resolves a different burden but creates a non-winning capture race. This branch needs replayed line analysis before turning it into a rule.
 - Fix or decision: do not patch this branch yet. Restart long-run discovery with `--no-stop-on-fatal` so known seed-1/seed-2 failures are accumulated into clusters instead of stopping the 23-hour loop immediately.
 - Regression probe: summarize `/tmp/pente-ai-long-run-23h-rerun/findings-all.jsonl` with `python3 Scripts/pente_ai_findings_summary.py` and replay the largest seed-1/seed-2 clusters before adding another compact fixture.
+
+## 2026-04-26 - Full 23-hour mixed long-run converges on early fork-pressure miss
+
+- Game: `pente_ai_long_run.py --seed-game-log /tmp/pente-ai-triage-current/export/ai-game-log.jsonl --hours 23 --no-stop-on-fatal`, output `/tmp/pente-ai-long-run-23h-rerun`.
+- Symptom: the completed run found `8185` findings across `161` batches: `5016` fatal, `3169` warnings, and `722` summary clusters. A few exploit slices had zero fatal findings, but later exploit slices again produced fatal seeded-game findings, so single clean exploit slices are variance rather than proof of resolution.
+- Root cause: the dominant stable discovery is the same self-play cascade. The earliest repeated miss is `self-play-1:6`, player `1`, selected `(8,10)#198`, with `(12,9)#183` listed as the fork-pressure defense. Combined summary counts ranked this at `424` hits, ahead of later cascade moves `(6,11)#215`, `(11,10)#201`, and `(9,11)#218`.
+- Fix or decision: do not patch from aggregate counts alone. Replay `self-play-1:6` first and verify whether `(12,9)#183` is a real tactical improvement or a pressure-oracle artifact. Then inspect whether the later ply-15/21 clusters disappear when that early move changes, before adding broad fork-pressure ordering rules.
+- Regression probe: `/tmp/pente_ai_pressure_bench --replay self-play-1:6 --emit-fixtures --verbose`; if confirmed, add a compact fixture for the earliest board and run the serial compact regression bench before another long discovery loop.
