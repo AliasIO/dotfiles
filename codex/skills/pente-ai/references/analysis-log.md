@@ -314,3 +314,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: the board already had human stones `(8,6)` through `(11,6)`, with `(12,6)` as the only empty endpoint for an immediate five. The diagonal extension `(12,10)#202` only creates a one-ended four and leaves the human immediate win at `(12,6)#126`.
 - Fix or decision: no code change. Keep `instantLossDefense` above own closed-four growth; this is not the prior "play too defensively into a soft three" pattern.
 - Regression probe: tactical probe on compact board `.........................................................................................................................10000................1...................1...............0...1................1.....................................0...........................................................................................................................` reports `opponent immediate wins: (12,6)#126`, `instant loss defenses: (12,6)#126`; after `(12,10)#202`, opponent still wins immediately at `(12,6)#126`.
+
+## 2026-04-27 - Safe immediate-win threats beat routine open-three blocks
+
+- Game: `local-ai-f7a0cba5-4475-4c5b-9b24-33937d008bbf`, computer move 14 after human `(9,6)#123`.
+- Symptom: computer blocked the human horizontal open three with `(7,6)#121`, even though `(12,10)#202` completed a diagonal four and forced a human response at `(13,11)#222`.
+- Root cause: `activeOpenFourCounterWin` was disabled whenever stable open-three/open-four defense moves existed, so the AI could not choose a safe forcing immediate-win threat before a routine block.
+- Fix or decision: allow active open-four counter-wins under stable open-three/open-four pressure when the move creates a forced immediate win, exposes no immediate/capture loss, and every forced human reply leaves no new fork or capture pressure. The suspect board now chooses `(12,10)#202` with reason `activeOpenFourCounterWin`.
+- Regression probe: compact fixture `forcing closed four can precede open-three defense` expects `(12,10)#202` and rejects `(7,6)#121` / `(11,6)#125`; serial compact bench passed 20/20 and short strict pressure smoke passed with `fatal=0`.
