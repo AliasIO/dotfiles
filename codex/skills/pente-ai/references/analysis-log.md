@@ -306,3 +306,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: when `stableOpenFourCreationDefenses` was non-empty, `hardOpenFourResolutionDefenses` discarded `openFourResolvingCaptureDefenses`. That preserved prior anti-temporary-capture-reset behavior, but it also hid capture defenses that strictly improve a compound open-four plus fork-pressure position.
 - Fix or decision: keep open-four-resolving capture defenses alongside stable open-four blocks only when the capture fully clears current open-four creation and reduces fork pressure below the best stable block.
 - Regression probe: compact-board fixture `open-four capture defense should reduce fork pressure` expects `(10,10)#200` and rejects `(9,12)#237`. Exact exploit replay `--replay seed-1-move-1-after:16` passed with `fatal=0 warnings=0`; serial compact bench passed 19/19 in 137.87s; post-fix strict-pressure smoke passed with `fatal=0 warnings=17`.
+
+## 2026-04-27 - Closed four attack cannot ignore an immediate line-five
+
+- Game: `local-ai-f7a0cba5-4475-4c5b-9b24-33937d008bbf`, computer move 16 after human `(11,6)#125`.
+- Symptom: the computer's block `(12,6)#126` looked like a soft defense when it also had a diagonal four-extension at `(12,10)#202`.
+- Root cause: the board already had human stones `(8,6)` through `(11,6)`, with `(12,6)` as the only empty endpoint for an immediate five. The diagonal extension `(12,10)#202` only creates a one-ended four and leaves the human immediate win at `(12,6)#126`.
+- Fix or decision: no code change. Keep `instantLossDefense` above own closed-four growth; this is not the prior "play too defensively into a soft three" pattern.
+- Regression probe: tactical probe on compact board `.........................................................................................................................10000................1...................1...............0...1................1.....................................0...........................................................................................................................` reports `opponent immediate wins: (12,6)#126`, `instant loss defenses: (12,6)#126`; after `(12,10)#202`, opponent still wins immediately at `(12,6)#126`.
