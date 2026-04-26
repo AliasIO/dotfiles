@@ -152,9 +152,17 @@ Run the headless pressure bench for smoke checks and longer self-play batches:
 swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
 ```
 
+Use the tactical probe for exact compact-board analysis when replay drift or mixed pressure makes a finding ambiguous:
+
+```bash
+swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAITacticalProbe/main.swift -o /tmp/pente_ai_tactical_probe
+```
+
 For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates only after confirming the root position was not already lost: if the opponent already had immediate wins and `instantLossDefenseMoves` is empty, move one or more plies earlier. Treat warning findings as suspicious positions to inspect before adding a regression. Use `--replay generated-1:17 --emit-fixtures --verbose` or `--replay self-play-1:22 --emit-fixtures --verbose` to reproduce a reported source/ply and print a candidate fixture. Low-budget timeout warnings are noisy; only treat timeout output as a code fix candidate when it reproduces near the Advanced 4s budget.
 
 When ordinary long pressure batches produce many warnings but no fatal findings, switch to discovery mode instead of extending the same run. Use `--strict-pressure` to promote unresolved capture/fork/open-four pressure without a forcing counter, `--teacher` plus explicit teacher depth/time/candidate knobs to compare against a deeper search, and `--jsonl /tmp/<name>.jsonl` to persist every finding. Summarize those files with `python3 Scripts/pente_ai_findings_summary.py /tmp/<name>.jsonl` and replay the top clusters before coding.
+
+Before patching from pressure-bench output, verify that the listed defense is viable against higher-priority threats. A fork/capture/open-four finding can be an oracle false positive when the AI selected the only immediate-loss defense, the only move that handles active open-four pressure, or the only move that improves active capture pressure. Use `Scripts/PenteAITacticalProbe/main.swift` on the finding's compact board to compare candidate outcomes before turning a pressure finding into an AI rule.
 
 When human games are clearly stronger than generated pressure positions, run the exploit bench instead of waiting for more manual games. Compile `Scripts/PenteAIExploitBench/main.swift`, optionally export the latest real game with `Scripts/pente_ai_export_game.py`, pass the exported `ai-game-log.jsonl` via `--seed-game-log`, and write `--jsonl` findings. The exploit bench uses a hostile human-side policy and can continue from real-game boards, so it should be used to convert the user's winning motifs into repeatable headless failures.
 
