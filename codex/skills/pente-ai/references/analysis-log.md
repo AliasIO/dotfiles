@@ -250,3 +250,11 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Root cause: the dominant stable discovery is the same self-play cascade. The earliest repeated miss is `self-play-1:6`, player `1`, selected `(8,10)#198`, with `(12,9)#183` listed as the fork-pressure defense. Combined summary counts ranked this at `424` hits, ahead of later cascade moves `(6,11)#215`, `(11,10)#201`, and `(9,11)#218`.
 - Fix or decision: do not patch from aggregate counts alone. Replay `self-play-1:6` first and verify whether `(12,9)#183` is a real tactical improvement or a pressure-oracle artifact. Then inspect whether the later ply-15/21 clusters disappear when that early move changes, before adding broad fork-pressure ordering rules.
 - Regression probe: `/tmp/pente_ai_pressure_bench --replay self-play-1:6 --emit-fixtures --verbose`; if confirmed, add a compact fixture for the earliest board and run the serial compact regression bench before another long discovery loop.
+
+## 2026-04-26 - Opening book must not leave active fork pressure
+
+- Game: replay `self-play-1:6` from `/tmp/pente-ai-long-run-23h-rerun`.
+- Symptom: strict pressure replay reproduced the top cluster: the AI selected opening-book move `(8,10)#198` while the engine still listed `(12,9)#183` as the only active fork-pressure defense. If the opponent then played `(12,9)#183`, they gained open-four creation at `(10,9)#181` and left the computer with multiple fork defenses.
+- Root cause: `openingBookMoveIsSafe()` checked immediate line wins and winning capture replies, but not active open-three fork pressure. Because opening book selection runs before the normal fork-defense shortcut stack, a quiet book move could bypass a known fork-pressure defense.
+- Fix or decision: reject opening-book moves that do not reduce existing `openThreeForkPointDefenseMoves` pressure. The replay now produces zero findings; the AI may choose either `(8,9)#179` or `(12,9)#183`, as long as it rejects `(8,10)#198` and leaves no human open-three fork.
+- Regression probe: compact-board fixture `opening book must resolve active fork pressure`; exact replay `--replay self-play-1:6 --depth 4 --time-limit-ms 700 --max-candidate-moves 16 --strict-pressure` writes zero findings. Serial compact bench passed 16/16 in 62.21s.
