@@ -5,4 +5,3 @@
 - For design or layout-only iOS app changes, rebuild/reinstall/launch after edits, but do not take screenshots or verify the layout in the simulator; the user will review those changes by eye.
 - Use the `bloomscout` AWS profile for BloomScout AWS work. Do not use the `pente` profile for this project.
 - Do not create git branches for BloomScout work. Always edit files on `master`, and keep existing local edits instead of discarding or resetting them.
-- After making significant code changes, consider edge cases and gotchas before closing out. If there is more that should ideally be done, say so directly, including any remaining follow-up work or next optimization steps.
