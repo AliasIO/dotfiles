@@ -1,0 +1,66 @@
+# Project Instructions
+
+## Product Direction
+
+- Treat ISO100 as a portfolio-first photography service, not a generic website builder, social network, client-delivery suite, or photographer business-management platform.
+- Favor decisions that improve public portfolio quality, image presentation, simple publishing, and clear free-vs-paid upgrade boundaries.
+- Keep the product direction aligned with `/Users/elbert/Sites/iso100/docs/product-plan.md`; update that document when changing durable product assumptions instead of scattering product notes elsewhere.
+- Use direct buyer language for public copy. Avoid meta commentary about page formats or internal positioning work.
+
+## Design Direction
+
+- ISO100-owned surfaces should feel minimal, industrial, precise, and image-led.
+- Use white, black, and accent `#ff4b5e` as the core ISO100 brand palette unless the user explicitly changes the direction.
+- Avoid rounded cards, rounded inputs, pill buttons, gradients, shadows, glassmorphism, decorative blobs, and soft SaaS styling on ISO100 brand/product surfaces.
+- Create hierarchy with spacing, borders, alignment, scale, contrast, and strong image presentation.
+- Do not let ISO100 chrome compete with photographer work; photos should remain the visual focus.
+
+## Architecture
+
+- Current infrastructure is CDK-managed in `/Users/elbert/Sites/iso100` with S3, CloudFront, Route 53, ACM, and deployment from `web/`.
+- Use the AWS CLI profile `iso100` for AWS commands unless the user specifies otherwise.
+- Treat `iso100.app` and `www.iso100.app` as CloudFront-backed public site domains.
+- For future app work, prefer Nuxt, Vue 3, TypeScript, shadcn-vue, and Tailwind for the web client, with native SwiftUI for iOS.
+- Keep core business logic out of Nuxt server routes. The web app and future iOS app should be peer clients of the same versioned HTTPS API.
+- Prefer AWS-native backend primitives: Cognito, API Gateway HTTP API, Lambda, DynamoDB on-demand, S3, CloudFront, and Stripe webhooks.
+
+## Domain Model
+
+- Keep ISO100-owned product surfaces separate from photographer public surfaces:
+  - `iso100.app` for the marketing site.
+  - `studio.iso100.app` for the logged-in product.
+  - `api.iso100.app` for the versioned API.
+  - `auth.iso100.app` if Cognito Hosted UI needs a dedicated domain.
+  - `username.iso100.app` for free public photographer portfolios.
+  - Custom domains for paid public portfolio surfaces.
+- Logged-in account, billing, destructive actions, and admin flows should stay on ISO100-controlled application domains, not on user subdomains or custom domains.
+- Backend validation must be authoritative for public username/subdomain reservation; frontend validation can mirror it only for user experience.
+
+## Web Workflow
+
+- `web/` currently contains the static website placeholder. Do not assume a framework has already been installed until the repo confirms it.
+- If converting the site to Nuxt or another framework, keep the CDK deployment path aligned with the generated static output.
+- For visual changes, verify the rendered page in a browser or with a screenshot flow when practical, especially across light/dark behavior and mobile widths.
+
+## iOS Workflow
+
+- `ios/` contains the native SwiftUI placeholder app used for the App Store name and bundle identifier.
+- For iOS app code or asset changes, validate the file-level result at minimum. Rebuild/run in the simulator when the change affects runtime behavior or visible SwiftUI UI.
+- Preserve the app identity unless the user asks otherwise:
+  - Display name: `ISO100`
+  - Bundle identifier: `app.iso100`
+  - Minimum iOS version: `17.0`
+
+## DNS And Deploy Checks
+
+- DNS and AWS output values can drift. Re-check live AWS and public DNS before giving a current operational answer.
+- When local DNS disagrees with expected delegation, compare `dig +trace NS iso100.app` with at least one public resolver such as `1.1.1.1`, `8.8.8.8`, or `9.9.9.9` before concluding propagation is incomplete.
+- If the in-app browser is unreliable for previewing the live site, use a direct browser/screenshot fallback rather than guessing from deployed files.
+
+## Git And Local Edits
+
+- Always work on `master` for ISO100. Do not create feature branches unless the user explicitly asks.
+- After making changes, commit and push them. If the push is rejected because `master` moved, rebase on the remote branch, resolve carefully, then push.
+- This repo may have substantial uncommitted setup work. Do not reset, clean, or discard local files unless the user explicitly asks.
+- Before committing, inspect status and keep unrelated user changes out of the commit where practical.
+- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Sites/dotfiles/codex/projects/iso100/AGENTS.md`; the repo-root `AGENTS.md` should be a symlink to it.
