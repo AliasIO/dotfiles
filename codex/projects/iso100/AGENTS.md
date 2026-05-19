@@ -15,6 +15,23 @@
 - Create hierarchy with spacing, borders, alignment, scale, contrast, and strong image presentation.
 - Do not let ISO100 chrome compete with photographer work; photos should remain the visual focus.
 
+## Public Portfolio Design Direction
+
+- Public portfolios are photographer-owned surfaces. They should feel like quiet, high-end photography portfolios, not ISO100 product pages.
+- Do not use ISO100 branding, accent colors, marketing copy, product chrome, logos, or navigation on public portfolio pages.
+- The only ISO100 branding exception is the branded `Made with ISO100` footer on free accounts. Paid accounts and custom-domain portfolios should have no ISO100 branding unless explicitly enabled by the photographer.
+- Let the photographer's images dominate. UI should recede and use neutral white, near-white, black, or near-black themes.
+- Avoid decorative styling: no gradients, shadows, glass effects, blobs, rounded cards, pill buttons, or SaaS-style panels.
+- Use restrained typography with normal casing. Avoid uppercase-heavy labels except where genuinely useful for tiny metadata.
+- Use spacing, alignment, borders, image scale, and contrast for hierarchy.
+- Keep portfolio navigation minimal: photographer name, gallery links, about, and contact where enabled.
+- Do not add explanatory product text like "portfolio", "gallery experience", "powered by", or "published with" inside the main page chrome.
+- Photo pages, gallery pages, and lightbox/detail views should feel immersive and editorial, not dashboard-like.
+- Metadata should support the photograph: title, caption, location, date, camera, and license where available, never internal processing stats.
+- Contact forms should be visually quiet and photographer-facing, not lead-gen styled.
+- Any controls should be plain, precise, and small: text links, simple icon buttons, or minimal bordered controls.
+- Mobile layouts should preserve image impact first, then navigation, then metadata.
+
 ## Architecture
 
 - Current infrastructure is CDK-managed in `/Users/elbert/Sites/iso100` with S3, CloudFront, Route 53, ACM, and deployment from `web/`.
