@@ -32,6 +32,15 @@
 - Any controls should be plain, precise, and small: text links, simple icon buttons, or minimal bordered controls.
 - Mobile layouts should preserve image impact first, then navigation, then metadata.
 
+## Layout Editor
+
+- Treat layout editor cover previews and cover-style preset buttons as representative scaled versions of the public portfolio page, not abstract placeholders.
+- Preserve the public page's visual contract in the editor: cover size/aspect ratio, hero height, page background color, image crop, tint or overlay color, text color, font family, font weight, approximate font scale, text alignment, text position, spacing, gallery proportions, and visible section balance.
+- Cover image cropping must use the same focus-point behavior as the public page across all cover sizes and layout presets. If a photographer sets a focus point, the editor preview, preset thumbnails, and published portfolio should all crop around the same focal area.
+- Preset thumbnails can be simplified, but they must still communicate the real page composition. A photographer should be able to choose a preset from the thumbnail and not be surprised by the published portfolio.
+- If public portfolio rendering changes for a layout style, update the editor preview and preset thumbnail representation at the same time.
+- When validating layout-editor changes, compare the editor preview against the rendered public portfolio at desktop and mobile widths. The preview does not need to be pixel-identical, but the proportions, typography, color treatment, crop/focus behavior, and placement must be faithful.
+
 ## Architecture
 
 - Current infrastructure is CDK-managed in `/Users/elbert/Sites/iso100` with S3, CloudFront, Route 53, ACM, and deployment from `web/`.
