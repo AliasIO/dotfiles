@@ -34,10 +34,10 @@
 
 ## Layout Editor
 
-- Treat layout editor cover previews and cover-style preset buttons as representative scaled versions of the public portfolio page, not abstract placeholders.
+- Treat layout editor cover previews as representative scaled versions of the public portfolio page, not abstract placeholders.
 - Preserve the public page's visual contract in the editor: cover size/aspect ratio, hero height, page background color, image crop, tint or overlay color, text color, font family, font weight, approximate font scale, text alignment, text position, spacing, gallery proportions, and visible section balance.
 - Cover image cropping must use the same focus-point behavior as the public page across all cover sizes and layout presets. If a photographer sets a focus point, the editor preview, preset thumbnails, and published portfolio should all crop around the same focal area.
-- Preset thumbnails can be simplified, but they must still communicate the real page composition. A photographer should be able to choose a preset from the thumbnail and not be surprised by the published portfolio.
+- Preset buttons may stay as abstract grey blocks and skeleton bars. They do not need to render the real photo, real text, or exact fonts, but their cover size, page/background balance, overlay/tint tone, text-block proportions, text positioning, gallery-grid proportions, and focus-point crop implication must still be representative of the published layout.
 - If public portfolio rendering changes for a layout style, update the editor preview and preset thumbnail representation at the same time.
 - When validating layout-editor changes, compare the editor preview against the rendered public portfolio at desktop and mobile widths. The preview does not need to be pixel-identical, but the proportions, typography, color treatment, crop/focus behavior, and placement must be faithful.
 
