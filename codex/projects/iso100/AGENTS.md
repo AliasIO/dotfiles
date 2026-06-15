@@ -79,6 +79,7 @@
 
 ## DNS And Deploy Checks
 
+- Do not deploy, republish, invalidate production caches, or otherwise mutate live ISO100 infrastructure unless the user explicitly asks for that action in the current request. Prior deploy approval from earlier turns does not carry forward. If the user asks to implement or fix something without saying to deploy, stop after local verification, commit, and push.
 - DNS and AWS output values can drift. Re-check live AWS and public DNS before giving a current operational answer.
 - When local DNS disagrees with expected delegation, compare `dig +trace NS iso100.app` with at least one public resolver such as `1.1.1.1`, `8.8.8.8`, or `9.9.9.9` before concluding propagation is incomplete.
 - If the in-app browser is unreliable for previewing the live site, use a direct browser/screenshot fallback rather than guessing from deployed files.
