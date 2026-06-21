@@ -1,6 +1,7 @@
 # Project Instructions
 
 - After making any file edits, commit the changes to git.
+- After making mobile app edits, rebuild/reinstall/launch the relevant simulator or emulator so the user can verify the changes.
 - After making iOS app edits, rebuild/reinstall/launch the app in the simulator so the user can see the changes.
 - For design or layout-only iOS app changes, rebuild/reinstall/launch after edits, but do not take screenshots or verify the layout in the simulator; the user will review those changes by eye.
 - For small visual/layout-only app iterations, do not run the full test suite after every tiny tweak. Batch related changes, rebuild/reinstall/launch so the user can inspect them, and run targeted tests once before commit when code paths, helpers, state rules, or tested constants changed.
