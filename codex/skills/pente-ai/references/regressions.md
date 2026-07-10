@@ -11,7 +11,7 @@ swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pen
 /tmp/pente_ai_regression_bench
 ```
 
-The current bench contains 24 fixtures. Treat the fixture source as authoritative for boards, expected moves, and assertions.
+The current bench contains 25 fixtures. Treat the fixture source as authoritative for boards, expected moves, assertions, and any explicit median CPU-time guard.
 
 ## Durable Invariants
 
@@ -51,6 +51,7 @@ The current bench contains 24 fixtures. Treat the fixture source as authoritativ
 - `active blocker beats soft capture cleanup`
 - `late capture defense must reduce fork pressure`
 - `capture response must not masquerade as fork defense`
+- `empty fork capture candidates avoid duplicate work`
 
 ### Opening and growth
 
