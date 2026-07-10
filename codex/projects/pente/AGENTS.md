@@ -1,5 +1,11 @@
 # Project Instructions
 
+## Git Workflow
+
+- Treat analysis-only work as read-only. When implementation is authorized, start from `origin/master` in an isolated Git worktree on an `agent/<short-description>` branch.
+- Preserve unrelated local edits. Stage and commit only task-owned files, push the task branch, and open a draft pull request. Never push directly to protected `master`.
+- Require the `App and AI regressions` CI check before merging. Keep deployment or release work separate from branch pushes and merges.
+
 ## Simulator Workflow
 
 - After making iOS app code changes, rebuild and run the active simulator before handing work back so the installed app is ready for manual testing.

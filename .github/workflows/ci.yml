@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Non-Wapp guidance and skill validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install YAML parser
+        run: python3 -m pip install --disable-pip-version-check pyyaml
+      - name: Validate project guidance and Pente skill
+        run: |
+          python3 - <<'PY'
+          import ast
+          from pathlib import Path
+
+          import yaml
+
+          root = Path("codex")
+          projects = ["alias.io", "bloomscout", "iso100", "notepile", "pente"]
+
+          for project in projects:
+              path = root / "projects" / project / "AGENTS.md"
+              if not path.is_file() or not path.read_text().startswith("# Project Instructions"):
+                  raise SystemExit(f"invalid project guidance: {path}")
+              print(f"validated {path}")
+
+          skill = root / "skills" / "pente-ai" / "SKILL.md"
+          text = skill.read_text()
+          if not text.startswith("---\n"):
+              raise SystemExit("Pente skill is missing YAML frontmatter")
+
+          _, frontmatter, body = text.split("---", 2)
+          metadata = yaml.safe_load(frontmatter)
+          if metadata.get("name") != "pente-ai":
+              raise SystemExit("Pente skill name must be pente-ai")
+          if not metadata.get("description") or len(metadata["description"]) > 1024:
+              raise SystemExit("Pente skill description is missing or too long")
+          if not body.strip():
+              raise SystemExit("Pente skill body is empty")
+
+          yaml.safe_load((skill.parent / "agents" / "openai.yaml").read_text())
+
+          for path in sorted((skill.parent / "scripts").glob("*.py")):
+              ast.parse(path.read_text(), filename=str(path))
+              print(f"validated {path}")
+          PY

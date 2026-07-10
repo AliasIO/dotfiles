@@ -85,7 +85,7 @@
 
 ## DNS And Deploy Checks
 
-- Do not deploy, republish, invalidate production caches, or otherwise mutate live ISO100 infrastructure unless the user explicitly asks for that action in the current request. Prior deploy approval from earlier turns does not carry forward. If the user asks to implement or fix something without saying to deploy, stop after local verification, commit, and push.
+- Do not deploy, republish, invalidate production caches, or otherwise mutate live ISO100 infrastructure unless the user explicitly asks for that action in the current request. Prior deploy approval from earlier turns does not carry forward. If the user asks to implement or fix something without saying to deploy, stop after local verification and a draft pull request. Authorized full-stack deployment uses the manual `Deploy` GitHub Actions workflow from protected `master`, its `production` environment, and the repository's OIDC-bound `AWS_DEPLOY_ROLE_ARN`.
 - Before any authorized AWS mutation, verify `aws sts get-caller-identity --profile iso100` returns the expected account through a non-root assumed role whose name contains `ISO100`; refuse root or unexpected identities.
 - DNS and AWS output values can drift. Re-check live AWS and public DNS before giving a current operational answer.
 - When local DNS disagrees with expected delegation, compare `dig +trace NS iso100.app` with at least one public resolver such as `1.1.1.1`, `8.8.8.8`, or `9.9.9.9` before concluding propagation is incomplete.
@@ -93,8 +93,8 @@
 
 ## Git And Local Edits
 
-- Always work on `master` for ISO100. Do not create feature branches unless the user explicitly asks.
-- After making changes, commit and push them. If the push is rejected because `master` moved, rebase on the remote branch, resolve carefully, then push.
-- This repo may have substantial uncommitted setup work. Do not reset, clean, or discard local files unless the user explicitly asks.
-- Before committing, inspect status and keep unrelated user changes out of the commit where practical.
+- Start implementation work from `origin/master` in an isolated Git worktree on an `agent/<short-description>` branch. Do not switch or reuse a dirty primary worktree.
+- After validation, commit task-owned changes, push the task branch, and open a draft pull request. Never push directly to protected `master`; require the `Application and infrastructure` CI check before merging.
+- This repo may have substantial uncommitted setup work. Do not reset, clean, discard, or include those files unless the user explicitly asks.
+- Before committing, inspect status and the staged diff to ensure the pull request contains only task-owned changes.
 - If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Sites/dotfiles/codex/projects/iso100/AGENTS.md`; the repo-root `AGENTS.md` should be a symlink to it.
