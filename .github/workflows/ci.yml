@@ -17,11 +17,11 @@ jobs:
   validate:
     name: Non-Wapp guidance and skill validation
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
-      - name: Install YAML parser
-        run: python3 -m pip install --disable-pip-version-check pyyaml
+      - name: Install validators
+        run: python3 -m pip install --disable-pip-version-check pyyaml cfn-lint
       - name: Validate project guidance and Pente skill
         run: |
           python3 - <<'PY'
@@ -59,3 +59,5 @@ jobs:
               ast.parse(path.read_text(), filename=str(path))
               print(f"validated {path}")
           PY
+      - name: Validate AWS OIDC template
+        run: cfn-lint codex/aws/github-actions-deploy-roles.yml
