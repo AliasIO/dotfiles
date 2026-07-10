@@ -3,7 +3,7 @@
 ## Git Workflow
 
 - Treat analysis-only work as read-only. When implementation is authorized, start from `origin/master` in an isolated Git worktree on an `agent/<short-description>` branch.
-- Preserve unrelated local edits. Stage and commit only task-owned files, push the task branch, and open a draft pull request. Never push directly to protected `master`.
+- Preserve unrelated local edits. Stage and commit only task-owned files, push the task branch, and open a draft pull request. Never push directly to `master`; treat it as protected by policy even when the repository's GitHub plan cannot enforce branch protection.
 - Require the `App and AI regressions` CI check before merging. Keep deployment or release work separate from branch pushes and merges.
 
 ## Simulator Workflow
