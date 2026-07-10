@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: GitHub Actions OIDC provider and manually gated project deploy roles
+
+Resources:
+  GitHubActionsOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      Tags:
+        - Key: Purpose
+          Value: GitHubActions
+
+  ISO100GitHubDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ISO100GitHubDeploy
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Ref GitHubActionsOidcProvider
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: repo:AliasIO/iso100:environment:production
+      Policies:
+        - PolicyName: ISO100CdkDeploy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadBootstrapVersion
+                Effect: Allow
+                Action: ssm:GetParameter
+                Resource: arn:aws:ssm:us-east-1:799414939380:parameter/cdk-bootstrap/hnb659fds/version
+              - Sid: DiscoverOAuthSecrets
+                Effect: Allow
+                Action: secretsmanager:DescribeSecret
+                Resource: arn:aws:secretsmanager:us-east-1:799414939380:secret:iso100/prod/oauth/*
+              - Sid: UseCdkBootstrapRoles
+                Effect: Allow
+                Action: sts:AssumeRole
+                Resource:
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-deploy-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-file-publishing-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-image-publishing-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-lookup-role-799414939380-us-east-1
+      Tags:
+        - Key: Project
+          Value: ISO100
+        - Key: Purpose
+          Value: GitHubActionsDeploy
+
+  AliasIoGitHubDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: AliasIoGitHubDeploy
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Ref GitHubActionsOidcProvider
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: repo:AliasIO/alias.io:environment:production
+      Policies:
+        - PolicyName: AliasIoCdkDeploy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadBootstrapVersion
+                Effect: Allow
+                Action: ssm:GetParameter
+                Resource: arn:aws:ssm:us-east-1:799414939380:parameter/cdk-bootstrap/hnb659fds/version
+              - Sid: UseCdkBootstrapRoles
+                Effect: Allow
+                Action: sts:AssumeRole
+                Resource:
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-deploy-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-file-publishing-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-image-publishing-role-799414939380-us-east-1
+                  - arn:aws:iam::799414939380:role/cdk-hnb659fds-lookup-role-799414939380-us-east-1
+      Tags:
+        - Key: Project
+          Value: AliasIo
+        - Key: Purpose
+          Value: GitHubActionsDeploy
+
+Outputs:
+  ISO100DeployRoleArn:
+    Value: !GetAtt ISO100GitHubDeployRole.Arn
+  AliasIoDeployRoleArn:
+    Value: !GetAtt AliasIoGitHubDeployRole.Arn
