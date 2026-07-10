@@ -1,7 +1,12 @@
 # Project Instructions
 
 - Always work on the `master` branch for this project.
-- After making code changes, commit them to Git and push the commit.
-- After making changes, rebuild the app and install the rebuilt app into the simulator so the changes are visible for manual testing. If no simulator is already booted, boot the standard `iPhone 17` simulator and install there. Do not test in the simulator automatically. Keep the simulator window open. Do not close, move, or mirror the simulator window unless explicitly asked.
-- Avoid commands such as simulator test runners that create a second or cloned simulator window. Prefer compile-only builds plus installing the built app into the active simulator unless the user explicitly asks to run simulator tests.
-- For minor UI-only or low-risk edits, do not run the full simulator test suite by default. Use a compile-only build plus install unless the user asks for tests or the change touches shared logic, persistence, import/export behavior, reminders, search/filtering, or other higher-risk paths.
+- Use US spelling in app copy, documentation, tests, and new durable guidance.
+- Inspect the working tree before editing. Never reset, clean, discard, or include unrelated local work. Stage only task-owned files or hunks, inspect the staged diff, then commit and push those changes. Stop for coordination if the task must overlap existing edits that cannot be separated safely.
+- Documentation-only and website-only changes do not require an app build or simulator install.
+- After app code or asset changes, build into a fixed derived-data directory such as `/tmp/NotePileDerivedData`, targeting the already-booted simulator by UDID. Install that exact `Build/Products/Debug-iphonesimulator/NotePile.app` with `xcrun simctl install`, launch bundle id `io.alias.notepile`, and leave the Simulator open for manual testing. If no simulator is booted, boot the standard `iPhone 17` simulator first.
+- Automated unit tests and manual simulator UI interaction are different activities. Do not click through, screenshot, move, mirror, or visually judge the app automatically unless the user asks. Unit tests may run without separate permission when risk warrants them.
+- For minor UI-only or low-risk edits, use a compile-only build plus install. For changes to shared logic, persistence, migrations, import/export, reminders, search/filtering, sync, or backups, run the relevant unit tests on the active simulator by UDID with `-parallel-testing-enabled NO`; run the full suite only when the affected surface is broad. Never use a destination that creates another simulator or cloned test workers.
+- Release surfaces are iPhone, iPad, and Mac Catalyst, all with the iOS 26/Swift 6 baseline. Use iPhone 17 for the default handoff, add an iPad build and visual check for adaptive-layout changes, and add a Mac Catalyst build for Mac-specific or shared cross-platform behavior.
+- The NotePile website is hosted at `alias.io/notepile`. Its source code lives in `/Users/elbert/Sites/alias.io`, specifically `/Users/elbert/Sites/alias.io/site/public/notepile`.
+- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Sites/dotfiles/codex/projects/notepile/AGENTS.md`; the repository-root file is a symlink.

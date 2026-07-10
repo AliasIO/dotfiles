@@ -1,179 +1,103 @@
 ---
 name: pente-ai
-description: Improve, debug, and regression-check the Pente iOS app's advanced single-player computer AI. Use when Codex is asked to analyze a game the human won against the computer, inspect AI reasoning logs, tune Pente tactics such as open threes/trias, stretched fours/tesseras, extensions, keystone captures, capture races, forks, or update `PenteAI.swift`, `PenteEngine.swift`, `PenteEvaluator.swift`, or `AIGameStore.swift`.
+description: Analyze, debug, implement, and regression-check the Pente iOS app's advanced single-player AI. Use for human wins against the computer, AI reasoning logs, open threes/trias, stretched fours/tesseras, extensions, keystone captures, capture races, forks, or changes to `PenteAI.swift`, `PenteEngine.swift`, `PenteEvaluator.swift`, and `AIGameStore.swift`.
 ---
 
 # Pente AI
 
-## Overview
+Work in `/Users/elbert/Sites/pente`. Start with tactical evidence and preserve the Advanced 4-second response budget.
 
-Use this skill for advanced single-player AI work in `/Users/elbert/Sites/pente`. Treat the task as tactical forensics first, then implement small symmetric attack/defense improvements without weakening existing defenses or blowing the hard difficulty time budget.
+## Respect The Requested Scope
 
-## Core Workflow
+- Treat requests to analyze, inspect, explain, review, or diagnose as read-only. Reconstruct the loss and report the first avoidable AI move without editing code, the skill, the history, or Git state.
+- Implement only when the user asks to fix, tune, change, update, or otherwise authorizes code changes.
+- Modify this skill or its dotfiles references only when the user explicitly asks to maintain the skill or regression documentation.
+- Commit or push only when the applicable project instructions or the user explicitly require it.
 
-1. Read the relevant repo files before changing behavior:
-   - `Pente/PenteAI.swift`: move selection, shortcut ordering, search, DEBUG decision logs.
+## Load Context Progressively
+
+1. Read only the relevant repo files:
+   - `Pente/PenteAI.swift`: move selection, shortcut ordering, search, and DEBUG decision logs.
    - `Pente/PenteEngine.swift`: player-relative tactical detectors and move generation.
-   - `Pente/PenteEvaluator.swift`: symmetric static scoring.
-   - `Pente/AIGameStore.swift`: single-player state, simulator JSONL logs, saved games.
+   - `Pente/PenteEvaluator.swift`: mostly player-relative static scoring with intentional defensive-urgency asymmetry.
+   - `Pente/AIGameStore.swift`: single-player state, simulator JSONL logs, and saved games.
+2. Read `references/codebase.md` for paths, simulator commands, and log fields.
+3. Read `references/strategy.md` only when game concepts need clarification.
+4. Before implementation, read `references/regressions.md`.
+5. Search `references/analysis-log.md` for a matching motif; do not load the full chronological archive by default.
 
-2. Load the detailed references only as needed:
-   - For Pente concepts and tactical priorities, read `references/strategy.md`.
-   - For code paths, simulator commands, and log formats, read `references/codebase.md`.
-   - Before analyzing or patching AI behavior, read `references/analysis-log.md` and treat it as a regression checklist.
+## Select The Correct Game Before Relaunching
 
-3. If debugging a human win against the computer, start from evidence:
-   - Build/run the debug app on the active simulator if needed.
-   - Locate logs with `xcrun simctl get_app_container booted io.alias.pente data`.
-   - Summarize logs with `scripts/pente_ai_log_summary.py --device booted --latest --reverse`.
-   - Inspect `AI_DECISION_LOG` / `AI_GAME_LOG` console output when reproducing live.
+For a reported human win, identify and record the completed game id before rebuilding, relaunching, or starting another game:
 
-4. Analyze from the end backward:
-   - Start at the terminal human-winning move.
-   - Step backward through committed moves and AI decision events until the side to move had no plausible defense against the winning sequence.
-   - Keep going backward to find the earlier computer move that first allowed that unwinnable position.
-   - Distinguish "already lost, no defense existed" from "defense existed but was not generated, ranked, searched, or selected."
-   - When a credible code-level solution is identified, implement it in the app in the same turn unless the user explicitly asked for analysis only or the fix is still speculative.
+```bash
+python3 /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest-human-win --reverse
+```
 
-5. Patch narrowly and symmetrically:
-   - Prefer player-relative helpers in `PenteEngine` so the same pattern supports computer attack and human-threat defense.
-   - Use the detector in candidate generation, shortcut attack paths, forced defense paths, and evaluation/order scoring as appropriate.
-   - Add the new behavior alongside existing defenses. Do not "fix" one tactical failure by simply demoting another already-working defense.
-   - Do not hand back only a diagnosis after finding the missing detector, ordering guard, or tactical scoring rule; patch the code, validate the specific board, and record the regression probe.
-
-6. Validate behavior and time:
-   - Rebuild and run the simulator after app code changes.
-   - Always reload/relaunch the simulator app after a code change and reopen or restart the single-player game so the user can continue testing against the latest build.
-   - Check the relevant AI decision log for selected reason, candidate groups, missed candidate tags, phase timings, and `exceededDeadline`.
-   - Run the compact-board regression bench so a local fix does not reintroduce an older tactical failure.
-   - Use headless scripts outside the iOS simulator for volume testing. The simulator is for manual play/log capture; self-play and generated-position pressure tests should run directly against `PenteEngine`/`PenteAI`.
-   - Run deadline-sensitive AI benches serially. Do not run the compact regression bench in parallel with pressure batches; CPU contention can starve 4s fixtures and produce false fallback failures.
-   - Keep hard AI response time practical. Current hard config is `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`; expensive shortcuts must cap candidates and respect `shouldStop()`.
-   - Do not raise the default 4s Advanced timeout to mask bad choices. Preserve a return-time reserve: once the AI is inside that reserve, return the best pre-ranked tactical shortcut or fallback instead of starting shortcut/full search or another expensive reply probe.
-
-7. Preserve learnings:
-   - After each game analysis, append a concise entry to `references/analysis-log.md`.
-   - Include the date, game id when available, symptom, root cause, fix or decision, and any regression probe that should be reused.
-   - If a durable lesson changes how future analyses should be run, update this skill in the same turn.
-
-## Parallel Debugging With Subagents
-
-When subagent use is permitted or has been authorized for a Pente AI debugging/fixing pass, use it whenever it is likely to shorten the investigation. Split independent work while keeping the main agent on the critical path:
-
-- Main agent: pull the latest simulator logs, identify the suspect move sequence, own the final code patch, run final validation, update the analysis log, and commit.
-- Explorer 1: reconstruct the suspect board from logs and report tactical facts only: active threats, capture vulnerabilities, expected move, candidate groups, and compact board.
-- Explorer 2: inspect the relevant `PenteAI.swift` / `PenteEngine.swift` paths and compare the failure against `references/analysis-log.md`.
-- Worker/verifier: run focused probes and prior regression probes while the main agent integrates the fix.
-
-Prefer delegating bounded read-only analysis or probe execution. Keep edits in one place unless the fix naturally has disjoint file ownership.
+Use `--list-games` if no human win is found. After identifying the game, use `--game-id <id>` for every summary, export, fixture, and triage command. Never assume a newly started session is the target loss.
 
 ## Reverse-Loss Analysis
 
-When the user says they beat the advanced computer, do this before coding:
-
-1. Identify the `gameId` and final winner from `ai-game-log.jsonl`.
-2. Print the reverse timeline and AI decision summaries.
-3. For each computer move in reverse order, inspect:
-   - `reason`, `selected`, `durationMs`, `phases`, and `groups`.
-   - Whether the selected move was a legal defense but insufficient.
-   - Whether a better defensive move appeared in a candidate group but lost in ordering/search.
-   - Whether the needed move never appeared in any tactical group or root search.
-4. Reconstruct the board before the suspect AI move from `decision.board` or the matching `aiMoveCommitted.before`.
-5. Confirm the tactical failure with `PenteEngine` helpers, not by visual intuition only.
-6. Continue one or more ply earlier when the current position was already losing.
-
-The target fix is usually the first earlier computer move where a player-relative detector should have generated, preferred, or searched a move that both handled the human threat and advanced the computer's own forcing plan.
-
-Before finalizing a diagnosis or patch, compare the suspected failure against `references/analysis-log.md`; repeated patterns such as shortcut deadline fallback, compound-defense preemption, and capture-refuted blocks should be tested explicitly.
-
-If the reverse analysis identifies a non-speculative implementation fix, apply it before final response. Only stop at analysis when the user explicitly asks for no code changes or when the evidence does not yet support a concrete patch.
+1. Confirm the selected `gameId`, final winner, and terminal human move.
+2. Walk committed moves backward and match each computer move to its decision event.
+3. Reconstruct the board before each suspect AI move.
+4. Check whether a viable defense existed and whether it was absent from generation, lost in ordering/search, or discarded at the deadline.
+5. Continue earlier when the current position was already lost.
+6. Confirm tactical facts with `PenteEngine` helpers or the tactical probe rather than visual intuition alone.
+7. For read-only requests, report the diagnosis and proposed fix without changing files.
 
 ## Implementation Rules
 
-- Make tactical detectors player-relative: `for player: Int8, in state: AIState`.
-- Keep attack/defense symmetry: every new defense concept should have an equivalent attacking use unless there is a concrete reason it cannot.
+- Make tactical detectors player-relative and preserve attack/defense symmetry unless a concrete asymmetry is required.
 - Prefer additive tactical buckets and ordering terms over broad reprioritization.
-- Guard against capture refutations: open-three, stretch-four, and fork moves are not good if the played stone or key support stones can be captured immediately into a loss.
-- Keep broad proof-style forced-threat solvers behind concrete tactical shortcuts such as immediate capture, fork defense, capture response, and active open-three creation; pure capture-setup moves are too soft to seed a proof shortcut unless a later validated regression says otherwise.
-- If a single urgent tactical response starts reply checking but overruns the deadline, keep that response as unrefuted rather than discarding it and falling through to a softer fallback.
-- Avoid global legal-move scans in normal paths. Use neighborhood/contact candidates, prefix limits, cached summaries, and early exits.
-- Log new tactical groups in DEBUG so future regressions are inspectable.
-- Preserve existing public behavior and opening rules.
+- Guard open-three, stretch-four, fork, and counter-threat moves against immediate and delayed capture refutations.
+- Keep broad forced-threat solvers behind concrete immediate-win, capture, fork, and open-four work.
+- Avoid global legal-move scans in normal paths. Cap candidates, cache summaries, add early exits, and honor `shouldStop()`.
+- Preserve urgent detected responses when a reply probe reaches the deadline instead of falling through to a softer fallback.
+- Log new tactical groups in DEBUG and preserve opening/public behavior.
 
 ## Validation
 
-Use the XcodeBuildMCP iOS workflow when app code changes:
+Run the compact regression bench from `references/regressions.md` serially after AI behavior changes. Do not run it beside pressure or exploit batches because CPU contention can create false deadline failures.
 
-- `session_show_defaults`
-- `list_sims` and choose the booted simulator, or boot/open one if explicitly requested.
-- `list_schemes` for `Pente.xcodeproj`.
-- `session_set_defaults` with project, scheme `Pente`, simulator, configuration `Debug`, and bundle id `io.alias.pente`.
-- `build_run_sim`
-- For fresh Advanced single-player testing, prefer launching with the debug shortcut argument `-PenteDebugStartSinglePlayer` after the build. It jumps straight into a new single-player game with Advanced difficulty, Tournament rules, and Player starting, avoiding menu navigation with Computer Use.
-- After `build_run_sim`, leave the simulator ready for manual testing: use the debug launch shortcut when starting a fresh game; use Computer Use only as a fallback when you need to inspect or control an already-open simulator UI.
-- `snapshot_ui` / `screenshot` for screen state.
-- `start_sim_log_cap` with `captureConsole: true`, reproduce, then `stop_sim_log_cap`.
+There are no dedicated AI unit tests. Use the compact bench, focused tactical probes, simulator logs, and a rebuilt Debug app. Use headless pressure/exploit tools for volume; use the simulator for captured games and manual play.
 
-There are no dedicated AI unit tests in the repo currently; use compile/build, simulator logs, targeted reproduced games, and code-level tactical probes as the validation surface.
+### Simulator
 
-Run the recorded compact-board regression bench after Pente AI code changes:
+Use XcodeBuildMCP only when its current build/run tools are available. Its build/run results include runtime log paths; do not call obsolete log-capture tools. Otherwise use the CLI fallback in `references/codebase.md`.
+
+For a fresh Advanced game, launch with `-PenteDebugStartSinglePlayer`. After app code changes, install and relaunch the newest build and leave the simulator ready for manual testing.
+
+### Log and fixture helpers
 
 ```bash
-swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench
+python3 Scripts/pente_ai_export_game.py --device booted --game-id <id> --output-dir /tmp/pente-ai-game --emit-fixture --show-board
+python3 Scripts/pente_ai_fixture_from_log.py --device booted --game-id <id> --move-number <n> --expected <x,y> --name "<failure>" --show-board
+python3 Scripts/pente_ai_triage_game.py --device booted --game-id <id> --work-dir /tmp/pente-ai-triage --run-exploit
 ```
 
-Use the log-to-fixture helper to convert suspect simulator moves into regression snippets:
+The triage tool defaults to the latest completed human win when `--game-id` is omitted. Pass `--latest` only when intentionally analyzing the latest non-terminal or computer-winning game with committed moves.
 
-```bash
-python3 Scripts/pente_ai_fixture_from_log.py --device booted --latest --move-number <n> --expected <x,y> --name "<short failure name>" --show-board
-```
+### Tactical probe
 
-Use the export helper to persist the latest DEBUG single-player game bundle and optionally print a fixture candidate for the latest AI move:
-
-```bash
-python3 Scripts/pente_ai_export_game.py --device booted --latest --output-dir /tmp/pente-ai-game --emit-fixture --show-board
-```
-
-Use the triage orchestrator as the default first pass after a real human win. It exports or reads the game bundle, prints the reverse timeline, runs Mmai teacher comparisons on logged AI turns, optionally seeds the exploit bench from the real game, and writes a report plus fixture candidates:
-
-```bash
-python3 Scripts/pente_ai_triage_game.py --device booted --work-dir /tmp/pente-ai-triage --run-exploit
-```
-
-Use the long-run supervisor for overnight/headless discovery loops. It compiles benches once, cycles bounded exploit/pressure/teacher-pressure batches, writes per-batch logs plus `findings-all.jsonl`, and keeps `summary.md` updated with replay commands:
-
-```bash
-python3 Scripts/pente_ai_long_run.py --latest-from-simulator --out /tmp/pente-ai-long-run --hours 8
-```
-
-Run the headless pressure bench for smoke checks and longer self-play batches:
-
-```bash
-swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIPressureBench/main.swift -o /tmp/pente_ai_pressure_bench && /tmp/pente_ai_pressure_bench
-```
-
-Use the tactical probe for exact compact-board analysis when replay drift or mixed pressure makes a finding ambiguous:
+Compile and inspect its supported flags:
 
 ```bash
 swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAITacticalProbe/main.swift -o /tmp/pente_ai_tactical_probe
+/tmp/pente_ai_tactical_probe --help
+/tmp/pente_ai_tactical_probe --board "<361-character-board>" --turn 1 --captures 0,0 --last 9,8 --moves "8,7;10,9" --scan
 ```
 
-For deeper self-play outside the simulator, pass explicit knobs such as `--games 4 --positions 16 --max-moves 70 --time-limit-ms 700 --depth 4`. Treat fatal findings as fix candidates only after confirming the root position was not already lost: if the opponent already had immediate wins and `instantLossDefenseMoves` is empty, move one or more plies earlier. Treat warning findings as suspicious positions to inspect before adding a regression. Use `--replay generated-1:17 --emit-fixtures --verbose` or `--replay self-play-1:22 --emit-fixtures --verbose` to reproduce a reported source/ply and print a candidate fixture. Low-budget timeout warnings are noisy; only treat timeout output as a code fix candidate when it reproduces near the Advanced 4s budget.
+### Pressure and long runs
 
-When ordinary long pressure batches produce many warnings but no fatal findings, switch to discovery mode instead of extending the same run. Use `--strict-pressure` to promote unresolved capture/fork/open-four pressure without a forcing counter, `--teacher` plus explicit teacher depth/time/candidate knobs to compare against a deeper search, and `--jsonl /tmp/<name>.jsonl` to persist every finding. Summarize those files with `python3 Scripts/pente_ai_findings_summary.py /tmp/<name>.jsonl` and replay the top clusters before coding.
+Use `Scripts/PenteAIPressureBench`, `Scripts/PenteAIExploitBench`, and `Scripts/pente_ai_long_run.py` only after focused reproduction. Treat findings as hypotheses until the tactical probe confirms the root was defensible and the suggested move handles higher-priority threats. Treat low-budget timeout warnings as noise unless they reproduce near 4 seconds.
 
-Before patching from pressure-bench output, verify that the listed defense is viable against higher-priority threats. A fork/capture/open-four finding can be an oracle false positive when the AI selected the only immediate-loss defense, the only move that handles active open-four pressure, or the only move that improves active capture pressure. Use `Scripts/PenteAITacticalProbe/main.swift` on the finding's compact board to compare candidate outcomes before turning a pressure finding into an AI rule.
+## Record Authorized Learnings
 
-When human games are clearly stronger than generated pressure positions, run the exploit bench instead of waiting for more manual games. Compile `Scripts/PenteAIExploitBench/main.swift`, optionally export the latest real game with `Scripts/pente_ai_export_game.py`, pass the exported `ai-game-log.jsonl` via `--seed-game-log`, and write `--jsonl` findings. The exploit bench uses a hostile human-side policy and can continue from real-game boards, so it should be used to convert the user's winning motifs into repeatable headless failures.
+When regression-documentation changes are in scope:
 
-When a probe covers a durable regression, record the compact board, expected move, and selected reason in `references/analysis-log.md` so future changes can reuse it.
+1. Add or update an executable compact-board fixture.
+2. Update `references/regressions.md` with the durable invariant or fixture name.
+3. Append only a concise historical note to `references/analysis-log.md` when chronology adds value.
 
-## Bundled Script
-
-Run:
-
-```bash
-python3 /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest --reverse
-```
-
-Use `--game-id <id>` for a specific game and `--show-board` when a text board helps.
+Include the date, game id, symptom, root cause, decision/fix, and executable regression probe. Do not record temporary paths as canonical commands.

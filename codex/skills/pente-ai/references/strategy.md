@@ -5,7 +5,6 @@
 - Pente.org strategy forum on initiative, pairs, double threats, extending, shapes, and keystones: https://www.pente.org/gameServer/forums/thread.jspa?forumID=27&threadID=4553&tstart=33
 - Board Game Arena Pente tips on pro opening rules, capture-aware blocking, and keystone/capture examples: https://en.doc.boardgamearena.com/Tips_pente
 - Pente overview and tactics for stretch twos, open trias, stretch trias, open tesseras, advanced shapes, wedge, and extension: https://en.wikipedia.org/wiki/Pente
-- Justapedia Pente strategy overview, useful as a compact mirror of the same concepts: https://justapedia.org/wiki/Pente
 
 ## Terms To Model
 
@@ -41,6 +40,6 @@
 ## How This Maps To Code
 
 - Pattern recognition belongs in `PenteEngine` as player-relative functions.
-- Static symmetry belongs in `PenteEvaluator` by adding the score for `maximizingPlayer` and subtracting the same score for the opponent.
+- Mostly player-relative static scoring belongs in `PenteEvaluator`; keep feature terms symmetric unless a documented defensive-urgency asymmetry is intentional.
 - Search/shortcut behavior belongs in `PenteAI.Searcher`, with DEBUG group logging for new tactical buckets.
 - UI/game-session evidence comes from `AIGameStore` JSONL logs.

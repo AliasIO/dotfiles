@@ -11,7 +11,7 @@
 
 - ISO100-owned surfaces should feel minimal, industrial, precise, and image-led.
 - Use white, black, and accent `#ff4b5e` as the core ISO100 brand palette unless the user explicitly changes the direction.
-- Avoid rounded cards, rounded inputs, pill buttons, gradients, shadows, glassmorphism, decorative blobs, and soft SaaS styling on ISO100 brand/product surfaces.
+- Avoid decorative rounded cards, rounded inputs, pill buttons, gradients, shadows, glassmorphism, blobs, and soft SaaS styling on ISO100 brand/product surfaces. Functional contrast scrims, transparency indicators, and narrowly specified legibility shadows are allowed when required by an authoritative rendering contract.
 - Create hierarchy with spacing, borders, alignment, scale, contrast, and strong image presentation.
 - Do not let ISO100 chrome compete with photographer work; photos should remain the visual focus.
 
@@ -21,7 +21,7 @@
 - Do not use ISO100 branding, accent colors, marketing copy, product chrome, logos, or navigation on public portfolio pages.
 - The only ISO100 branding exception is the branded `Made with ISO100` footer on free accounts. Paid accounts and custom-domain portfolios should have no ISO100 branding unless explicitly enabled by the photographer.
 - Let the photographer's images dominate. UI should recede and use neutral white, near-white, black, or near-black themes.
-- Avoid decorative styling: no gradients, shadows, glass effects, blobs, rounded cards, pill buttons, or SaaS-style panels.
+- Avoid decorative gradients, shadows, glass effects, blobs, rounded cards, pill buttons, and SaaS-style panels. Follow `docs/portfolio-layout-contract.md` for functional image-dimming gradients, scrims, and legibility shadows on full-image covers; those are accessibility and rendering behavior, not decoration.
 - Use restrained typography with normal casing. Avoid uppercase-heavy labels except where genuinely useful for tiny metadata.
 - Use spacing, alignment, borders, image scale, and contrast for hierarchy.
 - Keep portfolio navigation minimal: photographer name, gallery links, about, and contact where enabled.
@@ -43,12 +43,12 @@
 
 ## Architecture
 
-- Current infrastructure is CDK-managed in `/Users/elbert/Sites/iso100` with S3, CloudFront, Route 53, ACM, and deployment from `web/`.
-- Use the AWS CLI profile `iso100` for AWS commands unless the user specifies otherwise.
-- Treat `iso100.app` and `www.iso100.app` as CloudFront-backed public site domains.
-- For future app work, prefer Nuxt, Vue 3, TypeScript, shadcn-vue, and Tailwind for the web client, with native SwiftUI for iOS.
-- Keep core business logic out of Nuxt server routes. The web app and future iOS app should be peer clients of the same versioned HTTPS API.
-- Prefer AWS-native backend primitives: Cognito, API Gateway HTTP API, Lambda, DynamoDB on-demand, S3, CloudFront, and Stripe webhooks.
+- The current workspace uses `apps/marketing/nuxt` for the Nuxt/Vue marketing site, `apps/studio/nuxt` for the logged-in Nuxt/Vue Studio, `packages/api` for Lambda API handlers, `packages/contracts` for the OpenAPI contract, and `packages/portfolio-renderer` for static public portfolio output.
+- Root CDK manages AWS infrastructure including S3, CloudFront, ACM, Cognito, API Gateway, Lambda, DynamoDB, SQS, and supporting services. Production public DNS is authoritative in Cloudflare with `externalDns: true`; Route 53 constructs remain compatibility abstractions and are not the current production DNS control plane.
+- Use `AWS_PROFILE=iso100 AWS_REGION=us-east-1` for AWS commands. The profile must resolve to account `799414939380` through an assumed role whose name contains `ISO100`; never run project commands with AWS root credentials. Stop before any AWS mutation if the identity check fails.
+- Treat `iso100.app` and `www.iso100.app` as CloudFront-backed marketing domains and `studio.iso100.app` as the logged-in product domain.
+- Continue using Nuxt, Vue 3, TypeScript, the shared shadcn-vue-derived UI package, and Tailwind for web clients, with native SwiftUI for iOS.
+- Keep core business logic out of Nuxt server routes. The web clients and iOS app should be peer clients of the same versioned HTTPS API.
 
 ## Domain Model
 
@@ -57,15 +57,21 @@
   - `studio.iso100.app` for the logged-in product.
   - `api.iso100.app` for the versioned API.
   - `auth.iso100.app` if Cognito Hosted UI needs a dedicated domain.
-  - `username.iso100.app` for free public photographer portfolios.
+  - `username.iso100.photos` for free public photographer portfolios. Treat matching `username.iso100.app` hosts as legacy redirects only.
+  - `preview.iso100.app` for controlled portfolio previews.
+  - `uploads.iso100.app` for signed browser upload targets.
+  - `media.iso100.app` for first-party media delivery where configured.
+  - `domains.iso100.app` as the Cloudflare for SaaS fallback target for paid custom domains.
   - Custom domains for paid public portfolio surfaces.
 - Logged-in account, billing, destructive actions, and admin flows should stay on ISO100-controlled application domains, not on user subdomains or custom domains.
 - Backend validation must be authoritative for public username/subdomain reservation; frontend validation can mirror it only for user experience.
 
 ## Web Workflow
 
-- `web/` currently contains the static website placeholder. Do not assume a framework has already been installed until the repo confirms it.
-- If converting the site to Nuxt or another framework, keep the CDK deployment path aligned with the generated static output.
+- Build the marketing app with `npm run build:marketing` and the Studio app with `npm run build:studio`.
+- Root `npm run build` runs the design-system registry check and TypeScript validation; it does not build either Nuxt app.
+- Regenerate and verify the public renderer sample with `npm --prefix packages/portfolio-renderer run generate:sample` and `npm --prefix packages/portfolio-renderer run verify:sample` when renderer behavior changes.
+- Keep CDK and static deploy paths aligned with `apps/marketing/nuxt/.output/public`, `apps/studio/nuxt/.output/public`, and the portfolio renderer output.
 - For visual changes, verify the rendered page in a browser or with a screenshot flow when practical, especially across light/dark behavior and mobile widths.
 
 ## iOS Workflow
@@ -80,6 +86,7 @@
 ## DNS And Deploy Checks
 
 - Do not deploy, republish, invalidate production caches, or otherwise mutate live ISO100 infrastructure unless the user explicitly asks for that action in the current request. Prior deploy approval from earlier turns does not carry forward. If the user asks to implement or fix something without saying to deploy, stop after local verification, commit, and push.
+- Before any authorized AWS mutation, verify `aws sts get-caller-identity --profile iso100` returns the expected account through a non-root assumed role whose name contains `ISO100`; refuse root or unexpected identities.
 - DNS and AWS output values can drift. Re-check live AWS and public DNS before giving a current operational answer.
 - When local DNS disagrees with expected delegation, compare `dig +trace NS iso100.app` with at least one public resolver such as `1.1.1.1`, `8.8.8.8`, or `9.9.9.9` before concluding propagation is incomplete.
 - If the in-app browser is unreliable for previewing the live site, use a direct browser/screenshot fallback rather than guessing from deployed files.

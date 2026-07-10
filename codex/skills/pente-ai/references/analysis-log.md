@@ -1,6 +1,22 @@
 # Pente AI Analysis Log
 
-Persistent learnings from advanced single-player loss analysis. Read this before diagnosing or patching AI behavior, and append a new entry after each game analysis.
+Chronological learnings from advanced single-player loss analysis. Use the compact regression checklist first, search this archive only for matching motifs, and append entries only when regression-documentation changes are explicitly in scope.
+
+## Contents And Search
+
+- Use `references/regressions.md` for the current executable checklist and canonical commands.
+- Entries from 2026-04-24 cover deadline fallback, open-three/open-four ordering, capture safety, the opening book, the compact bench, and pressure-test foundations.
+- Entries from 2026-04-25 cover strict discovery, Mmai comparisons, exploit testing, capture races, and opening overrides.
+- Entries from 2026-04-26 cover long-run clustering, fork/capture counter-wins, safe fork defenses, and pressure-oracle corrections.
+- Entries from 2026-04-27 through 2026-04-29 cover forcing closed fours, delayed capture setups, restorable counter-wins, stretched fours, and deferred capture defense.
+
+Search this archive by motif instead of loading it wholesale:
+
+```bash
+rg -n -i 'deadline|fallback|open-four|fork|capture|opening book|pressure|teacher' analysis-log.md
+```
+
+Historical commands and fixture counts may be superseded; use `references/regressions.md` and the current repo scripts as authoritative.
 
 ## Entry Format
 
@@ -113,7 +129,7 @@ Persistent learnings from advanced single-player loss analysis. Read this before
 - Symptom: recurring losses came from many related tactical angles that are easy to see but brittle to encode as direct shortcut rules: open-four creation, fork setup, capture threats, and deadline fallback interactions.
 - Root cause: normal negamax leaves stopped at static evaluation in tactically noisy positions, while the persistent regression set lived only in prose and temporary probes.
 - Fix or decision: add a bounded quiescence extension at search leaves. It searches one extra ply over at most four forcing moves and only while more than 500ms remains, using existing player-relative tactical helpers. Add `Scripts/PenteAIRegressionBench/main.swift` so compact boards from this log are executable.
-- Regression probe: from `/Users/elbert/Sites/pente`, run `swiftc Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench && /tmp/pente_ai_regression_bench`; all recorded fixtures should pass before handing back Pente AI changes.
+- Regression probe: run the canonical compact regression command in `references/regressions.md`; all recorded fixtures should pass before handing back authorized Pente AI changes. The original command in this entry was superseded when shared support and opening-book sources were added.
 
 ## 2026-04-24 - Fork capture must not leave extra fork pressure
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Pente AI"
   short_description: "Debug and improve Pente single-player AI"
-  default_prompt: "Use $pente-ai to debug a won game against the computer and improve the advanced AI without regressing existing tactics."
+  default_prompt: "Use $pente-ai to analyze a won game against the computer, then implement a regression-safe fix only when I explicitly ask."

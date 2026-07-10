@@ -139,20 +139,39 @@ def committed_moves(events: list[dict[str, Any]], game_id: str) -> list[dict[str
     ]
 
 
-def latest_game_id(events: list[dict[str, Any]]) -> str | None:
-    latest: dict[str, Any] | None = None
+def latest_game_id(events: list[dict[str, Any]], winner: int | None = None) -> str | None:
+    latest_timestamp_by_game: dict[str, float] = {}
+    committed_game_ids: set[str] = set()
+    winner_by_game: dict[str, int] = {}
 
     for event in events:
-        if not event.get("gameId"):
+        game_id = event.get("gameId")
+
+        if not isinstance(game_id, str):
             continue
 
-        if latest is None or event.get("timestamp", 0) > latest.get("timestamp", 0):
-            latest = event
+        timestamp = event.get("timestamp", 0)
+        numeric_timestamp = float(timestamp) if isinstance(timestamp, (int, float)) else 0.0
+        latest_timestamp_by_game[game_id] = max(latest_timestamp_by_game.get(game_id, 0.0), numeric_timestamp)
 
-    if latest:
-        return latest.get("gameId")
+        if event.get("event") in {"humanMoveCommitted", "aiMoveCommitted"}:
+            committed_game_ids.add(game_id)
 
-    return None
+        after = event.get("after")
+
+        if isinstance(after, dict) and isinstance(after.get("winner"), int):
+            winner_by_game[game_id] = after["winner"]
+
+    candidates = [
+        game_id
+        for game_id in committed_game_ids
+        if winner is None or winner_by_game.get(game_id) == winner
+    ]
+
+    if not candidates:
+        return None
+
+    return max(candidates, key=lambda game_id: (latest_timestamp_by_game.get(game_id, 0.0), game_id))
 
 
 def list_games(events: list[dict[str, Any]]) -> None:
@@ -269,8 +288,10 @@ def main() -> int:
     parser.add_argument("--device", default="booted", help="simulator UDID or 'booted'")
     parser.add_argument("--bundle-id", default=DEFAULT_BUNDLE_ID)
     parser.add_argument("--data-dir", type=Path, help="app data container path; bypasses simctl")
-    parser.add_argument("--game-id", help="gameId to summarize")
-    parser.add_argument("--latest", action="store_true", help="summarize the latest game")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--game-id", help="gameId to summarize")
+    selection.add_argument("--latest", action="store_true", help="summarize the latest game containing a committed move")
+    selection.add_argument("--latest-human-win", action="store_true", help="summarize the latest completed human-winning game")
     parser.add_argument("--list-games", action="store_true", help="list games and exit")
     parser.add_argument("--reverse", action="store_true", help="print moves newest first")
     parser.add_argument("--show-board", action="store_true", help="print compact 19x19 boards")
@@ -292,11 +313,14 @@ def main() -> int:
 
     game_id = args.game_id
 
-    if args.latest or not game_id:
+    if args.latest_human_win:
+        game_id = latest_game_id(events, winner=0)
+    elif args.latest or not game_id:
         game_id = latest_game_id(events)
 
     if not game_id:
-        raise SystemExit("no gameId found; use --list-games to inspect logs")
+        selector = "human-winning game" if args.latest_human_win else "game with committed moves"
+        raise SystemExit(f"no {selector} found; use --list-games to inspect logs")
 
     summarize_game(events, decisions, game_id, reverse=args.reverse, show_board=args.show_board)
     return 0
