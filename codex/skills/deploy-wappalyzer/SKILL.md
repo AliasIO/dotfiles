@@ -1,38 +1,42 @@
 ---
 name: deploy-wappalyzer
-description: Deploy Wappalyzer services from `/Users/elbert/Sites/wappalyzer`. Use when Codex needs to ship or verify changes in `v4/apis`, `v4/apis-shared`, `cli`, or `v4/frontend`; choose the correct deployment path for the target; sync canonical repos and submodule pointers safely; prefer workflow-driven frontend deploys; and run target-appropriate smoke checks after deployment.
+description: Inspect Wappalyzer deployment state, propagate published canonical dependency commits into declared consumers, or explicitly deploy `v4/apis` and `v4/frontend`. Use for deployment planning/status, submodule/gitlink rollout, layer/API/ECS release, frontend production rollout, or post-deploy smoke checks. Inspection is read-only; dependency `--apply`, commits, and pushes require Publish authority; any deploy, production-triggering frontend push, or live mutation requires an explicit Operate request. Do not invoke merely to implement or locally verify code.
 ---
 
 # Deploy Wappalyzer
 
-Use this skill to map a code change to the correct deployment path in the Wappalyzer workspace. Start by identifying which repo owns the change, then load the matching section in [targets.md](./references/targets.md).
+## Select the least-authorized mode
+
+| Mode | Actions |
+| --- | --- |
+| Inspect | Read status, plan a rollout, run dependency `--check`, inspect workflows/functions, and report |
+| Publish | Run dependency `--apply`, make exact task-owned propagation commits, and push only when requested |
+| Operate | Execute an explicitly requested API, ECS, layer, or frontend production deployment and smoke-check it |
+
+- Implementation is not a deploy mode. Finish and validate code in the owning workflow first.
+- Never deploy `v2` or a stage sharing live resources without explicit current-task permission.
+- A frontend `master` push starts production deployment and therefore requires Operate authority, not merely generic permission to push.
+
+## Load only the needed reference
+
+- Dependency or submodule work: [dependency-propagation.md](references/dependency-propagation.md)
+- API, layer, Lambda, container, or ECS work: [apis.md](references/apis.md)
+- Website rollout: [frontend.md](references/frontend.md)
+- Live AWS/Cognito/Cloudflare facts: `$HOME/Sites/dotfiles/codex/projects/wappalyzer/runbooks/live-infrastructure.md`
 
 ## Workflow
 
-1. Identify the canonical repo for the change.
-   - `cli/` owns CLI, runtime, and browser-behavior changes.
-   - `v4/apis-shared/` owns shared API and Lambda-layer logic.
-   - `v4/frontend/` owns the main website deploy.
-2. Check repo state before deploying.
-   - Review `git status --short` in every repo you will push or use for gitlinks.
-   - Keep canonical repos on `master` when a deploy depends on newer `cli/` or `v4/apis-shared/` commits.
-   - Do not edit or deploy from checked-out submodule copies such as `v4/apis/*/wappalyzer` or `v4/apis/*/shared`.
-3. Follow the target-specific deploy path in [targets.md](./references/targets.md).
-4. Prefer the approved entrypoint over ad hoc commands.
-   - `v4/apis`: use `./run`.
-   - `v4/frontend`: push `master` and monitor GitHub Actions.
-5. Verify the deploy and report the result.
-   - Include the repo, branch, and commit pushed or deployed.
-   - Include the command or workflow used.
-   - Include the smoke test or verification result.
-   - Call out any skipped checks or follow-up gitlink updates.
+1. Identify the canonical repository, changed artifact, consumers, target stage, and requested authority mode.
+2. Inspect every repository that will be touched. Preserve unrelated canonical and parent changes; consumer paths declared in the dependency manifest are disposable.
+3. Validate the canonical change before publication. For shared dependencies, publish bottom-up and run the deterministic synchronization workflow after each published layer.
+4. In Operate mode, use the supported target entrypoint and record the exact commit, stage, command/workflow, and resulting revision.
+5. Perform a target-specific smoke check plus a one-shot deployment status check. Continuous waiting/monitoring requires an explicit request.
+6. Report publication, dispatch, deployment, and verification as separate states. List moved gitlinks and any remaining consumer or service rollout.
 
-## Guardrails
+## Non-negotiable boundaries
 
-- Keep `--single-process`; do not reintroduce multi-process crawler behavior.
-- For container API work that installs Puppeteer, keep `PUPPETEER_SKIP_DOWNLOAD=true`. `v4/apis/run` already exports it.
-- When `v4/apis-shared` changes affect `/opt/nodejs`, make the edit in `v4/apis-shared`, commit and push `master`, then let `v4/apis/run` refresh `shared/nodejs` and other submodules during deploy. Do not hand-edit `v4/apis/shared/nodejs/`.
-- When CLI or shared-layer changes are required by `v4/apis`, push the canonical repo first, then update the parent repo gitlink instead of patching submodule copies.
-- In `v4/apis/run`, first-level submodules must advance before the recursive non-remote sync. Use the existing `./run` helper instead of reproducing this manually.
-- `lookup` and `crawl-async` stay container-based. `ping` and `lookup-site` stay Lambda-plus-layer based.
-- For `v4/frontend` production, do not run the local website deploy script by default. Push the frontend repo and let GitHub Actions deploy. Use quick deploys only when the user explicitly wants that exception for an isolated fix.
+- Never patch consumer submodules. Never stage propagation with `git add -A`.
+- The sync script may overwrite only declared consumer paths and their gitlinks. It never commits, pushes, or deploys.
+- A layer/env update does not update consuming functions until they are redeployed.
+- An ECS image push is not an ECS service rollout.
+- Do not claim deployment success from a push or dispatch alone.

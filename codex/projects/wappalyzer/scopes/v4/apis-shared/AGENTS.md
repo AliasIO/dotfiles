@@ -1,0 +1,22 @@
+# Shared API Instructions
+
+- `v4/apis-shared/` is canonical for shared API logic, AWS compatibility helpers, dataset helpers, hostname persistence, and extraction. API submodules are consumers.
+- Serialize shared analyze-browser initialization and restart across concurrent work. Never destroy a shared browser while other analyses are active.
+- After an analysis timeout, skip synchronous page destruction and schedule browser recycle; clamp cleanup, restart, and best-effort follow-up writes to the remaining invocation budget.
+- Keep post-crawl hostname and dataset persistence best-effort and time-bounded so handled crawl failures do not become Lambda `5xx` responses.
+- `validateUrl()` must tolerate transient DNS failures and reject only definitive absence of public A/AAAA records or exclusively non-public addresses.
+- Treat `.ai`, `.am`, `.co`, `.fm`, `.io`, `.me`, and `.tv` as generic TLDs for country inference before certificate, phone, and IP signals.
+- Preserve certificate data from `response.securityDetails()` if lower-level certificate retrieval fails; prefer standard subject country/state fields before jurisdiction fallbacks.
+- Use `geoip-lite`. Preload it during container-handler initialization where lookup budgets are tight; non-container APIs needing local data must attach the matching dependency layer.
+- Preserve AWS SDK v2-style `error.code`, `maxRetries`, and `retryDelayOptions.base` behavior when wrapping SDK v3, and keep S3 region redirects enabled.
+- When adding an SDK v3 client, add its package to both lookup and crawl-async container manifests before rebuilding.
+- Capacity helpers must inspect billing mode. On-demand tables skip provisioned-throughput mutations; provisioned/autoscaled tables use the configured policy from code or a verified runbook.
+- Ping timestamps used for partitioning are server-authoritative. Daily applies are idempotent, ping refreshes never set `crawlAttemptedAt`, and one-off version strings must pass the aggregate threshold before persistence.
+- Cap per-row language-hit expressions before building DynamoDB updates. Oversized expression validation failures are terminal for that slice, not retryable work.
+- Auxiliary hostname writers use field-level updates, not full-row read/put cycles. Prefer materialized company/contact/social fields on root-domain hostname rows while preserving exact-host fields and fallbacks.
+- Company summaries come from firmographics materialization, not reverse LinkedIn joins or crawl overwrites. Do not restore the removed LinkedIn-to-hostname summary sync.
+- Normalize legacy scalar social fields to arrays at read/export boundaries.
+- Keep LinkedIn and verified-email rows on the common 12-month `expiresAt` policy based on `updatedAt` or `createdAt`.
+- Centralize disposable/personal email filtering in `Shared.emailBlacklist` and use DNS MX/A/AAAA preflight before spawning the external verifier.
+- Build slug-keyed maps with null-prototype objects; valid slugs such as `constructor` and `prototype` must not inherit object behavior.
+- Read the matching project runbook before changing crawler/lookup, auth, ping compaction, dataset/Batch, integrations, or externally managed infrastructure contracts.

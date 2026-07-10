@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect Crisp Conversation"
+  short_description: "Privately inspect Crisp threads read-only"
+  default_prompt: "Use $inspect-crisp-conversation to inspect this Crisp thread privately in read-only mode and summarize the issue without changing the ticket."

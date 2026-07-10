@@ -11,6 +11,7 @@ function usage() {
 Options:
   --technology "Name"        Technology name used to build search tokens
   --website https://vendor   Vendor website used to build host tokens
+  --extension /path/to/repo  Use this canonical extension engine and definitions
   --output /tmp/file.json    Write JSON output to a file
   --probe basic|full         Default: basic
   --delay 500                Default: 500
@@ -19,6 +20,7 @@ Options:
   --pretty                   Pretty-print JSON
   --include-html             Include full HTML in the output
   --include-scripts          Include inline and external script bodies in the output
+  --dry-run                  Validate the CLI/extension sources without opening a browser
   --help                     Show this text
 `)
 }
@@ -45,6 +47,8 @@ function parseArgs(argv) {
       options.includeHtml = true
     } else if (arg === '--include-scripts') {
       options.includeScripts = true
+    } else if (arg === '--dry-run') {
+      options.dryRun = true
     } else if (arg.startsWith('--')) {
       const key = arg.slice(2)
       const value = argv[index + 1]
@@ -99,6 +103,63 @@ function getHost(value) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))]
+}
+
+function loadCanonicalDetectionSource(repoPath, extensionOption) {
+  if (!extensionOption) {
+    return null
+  }
+
+  const extensionPath = path.resolve(extensionOption)
+  const enginePath = path.join(extensionPath, 'src', 'js', 'wappalyzer.js')
+  const categoriesPath = path.join(extensionPath, 'src', 'categories.json')
+  const technologiesPath = path.join(extensionPath, 'src', 'technologies')
+  const consumerEnginePath = path.join(
+    repoPath,
+    'cli',
+    'wappalyzer',
+    'src',
+    'js',
+    'wappalyzer.js'
+  )
+
+  for (const requiredPath of [
+    enginePath,
+    categoriesPath,
+    technologiesPath,
+    consumerEnginePath,
+  ]) {
+    if (!fs.existsSync(requiredPath)) {
+      throw new Error(`Canonical detection source path not found: ${requiredPath}`)
+    }
+  }
+
+  const canonicalEngineModule = require.resolve(enginePath)
+  const consumerEngineModule = require.resolve(consumerEnginePath)
+  const engine = require(canonicalEngineModule)
+
+  // Make the CLI driver use the canonical engine before it is loaded.
+  require.cache[consumerEngineModule] = require.cache[canonicalEngineModule]
+
+  const categories = JSON.parse(fs.readFileSync(categoriesPath))
+  let technologies = {}
+
+  for (const index of Array(27).keys()) {
+    const character = index ? String.fromCharCode(index + 96) : '_'
+    const definitionPath = path.join(technologiesPath, `${character}.json`)
+
+    technologies = {
+      ...technologies,
+      ...JSON.parse(fs.readFileSync(definitionPath)),
+    }
+  }
+
+  return {
+    categories,
+    engine,
+    extensionPath,
+    technologies,
+  }
 }
 
 function buildTokens(technology, website) {
@@ -621,7 +682,35 @@ async function main() {
     throw new Error(`CLI entry not found: ${cliPath}`)
   }
 
+  const canonicalSource = loadCanonicalDetectionSource(repoPath, options.extension)
   const Wappalyzer = require(cliPath)
+
+  if (canonicalSource) {
+    canonicalSource.engine.setTechnologies(canonicalSource.technologies)
+    canonicalSource.engine.setCategories(canonicalSource.categories)
+  }
+
+  if (options.dryRun) {
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          cli: cliPath,
+          extension: canonicalSource?.extensionPath || null,
+          technologyCount: canonicalSource
+            ? Object.keys(canonicalSource.technologies).length
+            : null,
+          categoryCount: canonicalSource
+            ? Array.isArray(canonicalSource.categories)
+              ? canonicalSource.categories.length
+              : Object.keys(canonicalSource.categories).length
+            : null,
+        },
+        null,
+        options.pretty ? 2 : null
+      )}\n`
+    )
+    return
+  }
   const { tokens, shortTokens } = buildTokens(options.technology, options.website)
   const vendorHost = getHost(options.website)
   const hostTerms = unique(
@@ -634,6 +723,7 @@ async function main() {
     input: {
       observe: parseInt(options.observe, 10) || 0,
       repo: repoPath,
+      extension: canonicalSource?.extensionPath || null,
       technology: options.technology || '',
       url: options.url,
       website: options.website || '',

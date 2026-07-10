@@ -1,0 +1,25 @@
+# API Instructions
+
+- `v4/apis/` owns service packaging, configuration, and the `./run` deployment entrypoint. Shared code belongs in `v4/apis-shared/`; CLI and shared submodules are consumers.
+- `lookup` and `crawl-async` remain browser-containing images. `ping` and `lookup-site` remain Lambda handlers using shared/dependency layers.
+- Batch images copy the shared tree, but lookup and crawl-async enumerate shared files and packages. When adding a helper/import, update every affected Docker copy path or `package.docker.json` and smoke-load each image entrypoint.
+- The lookup image copies selected `lookup/shared/` files into `/var/task/`, not `/var/task/shared/`; imports and Docker destinations must agree.
+- Container builds installing Puppeteer must set `PUPPETEER_SKIP_DOWNLOAD=true`.
+- Clamp lookup analysis to the remaining Lambda budget and retain a handler-level timeout around non-recursive live analysis.
+- Public ping rejects remain indistinguishable generic handled responses. Preserve the browser UA plus matching extension-origin gate, but do not treat it as authentication.
+- Trust `cf-connecting-ip` or forwarded IP headers only after proving the request traversed the trusted proxy path. Direct API Gateway paths must fall back to the gateway source IP; caller-supplied proxy headers are not authoritative.
+- Website-only lookup and email-verification routes stay authenticated. Missing origins receive the generic handled response; explicit disallowed origins remain logged and rejected.
+- Keep signup reCAPTCHA verification fail-closed. Initiate Cognito account emails through throttled API endpoints rather than public browser calls.
+- Cognito trigger services attach to a shared live pool. A beta deploy can replace a production trigger, so every deployment of those services requires explicit production-impact authority.
+- Preserve legacy-account lookup/linking fallbacks and canonical user IDs; do not create a second free user solely because the shared-pool subject is new.
+- Normalize stringified custom-authorizer booleans before access checks.
+- Require a non-null top-level Stripe subscription plan ID; missing plan data is a billing configuration error. Treat `cancel_at_period_end` as cancellation at `current_period_end`.
+- Keep subscription plan-row persistence on the critical webhook path and rethrow before it succeeds. Track purchases on the subscription-completion path when order metadata is there.
+- ECS/Batch child jobs receive only explicitly whitelisted environment variables. Strip parent AWS credential/metadata variables and host-local temp paths; use the child task role and a valid container temp directory.
+- A task that submits Batch jobs or metrics needs Batch and CloudWatch permissions on the live ECS task role, not only on its launching Lambda.
+- Custom Batch job definitions require both execution and task roles. Do not deregister families still referenced by stage configuration.
+- EventBridge completion rules must scope both job family and terminal states; avoid broad Batch fan-out.
+- Public/product empty-result refreshes queue only when the exact hostname has never been attempted or its attempt is older than the configured recrawl window; the short `crawlActive` lease is only duplicate suppression.
+- Use `./run` and `$deploy-wappalyzer` for propagation and deployment. An image push is not an ECS service rollout, and a layer version change is not active until consuming services are redeployed.
+- Never deploy `v2` or a stage sharing live resources without explicit current-task permission.
+- Read the matching project runbook before service work: `auth-and-billing.md`, `crawler-and-lookup.md`, `ping-compaction.md`, `data-and-batch.md`, `integrations-and-email.md`, or `live-infrastructure.md`. Discover mutable IDs and modes at execution time.

@@ -1,0 +1,47 @@
+{
+  "workspace": "$HOME/Sites/wappalyzer",
+  "canonical": {
+    "extension": {
+      "path": "extension",
+      "remote": "origin",
+      "branch": "master"
+    },
+    "cli": {
+      "path": "cli",
+      "remote": "origin",
+      "branch": "master"
+    },
+    "apis-shared": {
+      "path": "v4/apis-shared",
+      "remote": "origin",
+      "branch": "master"
+    }
+  },
+  "parents": {
+    "cli": "cli",
+    "static": "static",
+    "apis": "v4/apis",
+    "utils": "_other/utils",
+    "extract": "extract"
+  },
+  "consumers": [
+    { "canonical": "extension", "parent": "cli", "path": "wappalyzer" },
+    { "canonical": "extension", "parent": "static", "path": "wappalyzer" },
+    { "canonical": "cli", "parent": "apis", "path": "ecs/wappalyzer" },
+    { "canonical": "cli", "parent": "apis", "path": "lookup/wappalyzer" },
+    { "canonical": "cli", "parent": "apis", "path": "lookup-site/wappalyzer" },
+    { "canonical": "cli", "parent": "apis", "path": "crawl-async/wappalyzer" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "shared/nodejs" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "lookup/shared" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "ping/shared" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "lookup-site/shared" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "ecs/shared" },
+    { "canonical": "apis-shared", "parent": "apis", "path": "crawl-async/shared" }
+  ],
+  "aliases": [
+    { "source": "v4/apis-shared/shared.js", "consumer": "extract/shared.js", "parent": "extract" },
+    { "source": "v4/apis-shared/linkedin.js", "consumer": "extract/linkedin.js", "parent": "extract" },
+    { "source": "v4/apis-shared/diallingcodes.json", "consumer": "extract/diallingcodes.json", "parent": "extract" },
+    { "source": "v4/apis-shared/extract.js", "consumer": "extract/extract.js", "parent": "extract" }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "canonicalRoot": "$HOME/Sites/dotfiles/codex/skills",
+  "discoveryRoot": "$HOME/.codex/skills",
+  "skills": [
+    "inspect-crisp-conversation",
+    "add-wappalyzer-technology",
+    "handle-wappalyzer-detection-issues",
+    "wappalyzer-frontend",
+    "deploy-wappalyzer",
+    "operate-wappalyzer-mass-lookup",
+    "release-wappalyzer-extension"
+  ],
+  "obsolete": [
+    "action-crisp-conversation",
+    "action-wappalyzer-issues",
+    "github-wappalyzer-issues",
+    "mass-lookup-wappalyzer"
+  ]
+}

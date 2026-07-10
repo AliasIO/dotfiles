@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handle Wappalyzer Detection Issues"
+  short_description: "Inspect, implement, or publish detection issues"
+  default_prompt: "Use $handle-wappalyzer-detection-issues to inspect this Wappalyzer detection issue in the least-authorized mode, mutating GitHub only if I explicitly request publish-one or backlog mode."

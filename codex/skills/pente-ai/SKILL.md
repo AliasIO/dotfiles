@@ -92,6 +92,23 @@ swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pen
 
 Use `Scripts/PenteAIPressureBench`, `Scripts/PenteAIExploitBench`, and `Scripts/pente_ai_long_run.py` only after focused reproduction. Treat findings as hypotheses until the tactical probe confirms the root was defensible and the suggested move handles higher-priority threats. Treat low-budget timeout warnings as noise unless they reproduce near 4 seconds.
 
+### Pinned version comparison
+
+Use the version bench after focused regressions pass to compare the working-tree AI with the explicit baseline in `Scripts/PenteAIVersionBench/baseline.json`:
+
+```bash
+python3 Scripts/pente_ai_version_bench.py \
+  --games 12 \
+  --max-moves 60 \
+  --time-limit-ms 4000 \
+  --max-seconds 1800 \
+  --jsonl /tmp/pente-ai-version-bench.jsonl
+```
+
+The runner builds the baseline in a temporary detached worktree, builds the current working tree as the candidate, reuses fixed opening histories, and swaps player indexes for each opening. Treat a short run as a smoke test, not a strength conclusion. Review wins together with median/p95 move time and over-budget moves. Update the pinned baseline only after an accepted candidate is intentionally promoted; do not silently compare against a moving branch name.
+
+DEBUG decision log schema 4 includes `searchTelemetry` with negamax/quiescence nodes, evaluated root moves, completed depth by search label, transposition score and move-ordering hits, stores, alpha-beta cutoffs, and deadline/cancellation exit reasons. Use these fields to decide whether a miss belongs to generation, ordering, horizon, caching, or deadline behavior before changing tactics.
+
 ## Record Authorized Learnings
 
 When regression-documentation changes are in scope:

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operate Wappalyzer Mass Lookup"
+  short_description: "Inspect and operate Batch mass lookups"
+  default_prompt: "Use $operate-wappalyzer-mass-lookup to inspect this mass-lookup run, choose the correct operating mode, and act only within that mode."

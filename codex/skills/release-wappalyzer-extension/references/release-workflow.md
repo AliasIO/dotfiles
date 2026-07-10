@@ -1,95 +1,61 @@
-# Release Workflow
+# Extension Release Workflow
 
-## Repo
+## Repository
 
-- Repo: `/Users/elbert/Sites/wappalyzer/extension`
-- Branch: `master`
-- Upstream: `origin/master`
+- Checkout: `$HOME/Sites/wappalyzer/extension`
+- Required branch: `master`
+- Required upstream: `origin/master`
+- Canonical version: `src/manifest.json`
 
-## Versioning
+## Mode Contract
 
-- Treat `src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
-- Read the current version from `src/manifest.json`.
-- If no version is provided, patch-bump the current version by one.
-- Require numeric `x.y.z` versions.
-- Keep the bumped version in tracked `src/manifest.json` after the build so it lands in the release commit when it changes.
+### Inspect
 
-## Build Commands
+Read local state only. Do not fetch, pull, edit, build, commit, tag, push, or upload. Ahead/behind values use cached `origin/master` refs and must be labeled accordingly.
 
-Default release build:
+### Prepare
 
-```bash
-yarn build:release
-```
+Require clean tracked files and the expected branch/upstream. Fetch `origin master` and tags, stop on divergence, and fast-forward local `master` when behind. If local is ahead, defer the push. Then:
 
-Optional Safari build:
+1. Select an explicit numeric `x.y.z` version or patch-bump the manifest version.
+2. Reject an existing tag.
+3. Update `src/manifest.json`.
+4. Run `yarn build:release`.
+5. Verify the Chromium/Firefox and Edge ZIPs.
+6. Optionally run `yarn build:safari` when requested.
+7. Generate the changelog.
+8. Record the base commit, tracked-diff digest, and SHA-256 digest of every ZIP, changelog, and Safari project in `build/.release-preparation.json`.
 
-```bash
-yarn build:safari
-```
+Never commit, tag, or push in Prepare mode. Leave the validated local state for review or a later explicit Release.
 
-Do not use `yarn build` or `yarn build:fast` for the default release path.
+### Release
 
-Keep the canonical `src/manifest.json` background block compatible with Chrome and Firefox. For Microsoft Edge uploads, use `build/webextension-edge.zip` because its packaged manifest omits `background.scripts`.
+Use only after an explicit release request. Consume a prepared state only when its base commit, manifest version, tracked diff, requested version, Safari choice, artifact set, and artifact digests still match. Otherwise require a clean tree and prepare first.
 
-## Sync Rules
+Refresh remote refs before publication. Stop if `origin/master` advanced or diverged. Create `Build vX.Y.Z`, tag it `vX.Y.Z`, and atomically push `master` plus the tag. Stage tracked changes only; never sweep unrelated untracked files into the release commit.
 
-- Fetch only `origin master` and tags before comparing ahead/behind counts.
-- If tracked files are dirty before sync, stop and ask the user.
-- If `master` is behind `origin/master`, pull with `--ff-only`.
-- If `master` is ahead of `origin/master`, push it before starting the release.
-- If local and remote histories diverge, stop and ask the user.
+Release mode authorizes the Git commit, tag, and push only. It does not authorize browser-store uploads.
 
-## Git Markers
+## Build Outputs
 
-- Commit the release as `Build vX.X.X`.
-- Tag the release commit as `vX.X.X`.
-- If the build creates no tracked diff, still create the release marker with `git commit --allow-empty`.
-- Push the branch and tag together.
+- Chrome and Firefox: `build/webextension-v3.zip`
+- Microsoft Edge: `build/webextension-edge.zip`; its packaged manifest omits `background.scripts`
+- Changelog: `build/changelog-vX.Y.Z.md`
+- Optional Safari Xcode output under `build/`
+
+Keep the canonical manifest background block compatible with Chrome and Firefox.
 
 ## Changelog
 
-Generate the changelog from the previous `Build v...` commit to the new release commit.
+During preparation, compare the previous `Build v...` marker with current `HEAD`.
 
-For standalone changelog requests outside an in-progress release, compare the latest two `Build v...` commits and ignore newer HEAD commits.
+Scan non-merge commits whose subjects begin with `add`, `update`, or `fix`, case-insensitively. Derive names from changes to `src/technologies/*.json`:
 
-Rules:
-- scan non-merge commits between the previous release marker and the new release whose subjects begin with `add`, `update`, or `fix`, matched case-insensitively
-- derive affected technologies from each matching commit's `src/technologies/*.json` diff
-- emit `ADD` when a technology key is new in that commit
-- emit `FIX` when an existing technology key changed in that commit
-- ignore removed technologies and non-technology changes
-- format each line exactly as `* \`ADD\` Name detection` or `* \`FIX\` Name detection`
+- emit `ADD` for a new technology key
+- emit `FIX` for a changed existing key
+- ignore removals and non-technology changes
+- format exactly as `* \`ADD\` Name detection` or `* \`FIX\` Name detection`
 
-Example:
+## Handoff
 
-```text
-* `ADD` Audienceful detection
-* `FIX` Firebase detection
-```
-
-Write the changelog to `build/changelog-vX.X.X.md`.
-
-## Expected Outputs
-
-- `build/webextension-v3.zip`
-- `build/webextension-edge.zip`
-- `build/changelog-vX.X.X.md`
-- optional Safari Xcode project output under `build/`
-
-## Final Handoff
-
-Report:
-- version used
-- sync action taken
-- commands run
-- artifact paths, including which ZIP is for Edge
-- release commit and tag
-- Safari status
-- changelog entries
-
-Manual follow-up stays outside this skill:
-- upload `build/webextension-v3.zip` to Chrome Web Store
-- upload `build/webextension-v3.zip` to AMO if needed
-- upload `build/webextension-edge.zip` to Microsoft Edge Add-ons
-- handle Safari packaging only when the Safari build was explicitly requested
+Report the selected mode, version, local synchronization, commands, artifacts, changelog entries, and Safari status. In Release mode also report the commit and tag. State explicitly that store upload was not performed.

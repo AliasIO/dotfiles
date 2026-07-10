@@ -1,57 +1,48 @@
 ---
 name: release-wappalyzer-extension
-description: Prepare a Wappalyzer browser-extension release from `/Users/elbert/Sites/wappalyzer/extension`. Use when Codex needs to sync the extension repo with `origin/master`, bump or set the release version in the local `src/manifest.json`, run the default release build with prettify, optionally build Safari, create a `Build vX.X.X` commit and matching tag, choose the correct store-upload artifacts, and generate the extension changelog for manual store handoff.
+description: Inspect release readiness, prepare local browser-extension artifacts, or explicitly release the Wappalyzer extension from the local extension repository. Use for version and Git-state inspection, local release builds and changelogs that must not commit or push, or an explicit release that may create a Build commit, tag, and atomic push. Browser-store upload is always excluded.
 ---
 
 # Release Wappalyzer Extension
 
-Use this skill for end-to-end extension release preparation in the current Wappalyzer workspace. It prepares the release artifacts and Git markers, but it does not publish to browser stores.
+Choose one mode from the user's intent. If release authority is ambiguous, use `inspect`; never promote `prepare` to `release`.
 
-Read [references/release-workflow.md](./references/release-workflow.md) before changing the workflow. Use `scripts/prepare_release.py` as the default entrypoint instead of retyping the release sequence.
+Read [references/release-workflow.md](./references/release-workflow.md) before `prepare` or `release`. Use the bundled helper rather than retyping the workflow.
 
-## Workflow
+## Inspect
 
-1. Work in `/Users/elbert/Sites/wappalyzer/extension`.
-2. Run the helper script:
-
-```bash
-python3 /Users/elbert/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py
-```
-
-3. Add flags only when the user asks for them:
+Inspect local repository state, cached ahead/behind counts, current and next version, latest release marker, and any prepared state. Make no filesystem, Git-ref, or remote changes.
 
 ```bash
-python3 /Users/elbert/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py --version 6.11.1
-python3 /Users/elbert/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py --safari
+python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" inspect
 ```
 
-4. Report the result with:
-   - release version
-   - sync action taken against `origin/master`
-   - commands run
-   - artifact paths for Chrome/Firefox and Edge
-   - commit hash and tag
-   - Safari status
-   - changelog path and entries
+## Prepare
 
-## Defaults
+Prepare local artifacts only. The helper may fetch and fast-forward local `master`, update the manifest, run builds, and write a changelog and preparation record. It never commits, tags, or pushes in this mode.
 
-- Treat `src/manifest.json` as the single canonical Manifest V3 source for Chromium, Firefox, and Safari conversion.
-- Read the current version from `src/manifest.json`.
-- If no version is supplied, patch-bump it by one segment, for example `6.11.0` to `6.11.1`.
-- Run `yarn build:release` by default. This is the required path because it includes `prettify`.
-- Exclude Safari unless the user explicitly requests it.
-- Stop if tracked files are dirty before sync. Do not auto-stash.
-- Stop if the repo is not on `master` tracking `origin/master`.
-- Create `Build vX.X.X` and tag `vX.X.X` even when the build produces no tracked diff by using an empty commit.
-- In this checkout, `src/manifest.json` is tracked, so keep the bumped version in the committed release state when it changes.
+```bash
+python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" prepare
+```
 
-## Guardrails
+Add `--version x.y.z` only for an explicit version and `--safari` only when Safari was requested.
 
-- Treat `src/manifest.json` as the current release-version source.
-- Do not switch to `yarn build`, `yarn build:fast`, or a manual build sequence unless the user explicitly changes the release policy.
-- Do not publish to Chrome Web Store, AMO, or Safari from this skill.
-- Keep the canonical `src/manifest.json` background block compatible with Chrome and Firefox, and use `build/webextension-edge.zip` for Microsoft Edge because its packaged manifest omits `background.scripts`.
-- Generate changelogs from release markers: during release prep, compare the previous `Build v...` marker to the new release commit; for standalone changelog requests, compare the latest two `Build v...` commits and ignore newer HEAD commits.
-- Generate changelog entries from non-merge commits between the previous `Build v...` marker and the release commit whose subjects begin with `add`, `update`, or `fix` (case-insensitive): derive the affected technology names from each commit's `src/technologies/*.json` diff, emit `ADD` for new keys and `FIX` for changed existing keys, ignore removals and non-technology changes, and format each line exactly as `* \`ADD\` Name detection` or `* \`FIX\` Name detection`.
-- If Safari was requested and `xcrun` is unavailable, stop and report the blocker instead of silently skipping it.
+## Release
+
+Use only when the user explicitly requests release/publication of the Git release. The helper validates or creates a prepared state, creates `Build vX.Y.Z`, tags `vX.Y.Z`, and atomically pushes `master` and the tag. It never uploads to a browser store.
+
+```bash
+python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" release
+```
+
+## Invariants
+
+- Use `$HOME/Sites/wappalyzer/extension`, branch `master`, upstream `origin/master`.
+- Treat `src/manifest.json` as the canonical version source and default to a patch bump.
+- Use `yarn build:release`; do not substitute fast or manual build paths.
+- Build Safari only when explicitly requested; stop if `xcrun` is unavailable.
+- Stop on unrecognized tracked changes or divergent Git history; never auto-stash.
+- Use `build/webextension-v3.zip` for Chrome/Firefox and `build/webextension-edge.zip` for Edge.
+- Keep Chrome Web Store, AMO, Edge Add-ons, and Safari store upload outside this skill.
+
+Report the mode, version, sync action, commands, artifact and changelog paths, Safari status, and whether commit/tag/push occurred.

@@ -1,57 +1,45 @@
 ---
 name: wappalyzer-frontend
-description: Build and refactor the Wappalyzer frontend in `v4/frontend` with Nuxt 2 and Vuetify 2. Use when changing pages, layouts, components, forms, navigation, tables, or styling in `v4/frontend`; prefer Vuetify 2 primitives, documented props, helper classes, and SASS variable overrides over ad hoc markup, inline styles, or component-local `<style>` blocks.
+description: Implement and locally validate Wappalyzer website changes in `v4/frontend` using the repository’s Nuxt 2 and Vuetify 2 conventions. Use for pages, layouts, components, forms, navigation, tables, responsive behavior, SSR/hydration, accessibility, or styling. This skill permits local task-owned edits when implementation is requested; it never commits, pushes, dispatches GitHub Actions, or deploys. A request to review or verify is read-only unless edits are explicit.
 ---
 
 # Wappalyzer Frontend
 
-Use this skill when working on `v4/frontend`.
+## Authority
 
-Treat the official Vuetify 2 docs at `https://v2.vuetifyjs.com/en/` as the source of truth. The bundled references below summarize durable guidance from those docs, but they do not replace checking the relevant official page before introducing or changing a pattern.
+- Use Inspect for review, diagnosis, or verification without edits.
+- Use Implement only when the user asks for a change; keep work local and task-owned.
+- Do not commit, push, dispatch a workflow, or deploy. Use `$deploy-wappalyzer` only when publication or rollout is explicitly requested.
 
-Start here:
-- Work in `v4/frontend`.
-- Read the surrounding page, layout, or component before changing structure.
-- Preserve Nuxt 2 and Vuetify 2 patterns that are already established in the repo.
-- Prefer Vuetify primitives, props, slots, and helper classes over custom wrappers and hand-rolled markup.
-- Avoid inline `style` attributes.
-- Avoid adding `<style>` blocks. If a visual change cannot be expressed with Vuetify props, helper classes, theme tokens, or SASS variable overrides, stop and explain why.
-- Prefer SASS variable overrides in `v4/frontend/assets/scss/variables.scss` and existing theme configuration in `v4/frontend/nuxt.config.js` where possible.
-- Account for both SSR and client hydration behavior.
-- Do not run `nuxt build` when the local frontend dev server is already running unless the user explicitly asks for it.
+## Load project context
 
-Read these references before substantial frontend work:
-- `references/docs-map.md` for the official Vuetify 2 pages to open for each task type.
-- `references/layout-and-styling.md` for application shell, grid, responsive helpers, theme, and SASS rules.
-- `references/components-and-forms.md` for forms, inputs, navigation, overlays, content components, icons, and data tables.
+- Read the root and `v4/frontend/` scoped project `AGENTS.md` files.
+- Read [project-conventions.md](references/project-conventions.md) before implementation.
+- Read [validation.md](references/validation.md) before running checks.
+- Inspect the surrounding page, layout, components, and existing theme patterns before selecting an approach.
+- Consult the official Vuetify 2 documentation when exact props, slots, breakpoint behavior, or accessibility semantics matter.
 
 ## Workflow
 
-1. Identify the surface you are changing: page, layout, shared component, form, table, navigation, or theme/styling.
-2. Open the matching official Vuetify 2 page from `references/docs-map.md` before changing props, slots, helper classes, or component composition.
-3. Reuse existing project structure in `v4/frontend` where possible instead of inventing a parallel abstraction.
-4. Build layouts with Vuetify’s application shell and grid primitives:
-   `v-app`, `v-main`, `v-container`, `v-row`, `v-col`, `v-spacer`, `v-sheet`, `v-card`, `v-list`, `v-btn`, `v-form`, `v-dialog`, `v-menu`, `v-data-table`, and related helpers.
-5. Express spacing, display, alignment, typography, and breakpoint behavior with documented Vuetify 2 props and helper classes first:
-   `pa-*`, `ma-*`, `d-*`, `text-*`, flex helpers, breakpoint props, `dense`, `outlined`, `rounded`, `tile`, `elevation-*`, and `color`.
-6. When a change needs styling beyond props and helper classes, prefer theme colors and SASS variables over CSS overrides.
-7. If a variable override is the right fix, update `v4/frontend/assets/scss/variables.scss` and stay aligned with the Vuetify module config already present in `v4/frontend/nuxt.config.js`.
-8. Keep interactions in the Vuetify 2 way:
-   activator slots for overlays, `rules` and `v-form` for validation, list primitives inside drawers, and documented table slots for partial customization.
-9. Validate the final UI against surrounding screens for responsive behavior, SSR safety, and consistency with the current design language.
+1. Identify the user flow and affected page, layout, shared component, data boundary, and responsive states.
+2. Reuse the closest established project pattern. Preserve Nuxt 2 SSR and client hydration behavior.
+3. Choose styling in this order:
+   1. existing project pattern;
+   2. Vuetify prop or slot;
+   3. Vuetify helper class;
+   4. existing theme token;
+   5. global SASS variable for a genuinely global design decision;
+   6. scoped component CSS for a local need the earlier options cannot express.
+4. Avoid inline style attributes and DOM patching. A focused `<style scoped>` block is acceptable when it is the narrowest local solution; do not turn a local exception into a global token.
+5. Use built-in component states, validation rules, activator slots, loading/disabled behavior, and accessibility semantics before custom plumbing.
+6. Validate task files, responsive layouts, SSR/hydration, interaction states, and browser console behavior using [validation.md](references/validation.md).
+7. Report what changed, checks run, viewports exercised, and any unverified state. Do not describe a push as a deployment.
 
 ## Defaults
 
-- Use `mdiSvg`-compatible icons and documented `v-icon` patterns.
-- Prefer `color` props and helper classes over hard-coded template colors.
-- Prefer list, card, alert, chip, and button primitives over raw HTML plus classes.
-- Prefer built-in component states such as `loading`, `disabled`, `readonly`, `error-messages`, `hint`, `hide-details`, and `persistent-hint` over custom logic or custom styling.
-- Prefer documented slots over DOM patching when customization is needed.
-- Prefer `v-simple-checkbox` inside `v-data-table` slots instead of `v-checkbox`.
-
-## Delivery
-
-When you finish frontend work:
-- State which official Vuetify 2 pages you used.
-- Call out any SASS variable or theme-level overrides.
-- Mention any place where the repo’s existing pattern forced a tradeoff against the default Vuetify 2 approach.
+- Build layout with the established Vuetify application shell and grid before custom wrappers.
+- Prefer documented component variants, color props, spacing/display/typography helpers, and theme values over hard-coded CSS.
+- Use `mdiSvg` through `v-icon`; icon-only actions need accessible names.
+- Prefer `v-form` and component `rules`; prefer documented slots and events over listeners on generated internals.
+- In data tables, customize individual columns before replacing whole headers/bodies; use `v-simple-checkbox` in table slots.
+- Do not run a competing Nuxt build while the project dev server is active unless the user explicitly requests it.

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "roots": {
+    "workspace": "$HOME/Sites/wappalyzer",
+    "canonical": "$HOME/Sites/dotfiles/codex/projects/wappalyzer"
+  },
+  "links": [
+    {
+      "destination": "AGENTS.md",
+      "source": "AGENTS.md"
+    },
+    {
+      "destination": "extension/AGENTS.md",
+      "source": "scopes/extension/AGENTS.md",
+      "repository": "extension",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "cli/AGENTS.md",
+      "source": "scopes/cli/AGENTS.md",
+      "repository": "cli",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "extract/AGENTS.md",
+      "source": "scopes/extract/AGENTS.md",
+      "repository": "extract",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "static/AGENTS.md",
+      "source": "scopes/static/AGENTS.md",
+      "repository": "static",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "v4/apis/AGENTS.md",
+      "source": "scopes/v4/apis/AGENTS.md",
+      "repository": "v4/apis",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "v4/apis-shared/AGENTS.md",
+      "source": "scopes/v4/apis-shared/AGENTS.md",
+      "repository": "v4/apis-shared",
+      "exclude": "/AGENTS.md"
+    },
+    {
+      "destination": "v4/frontend/AGENTS.md",
+      "source": "scopes/v4/frontend/AGENTS.md",
+      "repository": "v4/frontend",
+      "exclude": "/AGENTS.md"
+    }
+  ]
+}

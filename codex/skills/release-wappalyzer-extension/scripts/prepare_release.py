@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shlex
@@ -12,7 +13,8 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_REPO = Path("/Users/elbert/Sites/wappalyzer/extension")
+DEFAULT_REPO = Path.home() / "Sites" / "wappalyzer" / "extension"
+PREPARATION_FILE_NAME = ".release-preparation.json"
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 DETECTION_SUBJECT_RE = re.compile(r"^(add|update|fix)\b", re.IGNORECASE)
 TECHNOLOGY_PATH_PREFIX = "src/technologies/"
@@ -62,7 +64,12 @@ def run(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Prepare a Wappalyzer extension release."
+        description="Inspect, prepare, or release the Wappalyzer extension."
+    )
+    parser.add_argument(
+        "mode",
+        choices=("inspect", "prepare", "release"),
+        help="Required safety mode. Only release may commit, tag, or push.",
     )
     parser.add_argument(
         "--repo",
@@ -88,18 +95,42 @@ def require_repo(repo: Path) -> None:
         raise RuntimeError(f"Repo path is not a Git checkout: {repo}")
 
 
-def ensure_clean_tracked(repo: Path, commands_run: list[str]) -> None:
-    status = run(
+def get_tracked_status(repo: Path, commands_run: list[str]) -> str:
+    return run(
         ["git", "status", "--short", "--untracked-files=no"],
         repo,
         capture=True,
         commands_run=commands_run,
     )
 
+
+def ensure_clean_tracked(repo: Path, commands_run: list[str]) -> None:
+    status = get_tracked_status(repo, commands_run)
+
     if status:
         raise RuntimeError(
             "Tracked files are dirty before sync. Commit or discard them first."
         )
+
+
+def get_head(repo: Path, commands_run: list[str]) -> str:
+    return run(
+        ["git", "rev-parse", "HEAD"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+
+
+def get_origin_counts(repo: Path, commands_run: list[str]) -> tuple[int, int]:
+    counts = run(
+        ["git", "rev-list", "--left-right", "--count", "HEAD...origin/master"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+    ahead_text, behind_text = counts.split()
+    return int(ahead_text), int(behind_text)
 
 
 def ensure_branch(repo: Path, commands_run: list[str]) -> None:
@@ -122,7 +153,7 @@ def ensure_branch(repo: Path, commands_run: list[str]) -> None:
         raise RuntimeError(f"Expected upstream origin/master, found {upstream}.")
 
 
-def sync_origin(repo: Path, commands_run: list[str]) -> list[str]:
+def sync_for_preparation(repo: Path, commands_run: list[str]) -> list[str]:
     actions: list[str] = []
 
     run(
@@ -131,15 +162,7 @@ def sync_origin(repo: Path, commands_run: list[str]) -> list[str]:
         commands_run=commands_run,
     )
 
-    counts = run(
-        ["git", "rev-list", "--left-right", "--count", "HEAD...origin/master"],
-        repo,
-        capture=True,
-        commands_run=commands_run,
-    )
-    ahead_text, behind_text = counts.split()
-    ahead = int(ahead_text)
-    behind = int(behind_text)
+    ahead, behind = get_origin_counts(repo, commands_run)
 
     if ahead and behind:
         raise RuntimeError("Local master and origin/master have diverged.")
@@ -152,16 +175,29 @@ def sync_origin(repo: Path, commands_run: list[str]) -> list[str]:
         )
         actions.append("pulled origin/master")
     elif ahead:
-        run(
-            ["git", "push", "origin", "master"],
-            repo,
-            commands_run=commands_run,
-        )
-        actions.append("pushed local master")
+        actions.append("local master is ahead; push deferred")
     else:
         actions.append("already up to date")
 
     return actions
+
+
+def refresh_origin_for_release(repo: Path, commands_run: list[str]) -> None:
+    run(
+        ["git", "fetch", "origin", "master", "--tags"],
+        repo,
+        commands_run=commands_run,
+    )
+    ahead, behind = get_origin_counts(repo, commands_run)
+
+    if ahead and behind:
+        raise RuntimeError("Local master and origin/master have diverged.")
+
+    if behind:
+        raise RuntimeError(
+            "origin/master advanced after preparation. Revert or finish the prepared "
+            "state, then prepare again from the updated branch."
+        )
 
 
 def load_manifest(manifest_path: Path) -> dict:
@@ -223,7 +259,7 @@ def commit_release(repo: Path, version: str, commands_run: list[str]) -> str:
     )
 
     if tracked_status:
-        run(["git", "add", "-A"], repo, commands_run=commands_run)
+        run(["git", "add", "-u"], repo, commands_run=commands_run)
         run(
             ["git", "commit", "-m", f"Build v{version}"],
             repo,
@@ -365,38 +401,375 @@ def ensure_artifacts_exist(paths: list[Path]) -> None:
         )
 
 
+def hash_artifact(path: Path) -> str:
+    if not path.exists():
+        raise RuntimeError(f"Release artifact is missing: {path}.")
+
+    digest = hashlib.sha256()
+
+    if path.is_file():
+        paths = [path]
+        root = path.parent
+    elif path.is_dir():
+        paths = sorted(item for item in path.rglob("*") if item.is_file())
+        root = path
+    else:
+        raise RuntimeError(f"Unsupported release artifact type: {path}.")
+
+    for item in paths:
+        relative_name = item.relative_to(root).as_posix()
+        digest.update(relative_name.encode())
+        digest.update(b"\0")
+
+        with item.open("rb") as artifact_file:
+            for chunk in iter(lambda: artifact_file.read(1024 * 1024), b""):
+                digest.update(chunk)
+
+        digest.update(b"\0")
+
+    return digest.hexdigest()
+
+
+def artifact_hashes(repo: Path, paths: list[Path]) -> dict[str, str]:
+    repo = repo.resolve()
+    hashes: dict[str, str] = {}
+
+    for path in paths:
+        resolved = path.resolve()
+
+        try:
+            relative_path = resolved.relative_to(repo).as_posix()
+        except ValueError as error:
+            raise RuntimeError(f"Release artifact escapes the repository: {path}.") from error
+
+        hashes[relative_path] = hash_artifact(resolved)
+
+    return dict(sorted(hashes.items()))
+
+
 def find_safari_outputs(build_dir: Path) -> list[str]:
     return sorted(str(path) for path in build_dir.rglob("*.xcodeproj"))
 
 
-def print_summary(
+def get_preparation_path(repo: Path) -> Path:
+    return repo / "build" / PREPARATION_FILE_NAME
+
+
+def get_tracked_diff_digest(repo: Path, commands_run: list[str]) -> str:
+    diff = run(
+        ["git", "diff", "--binary", "--no-ext-diff"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+    return hashlib.sha256(diff.encode()).hexdigest()
+
+
+def write_preparation_record(
     *,
     repo: Path,
     version: str,
-    sync_actions: list[str],
-    commands_run: list[str],
-    release_commit: str,
-    webextension_v3_path: Path,
-    webextension_edge_path: Path,
-    changelog_path: Path,
-    changelog_lines: list[str],
+    base_commit: str,
+    diff_digest: str,
     safari_requested: bool,
     safari_outputs: list[str],
+    changelog_lines: list[str],
+    artifact_digests: dict[str, str],
+) -> Path:
+    path = get_preparation_path(repo)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "baseCommit": base_commit,
+                "artifactSha256": artifact_digests,
+                "changelogLines": changelog_lines,
+                "diffSha256": diff_digest,
+                "safariOutputs": safari_outputs,
+                "safariRequested": safari_requested,
+                "version": version,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    return path
+
+
+def load_preparation_record(repo: Path) -> dict | None:
+    path = get_preparation_path(repo)
+
+    if not path.exists():
+        return None
+
+    try:
+        return json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"Invalid preparation record at {path}: {error}") from error
+
+
+def preparation_artifacts(repo: Path, version: str) -> tuple[Path, Path, Path]:
+    build_dir = repo / "build"
+    return (
+        build_dir / "webextension-v3.zip",
+        build_dir / "webextension-edge.zip",
+        build_dir / f"changelog-v{version}.md",
+    )
+
+
+def validate_preparation(
+    repo: Path,
+    record: dict,
+    requested_version: str | None,
+    safari_requested: bool,
+    commands_run: list[str],
+) -> dict:
+    ensure_branch(repo, commands_run)
+    version = normalize_version(str(record.get("version", "")))
+
+    if requested_version and normalize_version(requested_version) != version:
+        raise RuntimeError(
+            f"Prepared version is {version}, not requested version {requested_version}."
+        )
+
+    if safari_requested and not record.get("safariRequested"):
+        raise RuntimeError("Prepared state does not include the requested Safari build.")
+
+    if get_head(repo, commands_run) != record.get("baseCommit"):
+        raise RuntimeError("Prepared state was created from a different HEAD commit.")
+
+    manifest = load_manifest(repo / "src" / "manifest.json")
+    if normalize_version(str(manifest.get("version", ""))) != version:
+        raise RuntimeError("Prepared manifest version no longer matches its record.")
+
+    if get_tracked_diff_digest(repo, commands_run) != record.get("diffSha256"):
+        raise RuntimeError("Tracked changes no longer match the prepared release state.")
+
+    webextension_v3_path, webextension_edge_path, changelog_path = (
+        preparation_artifacts(repo, version)
+    )
+    ensure_artifacts_exist(
+        [webextension_v3_path, webextension_edge_path, changelog_path]
+    )
+    artifact_paths = [
+        webextension_v3_path,
+        webextension_edge_path,
+        changelog_path,
+        *(Path(path) for path in record.get("safariOutputs") or []),
+    ]
+    recorded_hashes = record.get("artifactSha256")
+
+    if not isinstance(recorded_hashes, dict) or not recorded_hashes:
+        raise RuntimeError("Prepared state predates artifact integrity hashes; prepare again.")
+
+    if artifact_hashes(repo, artifact_paths) != recorded_hashes:
+        raise RuntimeError("Release artifacts no longer match the prepared release state.")
+
+    return {
+        "base_commit": record["baseCommit"],
+        "changelog_lines": list(record.get("changelogLines") or []),
+        "changelog_path": changelog_path,
+        "preparation_path": get_preparation_path(repo),
+        "safari_outputs": list(record.get("safariOutputs") or []),
+        "safari_requested": bool(record.get("safariRequested")),
+        "sync_actions": ["using validated prepared state"],
+        "version": version,
+        "webextension_edge_path": webextension_edge_path,
+        "webextension_v3_path": webextension_v3_path,
+    }
+
+
+def prepare_release(
+    repo: Path,
+    requested_version: str | None,
+    safari_requested: bool,
+    commands_run: list[str],
+) -> dict:
+    ensure_clean_tracked(repo, commands_run)
+    ensure_branch(repo, commands_run)
+    sync_actions = sync_for_preparation(repo, commands_run)
+    ensure_clean_tracked(repo, commands_run)
+
+    manifest_path = repo / "src" / "manifest.json"
+    manifest = load_manifest(manifest_path)
+    current_version = normalize_version(str(manifest.get("version", "")).strip())
+    version = (
+        normalize_version(requested_version)
+        if requested_version
+        else bump_patch(current_version)
+    )
+
+    ensure_tag_available(repo, version, commands_run)
+    previous_build = get_latest_build_commit(repo, commands_run)
+    base_commit = get_head(repo, commands_run)
+
+    manifest["version"] = version
+    write_manifest(manifest_path, manifest)
+    run(["yarn", "build:release"], repo, commands_run=commands_run)
+
+    webextension_v3_path, webextension_edge_path, changelog_path = (
+        preparation_artifacts(repo, version)
+    )
+    ensure_artifacts_exist([webextension_v3_path, webextension_edge_path])
+
+    safari_outputs: list[str] = []
+    if safari_requested:
+        if not shutil.which("xcrun"):
+            raise RuntimeError("Safari was requested but xcrun is not available.")
+        run(["yarn", "build:safari"], repo, commands_run=commands_run)
+        safari_outputs = find_safari_outputs(repo / "build")
+
+    changelog_lines = build_changelog_lines(repo, previous_build, commands_run)
+    changelog_path.write_text(
+        ("\n".join(changelog_lines) + "\n") if changelog_lines else ""
+    )
+    artifact_paths = [
+        webextension_v3_path,
+        webextension_edge_path,
+        changelog_path,
+        *(Path(path) for path in safari_outputs),
+    ]
+    preparation_path = write_preparation_record(
+        repo=repo,
+        version=version,
+        base_commit=base_commit,
+        diff_digest=get_tracked_diff_digest(repo, commands_run),
+        safari_requested=safari_requested,
+        safari_outputs=safari_outputs,
+        changelog_lines=changelog_lines,
+        artifact_digests=artifact_hashes(repo, artifact_paths),
+    )
+
+    return {
+        "base_commit": base_commit,
+        "changelog_lines": changelog_lines,
+        "changelog_path": changelog_path,
+        "preparation_path": preparation_path,
+        "safari_outputs": safari_outputs,
+        "safari_requested": safari_requested,
+        "sync_actions": sync_actions,
+        "version": version,
+        "webextension_edge_path": webextension_edge_path,
+        "webextension_v3_path": webextension_v3_path,
+    }
+
+
+def inspect_release(repo: Path, commands_run: list[str]) -> None:
+    branch = run(
+        ["git", "branch", "--show-current"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+    upstream = run(
+        ["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"],
+        repo,
+        capture=True,
+        commands_run=commands_run,
+    )
+    ahead, behind = get_origin_counts(repo, commands_run)
+    manifest = load_manifest(repo / "src" / "manifest.json")
+    version = normalize_version(str(manifest.get("version", "")).strip())
+    latest_build = get_latest_build_commit(repo, commands_run)
+    status = get_tracked_status(repo, commands_run)
+    preparation = load_preparation_record(repo)
+
+    print("Inspection summary")
+    print(f"Repo: {repo}")
+    print(f"Branch: {branch}")
+    print(f"Upstream: {upstream}")
+    print(f"Ahead/behind cached origin/master: {ahead}/{behind}")
+    print(f"Current manifest version: {version}")
+    print(f"Default next version: {bump_patch(version)}")
+    print(f"Latest Build marker: {latest_build or 'none'}")
+    print(f"Tracked status: {status or 'clean'}")
+    if preparation:
+        print(
+            "Prepared state: "
+            f"v{preparation.get('version', 'unknown')} from "
+            f"{preparation.get('baseCommit', 'unknown')}"
+        )
+    else:
+        print("Prepared state: none")
+    print("Remote refs were not fetched; inspect mode is read-only.")
+
+
+def get_or_create_preparation(
+    repo: Path,
+    requested_version: str | None,
+    safari_requested: bool,
+    commands_run: list[str],
+) -> dict:
+    record = load_preparation_record(repo)
+
+    if record and record.get("baseCommit") == get_head(repo, commands_run):
+        return validate_preparation(
+            repo,
+            record,
+            requested_version,
+            safari_requested,
+            commands_run,
+        )
+
+    if get_tracked_status(repo, commands_run):
+        raise RuntimeError(
+            "Tracked files are dirty and do not match a prepared release state."
+        )
+
+    if record:
+        get_preparation_path(repo).unlink(missing_ok=True)
+
+    return prepare_release(
+        repo,
+        requested_version,
+        safari_requested,
+        commands_run,
+    )
+
+
+def publish_release(repo: Path, preparation: dict, commands_run: list[str]) -> str:
+    version = preparation["version"]
+    refresh_origin_for_release(repo, commands_run)
+    ensure_tag_available(repo, version, commands_run)
+    release_commit = commit_release(repo, version, commands_run)
+    run(["git", "tag", f"v{version}"], repo, commands_run=commands_run)
+    run(
+        ["git", "push", "--atomic", "origin", "master", f"refs/tags/v{version}"],
+        repo,
+        commands_run=commands_run,
+    )
+    preparation["preparation_path"].unlink(missing_ok=True)
+    return release_commit
+
+
+def print_summary(
+    *,
+    mode: str,
+    repo: Path,
+    preparation: dict,
+    commands_run: list[str],
+    release_commit: str | None = None,
 ) -> None:
+    version = preparation["version"]
     print("")
-    print("Release summary")
+    print(f"{mode.capitalize()} summary")
     print(f"Repo: {repo}")
     print(f"Version: {version}")
-    print(f"Sync: {', '.join(sync_actions)}")
+    print(f"Sync: {', '.join(preparation['sync_actions'])}")
     print(f"Local manifest: {repo / 'src/manifest.json'}")
-    print(f"Chrome/Firefox artifact: {webextension_v3_path}")
-    print(f"Edge artifact: {webextension_edge_path}")
-    print(f"Changelog: {changelog_path}")
-    print(f"Commit: {release_commit}")
-    print(f"Tag: v{version}")
-    if safari_requested and safari_outputs:
-        safari_status = ", ".join(safari_outputs)
-    elif safari_requested:
+    print(f"Chrome/Firefox artifact: {preparation['webextension_v3_path']}")
+    print(f"Edge artifact: {preparation['webextension_edge_path']}")
+    print(f"Changelog: {preparation['changelog_path']}")
+    if release_commit:
+        print(f"Commit: {release_commit}")
+        print(f"Tag: v{version}")
+        print("Push: origin/master and tag pushed atomically")
+    else:
+        print("Commit/tag/push: not performed")
+        print(f"Preparation record: {preparation['preparation_path']}")
+    if preparation["safari_requested"] and preparation["safari_outputs"]:
+        safari_status = ", ".join(preparation["safari_outputs"])
+    elif preparation["safari_requested"]:
         safari_status = "requested, but no .xcodeproj path was found under build/"
     else:
         safari_status = "not requested"
@@ -405,8 +778,8 @@ def print_summary(
     for command in commands_run:
         print(f"- {command}")
     print("Changelog entries:")
-    if changelog_lines:
-        for line in changelog_lines:
+    if preparation["changelog_lines"]:
+        for line in preparation["changelog_lines"]:
             print(line)
     else:
         print("- none")
@@ -419,60 +792,41 @@ def main() -> int:
 
     try:
         require_repo(repo)
-        ensure_clean_tracked(repo, commands_run)
-        ensure_branch(repo, commands_run)
-        sync_actions = sync_origin(repo, commands_run)
 
-        manifest_path = repo / "src/manifest.json"
-        manifest = load_manifest(manifest_path)
-        current_version = normalize_version(str(manifest.get("version", "")).strip())
-        version = normalize_version(args.version) if args.version else bump_patch(current_version)
+        if args.mode == "inspect":
+            if args.version or args.safari:
+                raise RuntimeError("inspect mode does not accept --version or --safari.")
+            inspect_release(repo, commands_run)
+            return 0
 
-        ensure_tag_available(repo, version, commands_run)
-        previous_build = get_latest_build_commit(repo, commands_run)
+        if args.mode == "prepare":
+            preparation = prepare_release(
+                repo,
+                args.version,
+                args.safari,
+                commands_run,
+            )
+            print_summary(
+                mode="prepare",
+                repo=repo,
+                preparation=preparation,
+                commands_run=commands_run,
+            )
+            return 0
 
-        manifest["version"] = version
-        write_manifest(manifest_path, manifest)
-
-        run(["yarn", "build:release"], repo, commands_run=commands_run)
-        webextension_v3_path = repo / "build" / "webextension-v3.zip"
-        webextension_edge_path = repo / "build" / "webextension-edge.zip"
-        ensure_artifacts_exist([webextension_v3_path, webextension_edge_path])
-
-        safari_outputs: list[str] = []
-        if args.safari:
-            if not shutil.which("xcrun"):
-                raise RuntimeError("Safari was requested but xcrun is not available.")
-            run(["yarn", "build:safari"], repo, commands_run=commands_run)
-            safari_outputs = find_safari_outputs(repo / "build")
-
-        release_commit = commit_release(repo, version, commands_run)
-        run(["git", "tag", f"v{version}"], repo, commands_run=commands_run)
-
-        changelog_lines = build_changelog_lines(repo, previous_build, commands_run)
-        changelog_path = repo / "build" / f"changelog-v{version}.md"
-        changelog_path.write_text(
-            ("\n".join(changelog_lines) + "\n") if changelog_lines else ""
-        )
-
-        run(
-            ["git", "push", "--atomic", "origin", "master", f"refs/tags/v{version}"],
+        preparation = get_or_create_preparation(
             repo,
-            commands_run=commands_run,
+            args.version,
+            args.safari,
+            commands_run,
         )
-
+        release_commit = publish_release(repo, preparation, commands_run)
         print_summary(
+            mode="release",
             repo=repo,
-            version=version,
-            sync_actions=sync_actions,
+            preparation=preparation,
             commands_run=commands_run,
             release_commit=release_commit,
-            webextension_v3_path=webextension_v3_path,
-            webextension_edge_path=webextension_edge_path,
-            changelog_path=changelog_path,
-            changelog_lines=changelog_lines,
-            safari_requested=args.safari,
-            safari_outputs=safari_outputs,
         )
         return 0
     except RuntimeError as error:

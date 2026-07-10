@@ -6,7 +6,8 @@
   - `AIDifficulty.hard.config`: `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`, advanced shortcuts on.
   - `PenteAI.chooseMove`: wraps `Searcher.bestMove()`.
   - `Searcher.bestMove()`: shortcut order, forced defenses, compound threats, shortcut/full negamax, DEBUG decision logging.
-  - DEBUG logs include `groups`, `phases`, `candidates`, `selected`, `reason`, `durationMs`, and root `board`.
+  - DEBUG decision-log schema 4 includes `groups`, `phases`, `candidates`, `selected`, `reason`, `durationMs`, root `board`, and `searchTelemetry`.
+  - `searchTelemetry` records negamax/quiescence nodes, evaluated root moves, completed depth by search label, transposition probes/misses/score hits/move-ordering hits/stores, alpha-beta cutoffs, and deadline/cancellation exit reasons.
 
 - `/Users/elbert/Sites/pente/Pente/PenteEngine.swift`
   - Board: 19x19, `AIState.board` has `-1` empty, `0` human/white, `1` computer/black in single player.
@@ -80,8 +81,26 @@ Key fields:
 - `groups`: tactical buckets the move appeared in.
 - `candidates`: per-move tags and search scores.
 - `phases`: timings and `exceededDeadline` flags; long phases identify compute risks.
+- `searchTelemetry`: node counts, completed depths, cache behavior, cutoffs, and the first recorded deadline/cancellation exit context.
 - `board`: board before the AI move.
 - `selected`: AI move.
+
+## Pinned Version Bench
+
+`Scripts/pente_ai_version_bench.py` compares the current working tree with the immutable Git revision in `Scripts/PenteAIVersionBench/baseline.json`. It compiles each version as a persistent move oracle, starts paired games from the same fixed histories, swaps player indexes, and reports win plus latency summaries.
+
+Canonical Advanced-budget run:
+
+```bash
+python3 Scripts/pente_ai_version_bench.py \
+  --games 12 \
+  --max-moves 60 \
+  --time-limit-ms 4000 \
+  --max-seconds 1800 \
+  --jsonl /tmp/pente-ai-version-bench.jsonl
+```
+
+Use `--baseline-ref <commit>` only for an intentional one-off comparison. Promote a new baseline by updating the pinned full commit and label after the candidate has passed focused probes, the compact bench, and a meaningful paired run.
 
 ## Reverse Human-Win Debugging
 
