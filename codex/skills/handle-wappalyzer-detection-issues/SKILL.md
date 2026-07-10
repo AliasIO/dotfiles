@@ -1,6 +1,6 @@
 ---
 name: handle-wappalyzer-detection-issues
-description: "Inspect, implement, publish, or batch-process GitHub issues about missing, broken, false-positive, or metadata-only Wappalyzer extension detections. Use for a specific issue URL or number, or when explicitly asked to action the detection backlog. Select the least-authorized mode: inspect only reads and classifies; implement makes and validates a local extension change; publish-one commits, pushes, opens one PR, then labels, comments on, and closes one in-scope issue; backlog repeats publish-one oldest-first only when the user explicitly requests a batch. Delegate technology-definition research to add-wappalyzer-technology."
+description: "Inspect, implement, publish, or batch-process GitHub issues about missing, broken, false-positive, or metadata-only Wappalyzer extension detections. Use for a specific issue URL or number, or when explicitly asked to action the detection backlog. Select the least-authorized mode: inspect only reads and classifies; implement makes, validates, commits, and directly pushes an extension change under the global delivery rule without mutating the issue; publish-one uses an explicitly requested PR workflow, then labels, comments on, and closes one in-scope issue; backlog repeats publish-one oldest-first only when the user explicitly requests a batch. Delegate technology-definition research to add-wappalyzer-technology."
 ---
 
 # Handle Wappalyzer Detection Issues
@@ -14,7 +14,7 @@ Choose the least-authorized mode supported by the user's request:
 | Mode | Trigger | Allowed effects |
 | --- | --- | --- |
 | `inspect` | Review, summarize, classify, or choose an issue | Read GitHub and local files only |
-| `implement` | Fix or implement a specific issue | Edit and validate local files in `extension/`; do not commit, push, open a PR, or mutate the issue |
+| `implement` | Fix or implement a specific issue | Edit and validate files in `extension/`, then commit and push task-owned changes directly upstream under the global delivery rule; do not open a PR or mutate the issue |
 | `publish-one` | Explicitly action or publish a specific issue, or explicitly open its PR | Implement; create one branch and commit; push; open one PR; label, comment on, and close that issue |
 | `backlog` | Explicitly process or action multiple backlog issues | Repeat `publish-one` oldest-first, completing each issue before starting the next |
 

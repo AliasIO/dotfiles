@@ -6,7 +6,7 @@
 - Destructive authority is bounded by [dependencies.json](dependencies.json). Preserve all canonical-source changes and every ordinary parent path not listed there.
 - Publish bottom-up. A consumer can point only to a commit available on the canonical remote branch.
 - Updating a dependency is incomplete until all declared direct consumers, recursive nested consumers, and extractor aliases pass `--check`.
-- The helper stages only exact declared gitlinks and extractor-alias paths. A human/agent with Publish authority reviews, commits, and pushes each parent layer.
+- The helper stages only exact declared gitlinks and extractor-alias paths. Review, commit, and push each parent layer under the global delivery rule.
 
 ## Inspect
 

@@ -1,6 +1,6 @@
 ---
 name: add-wappalyzer-technology
-description: Research, validate, add, or update Wappalyzer browser-extension technology definitions and icons in `extension/`. Use for technology eligibility, live-site evidence, false-positive analysis, fingerprints, metadata, categories, CPEs, pricing, icons, and local behavioral validation. An inspection request is read-only; “add”, “fix”, or “update” permits local implementation but never commit, push, PR, issue mutation, or deployment unless separately requested through the appropriate workflow.
+description: Research, validate, add, or update Wappalyzer browser-extension technology definitions and icons in `extension/`. Use for technology eligibility, live-site evidence, false-positive analysis, fingerprints, metadata, categories, CPEs, pricing, icons, and local behavioral validation. An inspection request is read-only; “add”, “fix”, or “update” permits implementation followed by a task-scoped commit and direct upstream push under the global delivery rule, while PRs, issue mutation, releases, and deployments use their explicit workflows.
 ---
 
 # Add Wappalyzer Technology
@@ -8,8 +8,8 @@ description: Research, validate, add, or update Wappalyzer browser-extension tec
 ## Authority
 
 - Select Inspect for research, review, or diagnosis and do not edit files.
-- Select Implement only when the user asks to add, fix, or update a definition. Limit work to local task-owned files and validation.
-- Never commit, push, open a PR, mutate an issue, release, or deploy through this skill. Use the issue or publication workflow when explicitly requested.
+- Select Implement only when the user asks to add, fix, or update a definition. Limit work to task-owned files and validation.
+- After validation, commit and push task-owned changes directly to the current upstream branch under the global delivery rule. Do not open a PR, mutate an issue, release, or deploy through this skill; when another explicitly requested workflow owns publication or issue lifecycle, follow that workflow instead.
 
 ## Load the right guidance
 

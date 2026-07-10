@@ -1,6 +1,6 @@
 ---
 name: deploy-wappalyzer
-description: Inspect Wappalyzer deployment state, propagate published canonical dependency commits into declared consumers, or explicitly deploy `v4/apis` and `v4/frontend`. Use for deployment planning/status, submodule/gitlink rollout, layer/API/ECS release, frontend production rollout, or post-deploy smoke checks. Inspection is read-only; dependency `--apply`, commits, and pushes require Publish authority; any deploy, production-triggering frontend push, or live mutation requires an explicit Operate request. Do not invoke merely to implement or locally verify code.
+description: Inspect Wappalyzer deployment state, propagate published canonical dependency commits into declared consumers, or explicitly deploy `v4/apis` and `v4/frontend`. Use for deployment planning/status, submodule/gitlink rollout, layer/API/ECS release, frontend production rollout, or post-deploy smoke checks. Inspection is read-only; required dependency propagation, commits, and direct upstream pushes follow the global delivery rule; any deploy, production-triggering frontend push, or live mutation requires an explicit Operate request. Do not invoke merely to implement or locally verify code.
 ---
 
 # Deploy Wappalyzer
@@ -10,10 +10,10 @@ description: Inspect Wappalyzer deployment state, propagate published canonical 
 | Mode | Actions |
 | --- | --- |
 | Inspect | Read status, plan a rollout, run dependency `--check`, inspect workflows/functions, and report |
-| Publish | Run dependency `--apply`, make exact task-owned propagation commits, and push only when requested |
+| Publish | Run required dependency `--apply`, make exact task-owned propagation commits, and push them directly upstream under the global delivery rule; also handle explicitly requested non-default publication workflows |
 | Operate | Execute an explicitly requested API, ECS, layer, or frontend production deployment and smoke-check it |
 
-- Implementation is not a deploy mode. Finish and validate code in the owning workflow first.
+- Implementation is not a deploy mode. Finish, validate, commit, and push canonical code in the owning workflow first, then use this workflow for any required dependency propagation.
 - Never deploy `v2` or a stage sharing live resources without explicit current-task permission.
 - A frontend `master` push starts production deployment and therefore requires Operate authority, not merely generic permission to push.
 

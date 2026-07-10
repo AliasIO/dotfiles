@@ -1,4 +1,4 @@
 interface:
   display_name: "Wappalyzer Frontend"
   short_description: "Implement Nuxt and Vuetify UI changes"
-  default_prompt: "Use $wappalyzer-frontend to implement and locally validate this frontend change without publishing or deploying it."
+  default_prompt: "Use $wappalyzer-frontend to implement, validate, and commit this frontend change, leaving any production-triggering push for an explicitly authorized rollout."

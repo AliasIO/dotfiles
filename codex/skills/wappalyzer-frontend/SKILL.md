@@ -1,6 +1,6 @@
 ---
 name: wappalyzer-frontend
-description: Implement and locally validate Wappalyzer website changes in `v4/frontend` using the repository’s Nuxt 2 and Vuetify 2 conventions. Use for pages, layouts, components, forms, navigation, tables, responsive behavior, SSR/hydration, accessibility, or styling. This skill permits local task-owned edits when implementation is requested; it never commits, pushes, dispatches GitHub Actions, or deploys. A request to review or verify is read-only unless edits are explicit.
+description: Implement, validate, and commit Wappalyzer website changes in `v4/frontend` using the repository’s Nuxt 2 and Vuetify 2 conventions. Use for pages, layouts, components, forms, navigation, tables, responsive behavior, SSR/hydration, accessibility, or styling. Implementation follows the global task-scoped commit rule; because a `master` push triggers production, pushing, dispatching GitHub Actions, and deployment require explicit Operate authority. A request to review or verify is read-only unless edits are explicit.
 ---
 
 # Wappalyzer Frontend
@@ -8,8 +8,8 @@ description: Implement and locally validate Wappalyzer website changes in `v4/fr
 ## Authority
 
 - Use Inspect for review, diagnosis, or verification without edits.
-- Use Implement only when the user asks for a change; keep work local and task-owned.
-- Do not commit, push, dispatch a workflow, or deploy. Use `$deploy-wappalyzer` only when publication or rollout is explicitly requested.
+- Use Implement only when the user asks for a change; keep edits task-owned.
+- After validation, commit task-owned changes under the global delivery rule. Do not push a production-triggering branch, dispatch a workflow, or deploy without explicit Operate authority; use `$deploy-wappalyzer` for that rollout.
 
 ## Load project context
 

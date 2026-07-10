@@ -1,6 +1,6 @@
 ---
 name: operate-wappalyzer-mass-lookup
-description: Inspect, start, resume, troubleshoot, or locally repair Wappalyzer AWS Batch mass-lookup workflows from the Wappalyzer workspace. Use for mass-lookup S3 run prefixes, coordinator or shard status, explicit new or resumed live runs, Batch failures, and local changes to the utility or ECS handlers. Status and troubleshooting are read-only; starting or resuming requires an explicit live-operation request; local repair never implies commit, deployment, setup, or run submission.
+description: Inspect, start, resume, troubleshoot, or repair Wappalyzer AWS Batch mass-lookup workflows from the Wappalyzer workspace. Use for mass-lookup S3 run prefixes, coordinator or shard status, explicit new or resumed live runs, Batch failures, and changes to the utility or ECS handlers. Status and troubleshooting are read-only; validated repairs are committed and pushed under the global delivery rule; starting, resuming, deployment, setup, and run submission require an explicit live-operation request.
 ---
 
 # Operate Wappalyzer Mass Lookup
@@ -27,7 +27,7 @@ Diagnose read-only by default: inspect the manifest, summary, Batch parents and 
 
 ### Local Repair
 
-Change only canonical local mass-lookup code, preserve unrelated worktree changes, and run focused checks and tests. Do not deploy, set up Batch resources, or start/resume a run in this mode. Report any required deployment or live validation as follow-up; commit only when explicitly requested.
+Change only canonical mass-lookup code, preserve unrelated worktree changes, and run focused checks and tests. Commit and push validated task-owned repairs under the global delivery rule. Do not deploy, set up Batch resources, or start/resume a run in this mode; report any required deployment or live validation as follow-up.
 
 ## Boundaries
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Add Wappalyzer Technology"
   short_description: "Research and edit detection definitions"
-  default_prompt: "Use $add-wappalyzer-technology to research this technology and implement a locally validated definition without publishing it."
+  default_prompt: "Use $add-wappalyzer-technology to research, implement, validate, commit, and directly push this detection change under the project delivery rules."
