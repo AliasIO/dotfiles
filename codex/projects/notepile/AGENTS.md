@@ -2,6 +2,7 @@
 
 - Always work on the `master` branch for this project.
 - Use US spelling in app copy, documentation, tests, and new durable guidance.
+- Before changing share-extension behavior, supported share inputs, import classification, attachment handling, limits, errors, or the share interface, read `docs/sharing-policy.md`. Update that policy and the relevant tests in the same change whenever accepted sharing behavior changes.
 - Inspect the working tree before editing. Never reset, clean, discard, or include unrelated local work. Stage only task-owned files or hunks, inspect the staged diff, then commit and push those changes. Stop for coordination if the task must overlap existing edits that cannot be separated safely.
 - Documentation-only and website-only changes do not require an app build or simulator install.
 - After app code or asset changes, build into a fixed derived-data directory such as `/tmp/NotePileDerivedData`, targeting the already-booted simulator by UDID. Install that exact `Build/Products/Debug-iphonesimulator/NotePile.app` with `xcrun simctl install`, launch bundle id `io.alias.notepile`, and leave the Simulator open for manual testing. If no simulator is booted, boot the standard `iPhone 17` simulator first.
