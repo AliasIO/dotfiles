@@ -34,6 +34,7 @@
 
 ## Layout Editor
 
+- When the user asks to open or show "the lab," default to the local Portfolio Cover Lab at `http://127.0.0.1:3000/dev/portfolio-cover-lab` unless they identify a different lab. Start it with `npm run dev --workspace=@iso100/studio -- --host 127.0.0.1 --port 3000`, then open that route. It is the dev-only page headed `Local cover lab`, backed by `apps/studio/nuxt/app/components/studio/DevPortfolioCoverLab.vue`; do not substitute the Studio dashboard or the static renderer fixture.
 - Treat layout editor cover previews as representative scaled versions of the public portfolio page, not abstract placeholders.
 - Preserve the public page's visual contract in the editor: cover size/aspect ratio, hero height, page background color, image crop, tint or overlay color, text color, font family, font weight, approximate font scale, text alignment, text position, spacing, gallery proportions, and visible section balance.
 - Cover image cropping must use the same focus-point behavior as the public page across all cover sizes and layout presets. If a photographer sets a focus point, the editor preview, preset thumbnails, and published portfolio should all crop around the same focal area.
