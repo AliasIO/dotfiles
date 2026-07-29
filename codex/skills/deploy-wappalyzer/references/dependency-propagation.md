@@ -11,7 +11,7 @@
 ## Inspect
 
 ```bash
-node "$HOME/Sites/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" --check
+node "$HOME/Projects/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" --check
 ```
 
 `--check` is local and does not fetch. It validates the manifest against each parent `.gitmodules`, compares canonical cached `origin/master`, recorded/index/working gitlinks, checks recursive nested status, and compares extractor aliases.
@@ -23,13 +23,13 @@ Parents remain monitored even when they have no active consumers. A stale `.gitm
 Run only after the canonical commit is on `origin/master`:
 
 ```bash
-node "$HOME/Sites/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
+node "$HOME/Projects/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
   --apply --canonical extension
 
-node "$HOME/Sites/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
+node "$HOME/Projects/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
   --apply --canonical cli
 
-node "$HOME/Sites/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
+node "$HOME/Projects/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs" \
   --apply --canonical apis-shared
 ```
 

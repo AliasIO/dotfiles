@@ -22,7 +22,7 @@ Prefer authenticated `gh`. Otherwise use `GITHUB_TOKEN` or `GH_TOKEN` with the b
 
 ## Preliminary scope gate
 
-Read `$HOME/Sites/wappalyzer/extension/README.md`, then load and apply the canonical eligibility, first-party evidence, category, and implication rules from `add-wappalyzer-technology`. Do not create a second issue-specific eligibility standard.
+Read `$HOME/Projects/wappalyzer/extension/README.md`, then load and apply the canonical eligibility, first-party evidence, category, and implication rules from `add-wappalyzer-technology`. Do not create a second issue-specific eligibility standard.
 
 When a known technology is reportedly missing or misdetected, investigate the cited page first. Use a comparable public deployment only when that page is unreachable. If the technology is present but current detection misses it, classify it as `FIX` and attempt an improvement before resolving it without code. Gather the first round of browser evidence yourself; use `More info needed` only after a concrete blocker remains, such as dead samples, anti-bot lockout, or ambiguous product identity.
 
@@ -33,6 +33,6 @@ When a known technology is reportedly missing or misdetected, investigate the ci
 - `META`: only the icon, website, description, category, or other metadata needs changing.
 - `NOT_THIS_SKILL`: crawler/runtime behavior, extension UI, account, billing, AWS, Cognito, or another issue without a technology-definition target.
 
-Search `$HOME/Sites/wappalyzer/extension/src/technologies/*.json` and recent history in the `extension/` repository before finalizing `ADD`, `FIX`, or `META`. The workspace root is not the extension Git repository. Do not edit checked-out extension submodule copies elsewhere in the workspace.
+Search `$HOME/Projects/wappalyzer/extension/src/technologies/*.json` and recent history in the `extension/` repository before finalizing `ADD`, `FIX`, or `META`. The workspace root is not the extension Git repository. Do not edit checked-out extension submodule copies elsewhere in the workspace.
 
 Outside-scope issues remain untouched even in publish modes. In-scope intake that is rejected on eligibility or evidence grounds is resolved through the labels in [github-lifecycle.md](./github-lifecycle.md).

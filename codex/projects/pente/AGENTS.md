@@ -7,4 +7,4 @@
 - Pass `-PenteDebugStartSinglePlayer` as a launch argument when a fresh Advanced single-player game is needed. Current XcodeBuildMCP builds capture runtime logs directly; do not call obsolete `start_sim_log_cap` or `stop_sim_log_cap` tools.
 - When controlling the Simulator UI, prefer Computer Use when available. Use XcodeBuildMCP taps/gestures only when those tools exist; otherwise leave visual interaction to the user rather than inventing unavailable automation.
 - If no simulator is active and app verification is required, boot/open the standard `iPhone 17` simulator before building.
-- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Sites/dotfiles/codex/projects/pente/AGENTS.md`; the repository-root file is a symlink.
+- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Projects/dotfiles/codex/projects/pente/AGENTS.md`; the repository-root file is a symlink.

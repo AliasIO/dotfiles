@@ -5,7 +5,7 @@ Apply this reference only in `publish-one` or `backlog` mode. Those modes requir
 ## Repository and branch
 
 - Use the same GitHub repository for the issue, branch publication, PR, labels, comments, and closure.
-- Work in `$HOME/Sites/wappalyzer/extension` for definition changes.
+- Work in `$HOME/Projects/wappalyzer/extension` for definition changes.
 - Do not assume its current `origin` is the issue repository. Inspect remotes and add or use the correct remote when necessary.
 - Start from a clean, current target default branch; in this workspace it is normally `master`.
 - Create a fresh `codex/...` branch for each accepted issue.
@@ -19,7 +19,7 @@ Use the same concise subject for the commit and PR title:
 - `add <technology name>` for a new definition
 - `update <technology name>` for detection, icon, or metadata changes
 
-Validate with `yarn validate` in `$HOME/Sites/wappalyzer/extension` before committing.
+Validate with `yarn validate` in `$HOME/Projects/wappalyzer/extension` before committing.
 
 The PR body must include:
 

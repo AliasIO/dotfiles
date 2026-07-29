@@ -1,6 +1,6 @@
 # API and ECS Deployment
 
-Working directory: `$HOME/Sites/wappalyzer/v4/apis`
+Working directory: `$HOME/Projects/wappalyzer/v4/apis`
 
 ## Preflight
 

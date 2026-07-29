@@ -4,7 +4,7 @@
 
 - Treat ISO100 as a portfolio-first photography service, not a generic website builder, social network, client-delivery suite, or photographer business-management platform.
 - Favor decisions that improve public portfolio quality, image presentation, simple publishing, and clear free-vs-paid upgrade boundaries.
-- Keep the product direction aligned with `/Users/elbert/Sites/iso100/docs/product-plan.md`; update that document when changing durable product assumptions instead of scattering product notes elsewhere.
+- Keep the product direction aligned with `/Users/elbert/Projects/iso100/docs/product-plan.md`; update that document when changing durable product assumptions instead of scattering product notes elsewhere.
 - Use direct buyer language for public copy. Avoid meta commentary about page formats or internal positioning work.
 
 ## Design Direction
@@ -99,4 +99,4 @@
 - After making changes, commit and push them. If the push is rejected because `master` moved, rebase on the remote branch, resolve carefully, then push.
 - This repo may have substantial uncommitted setup work. Do not reset, clean, or discard local files unless the user explicitly asks.
 - Before committing, inspect status and keep unrelated user changes out of the commit where practical.
-- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Sites/dotfiles/codex/projects/iso100/AGENTS.md`; the repo-root `AGENTS.md` should be a symlink to it.
+- If editing this `AGENTS.md`, make the canonical change in `/Users/elbert/Projects/dotfiles/codex/projects/iso100/AGENTS.md`; the repo-root `AGENTS.md` should be a symlink to it.

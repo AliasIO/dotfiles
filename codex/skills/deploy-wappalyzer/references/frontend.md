@@ -1,6 +1,6 @@
 # Frontend Deployment
 
-Working directory: `$HOME/Sites/wappalyzer/v4/frontend`
+Working directory: `$HOME/Projects/wappalyzer/v4/frontend`
 
 ## Production trigger
 

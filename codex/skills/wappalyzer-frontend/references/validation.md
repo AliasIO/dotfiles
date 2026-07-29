@@ -8,7 +8,7 @@
 
 ## Static checks
 
-Run non-fixing ESLint on task files from `$HOME/Sites/wappalyzer/v4/frontend`:
+Run non-fixing ESLint on task files from `$HOME/Projects/wappalyzer/v4/frontend`:
 
 ```bash
 yarn eslint --ext .js,.vue --ignore-path .gitignore <changed-files...>

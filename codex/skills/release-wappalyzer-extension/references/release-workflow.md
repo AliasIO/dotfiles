@@ -2,7 +2,7 @@
 
 ## Repository
 
-- Checkout: `$HOME/Sites/wappalyzer/extension`
+- Checkout: `$HOME/Projects/wappalyzer/extension`
 - Required branch: `master`
 - Required upstream: `origin/master`
 - Canonical version: `src/manifest.json`

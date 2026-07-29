@@ -22,7 +22,7 @@ description: Inspect Wappalyzer deployment state, propagate published canonical 
 - Dependency or submodule work: [dependency-propagation.md](references/dependency-propagation.md)
 - API, layer, Lambda, container, or ECS work: [apis.md](references/apis.md)
 - Website rollout: [frontend.md](references/frontend.md)
-- Live AWS/Cognito/Cloudflare facts: `$HOME/Sites/dotfiles/codex/projects/wappalyzer/runbooks/live-infrastructure.md`
+- Live AWS/Cognito/Cloudflare facts: `$HOME/Projects/dotfiles/codex/projects/wappalyzer/runbooks/live-infrastructure.md`
 
 ## Workflow
 

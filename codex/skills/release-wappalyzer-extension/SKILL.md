@@ -14,7 +14,7 @@ Read [references/release-workflow.md](./references/release-workflow.md) before `
 Inspect local repository state, cached ahead/behind counts, current and next version, latest release marker, and any prepared state. Make no filesystem, Git-ref, or remote changes.
 
 ```bash
-python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" inspect
+python3 "$HOME/Projects/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" inspect
 ```
 
 ## Prepare
@@ -22,7 +22,7 @@ python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/
 Prepare local artifacts only. The helper may fetch and fast-forward local `master`, update the manifest, run builds, and write a changelog and preparation record. It never commits, tags, or pushes in this mode.
 
 ```bash
-python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" prepare
+python3 "$HOME/Projects/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" prepare
 ```
 
 Add `--version x.y.z` only for an explicit version and `--safari` only when Safari was requested.
@@ -32,12 +32,12 @@ Add `--version x.y.z` only for an explicit version and `--safari` only when Safa
 Use only when the user explicitly requests release/publication of the Git release. The helper validates or creates a prepared state, creates `Build vX.Y.Z`, tags `vX.Y.Z`, and atomically pushes `master` and the tag. It never uploads to a browser store.
 
 ```bash
-python3 "$HOME/Sites/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" release
+python3 "$HOME/Projects/dotfiles/codex/skills/release-wappalyzer-extension/scripts/prepare_release.py" release
 ```
 
 ## Invariants
 
-- Use `$HOME/Sites/wappalyzer/extension`, branch `master`, upstream `origin/master`.
+- Use `$HOME/Projects/wappalyzer/extension`, branch `master`, upstream `origin/master`.
 - Treat `src/manifest.json` as the canonical version source and default to a patch bump.
 - Use `yarn build:release`; do not substitute fast or manual build paths.
 - Build Safari only when explicitly requested; stop if `xcrun` is unavailable.

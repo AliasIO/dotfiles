@@ -2,24 +2,24 @@
 
 ## Repo Map
 
-- `/Users/elbert/Sites/pente/Pente/PenteAI.swift`
+- `/Users/elbert/Projects/pente/Pente/PenteAI.swift`
   - `AIDifficulty.hard.config`: `maxDepth: 6`, `timeLimitMs: 4_000`, `maxCandidateMoves: 20`, advanced shortcuts on.
   - `PenteAI.chooseMove`: wraps `Searcher.bestMove()`.
   - `Searcher.bestMove()`: shortcut order, forced defenses, compound threats, shortcut/full negamax, DEBUG decision logging.
   - DEBUG decision-log schema 4 includes `groups`, `phases`, `candidates`, `selected`, `reason`, `durationMs`, root `board`, and `searchTelemetry`.
   - `searchTelemetry` records negamax/quiescence nodes, evaluated root moves, completed depth by search label, transposition probes/misses/score hits/move-ordering hits/stores, alpha-beta cutoffs, and deadline/cancellation exit reasons.
 
-- `/Users/elbert/Sites/pente/Pente/PenteEngine.swift`
+- `/Users/elbert/Projects/pente/Pente/PenteEngine.swift`
   - Board: 19x19, `AIState.board` has `-1` empty, `0` human/white, `1` computer/black in single player.
   - Move helpers: `aiIndex`, `aiCoordinates`, `aiOpponent`.
   - Core application: `apply`, `capturePreviewPositions`, `capturePreviewCount`, `immediateWinningMoves`. `capturePreviewIndices` is private and should not be treated as a callable helper outside `PenteEngine`.
   - Tactical detectors: forced line/capture/pair defenses, open-three defenses, open-four creation, fork setup, capture threat summaries, move qualities.
 
-- `/Users/elbert/Sites/pente/Pente/PenteEvaluator.swift`
+- `/Users/elbert/Projects/pente/Pente/PenteEvaluator.swift`
   - Static scoring is mostly player-relative, but immediate opponent wins carry an intentional stronger defensive penalty than the corresponding attacking bonus.
   - Keep new feature terms symmetric unless intentionally modeling defensive urgency or another documented turn-specific risk.
 
-- `/Users/elbert/Sites/pente/Pente/AIGameStore.swift`
+- `/Users/elbert/Projects/pente/Pente/AIGameStore.swift`
   - Owns single-player state, saved sessions, human moves, AI turn tasks, hints, and debug logs.
   - DEBUG files in app Documents:
     - `ai-game-log.jsonl`: session, pending moves, committed human/AI moves, board snapshots.
@@ -44,7 +44,7 @@ When current XcodeBuildMCP tools are available:
 
 1. `session_show_defaults`
 2. `list_sims` and choose a booted simulator, usually iPhone 17 in this workspace.
-3. `list_schemes` with `/Users/elbert/Sites/pente/Pente.xcodeproj`; scheme is `Pente`.
+3. `list_schemes` with `/Users/elbert/Projects/pente/Pente.xcodeproj`; scheme is `Pente`.
 4. `session_set_defaults` with project, scheme, simulator, `configuration: Debug`, `bundleId: io.alias.pente`.
 5. Use `build_run_sim`, or build and then `launch_app_sim` with `launchArgs: ["-PenteDebugStartSinglePlayer"]` for a fresh Advanced game.
 6. Read the runtime/OS log paths returned by the build or launch result. Current XcodeBuildMCP versions capture those logs directly; do not call obsolete `start_sim_log_cap` or `stop_sim_log_cap` tools.
@@ -70,7 +70,7 @@ Project instruction: after iOS app code changes, rebuild and run the active simu
 Use the bundled script for the latest completed human win:
 
 ```bash
-python3 /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest-human-win --reverse --show-board
+python3 /Users/elbert/Projects/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest-human-win --reverse --show-board
 ```
 
 A typical AI decision maps to the following committed AI move by `gameId` and `moveNumber`.

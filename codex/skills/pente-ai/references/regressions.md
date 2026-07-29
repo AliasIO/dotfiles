@@ -4,7 +4,7 @@ Use this compact checklist before changing AI behavior. Read the chronological `
 
 ## Canonical Bench
 
-Run deadline-sensitive benches serially from `/Users/elbert/Sites/pente`:
+Run deadline-sensitive benches serially from `/Users/elbert/Projects/pente`:
 
 ```bash
 swiftc Scripts/PenteAISupport/Support.swift Pente/PenteOpeningBookData.swift Pente/PenteOpeningBook.swift Pente/PenteAI.swift Pente/PenteEngine.swift Pente/PenteEvaluator.swift Scripts/PenteAIRegressionBench/main.swift -o /tmp/pente_ai_regression_bench
@@ -66,8 +66,8 @@ The current bench contains 25 fixtures. Treat the fixture source as authoritativ
 Search only matching historical entries, for example:
 
 ```bash
-rg -n -i 'deadline|fallback' /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/references/analysis-log.md
-rg -n -i 'open-four|fork|capture|opening book' /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/references/analysis-log.md
+rg -n -i 'deadline|fallback' /Users/elbert/Projects/dotfiles/codex/skills/pente-ai/references/analysis-log.md
+rg -n -i 'open-four|fork|capture|opening book' /Users/elbert/Projects/dotfiles/codex/skills/pente-ai/references/analysis-log.md
 ```
 
 When an authorized implementation adds a durable regression, add the executable fixture to `Scripts/PenteAIRegressionBench/main.swift` first, update this checklist, and keep chronological narrative in `analysis-log.md` brief.

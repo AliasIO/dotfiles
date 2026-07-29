@@ -2,9 +2,9 @@
 
 ## Canonical paths
 
-- Workspace: `$HOME/Sites/wappalyzer` (not a Git repository)
-- Extension repository: `$HOME/Sites/wappalyzer/extension`
-- Browser capture repository: `$HOME/Sites/wappalyzer/cli`
+- Workspace: `$HOME/Projects/wappalyzer` (not a Git repository)
+- Extension repository: `$HOME/Projects/wappalyzer/extension`
+- Browser capture repository: `$HOME/Projects/wappalyzer/cli`
 - Definitions: `extension/src/technologies/*.json`
 - Icons: `extension/src/images/icons/`
 - Categories: `extension/src/categories.json`
@@ -21,7 +21,7 @@ Do not edit extension consumers such as `cli/wappalyzer`, `static/wappalyzer`, o
 - Read history from the extension repository and inspect analogous current definitions:
 
 ```bash
-cd "$HOME/Sites/wappalyzer/extension"
+cd "$HOME/Projects/wappalyzer/extension"
 git log --oneline -- src/technologies src/images/icons README.md bin
 git log -p -- src/technologies/<file>.json src/images/icons/<icon>
 ```
@@ -30,12 +30,12 @@ Do not copy mutable example commit IDs into this reference.
 
 ## Browser capture
 
-The capture helper observes requests, response headers, cookies, URLs, inline/external scripts, metadata, and rendered DOM. Pass `--extension "$HOME/Sites/wappalyzer/extension"` to replace the CLI consumer’s engine and definitions in memory with the canonical checkout before loading the driver. Omit it only when deliberately testing the recorded consumer.
+The capture helper observes requests, response headers, cookies, URLs, inline/external scripts, metadata, and rendered DOM. Pass `--extension "$HOME/Projects/wappalyzer/extension"` to replace the CLI consumer’s engine and definitions in memory with the canonical checkout before loading the driver. Omit it only when deliberately testing the recorded consumer.
 
 ```bash
-node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/capture-evidence.js" \
-  --repo "$HOME/Sites/wappalyzer" \
-  --extension "$HOME/Sites/wappalyzer/extension" \
+node "$HOME/Projects/dotfiles/codex/skills/add-wappalyzer-technology/scripts/capture-evidence.js" \
+  --repo "$HOME/Projects/wappalyzer" \
+  --extension "$HOME/Projects/wappalyzer/extension" \
   --technology "Technology Name" \
   --website "https://vendor.example" \
   --url "https://sample.example" \
@@ -46,9 +46,9 @@ node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/captur
 Validate source loading without opening a browser:
 
 ```bash
-node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/capture-evidence.js" \
-  --repo "$HOME/Sites/wappalyzer" \
-  --extension "$HOME/Sites/wappalyzer/extension" \
+node "$HOME/Projects/dotfiles/codex/skills/add-wappalyzer-technology/scripts/capture-evidence.js" \
+  --repo "$HOME/Projects/wappalyzer" \
+  --extension "$HOME/Projects/wappalyzer/extension" \
   --url https://example.com \
   --dry-run \
   --pretty
@@ -62,7 +62,7 @@ node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/captur
 Compare captures:
 
 ```bash
-node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/compare-captures.js" \
+node "$HOME/Projects/dotfiles/codex/skills/add-wappalyzer-technology/scripts/compare-captures.js" \
   --sample /tmp/sample-1.json \
   --sample /tmp/sample-2.json \
   --control /tmp/control-1.json
@@ -71,7 +71,7 @@ node "$HOME/Sites/dotfiles/codex/skills/add-wappalyzer-technology/scripts/compar
 ## Validation
 
 ```bash
-cd "$HOME/Sites/wappalyzer/extension"
+cd "$HOME/Projects/wappalyzer/extension"
 yarn validate
 ```
 

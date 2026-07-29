@@ -8,15 +8,15 @@ Verify with: inspect the owning repositories and current run manifests, then que
 
 ## Canonical Locations
 
-- Utility and submission flow: `$HOME/Sites/wappalyzer/_other/utils/mass-lookup`
-- Coordinator and worker runtime: `$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.js`, `mass-lookup-coordinator.js`, and `mass-lookup.js`
-- Batch image: `$HOME/Sites/wappalyzer/v4/apis/ecs`
+- Utility and submission flow: `$HOME/Projects/wappalyzer/_other/utils/mass-lookup`
+- Coordinator and worker runtime: `$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.js`, `mass-lookup-coordinator.js`, and `mass-lookup.js`
+- Batch image: `$HOME/Projects/wappalyzer/v4/apis/ecs`
 
 Inspect both owning repositories before local repair:
 
 ```bash
-git -C "$HOME/Sites/wappalyzer/_other/utils" status --short
-git -C "$HOME/Sites/wappalyzer/v4/apis" status --short
+git -C "$HOME/Projects/wappalyzer/_other/utils" status --short
+git -C "$HOME/Projects/wappalyzer/v4/apis" status --short
 ```
 
 ## Discover Current Configuration
@@ -35,7 +35,7 @@ Do not record mutable IDs, account details, email recipients, capacities, genera
 Run the maintained utility from its directory:
 
 ```bash
-cd "$HOME/Sites/wappalyzer/_other/utils/mass-lookup"
+cd "$HOME/Projects/wappalyzer/_other/utils/mass-lookup"
 node index.js
 ```
 
@@ -98,14 +98,14 @@ Edit utility/setup behavior under `_other/utils/mass-lookup` and coordinator/wor
 Run the applicable checks:
 
 ```bash
-node --check "$HOME/Sites/wappalyzer/_other/utils/mass-lookup/index.js"
-node --test "$HOME/Sites/wappalyzer/_other/utils/mass-lookup/env.test.js" \
-  "$HOME/Sites/wappalyzer/_other/utils/mass-lookup/logic.test.js"
-node --check "$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.js"
-node --check "$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup-coordinator.js"
-node --check "$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup.js"
-node --test "$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.test.js" \
-  "$HOME/Sites/wappalyzer/v4/apis/ecs/handlers/mass-lookup-coordinator.test.js"
+node --check "$HOME/Projects/wappalyzer/_other/utils/mass-lookup/index.js"
+node --test "$HOME/Projects/wappalyzer/_other/utils/mass-lookup/env.test.js" \
+  "$HOME/Projects/wappalyzer/_other/utils/mass-lookup/logic.test.js"
+node --check "$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.js"
+node --check "$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup-coordinator.js"
+node --check "$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup.js"
+node --test "$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup-common.test.js" \
+  "$HOME/Projects/wappalyzer/v4/apis/ecs/handlers/mass-lookup-coordinator.test.js"
 ```
 
 If ECS runtime files changed, report that the Batch image must be deployed before live validation. Deployment, resource setup, and run submission require their own explicit authorization.

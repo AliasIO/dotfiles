@@ -1,8 +1,8 @@
 {
   "version": 1,
   "roots": {
-    "workspace": "$HOME/Sites/wappalyzer",
-    "canonical": "$HOME/Sites/dotfiles/codex/projects/wappalyzer"
+    "workspace": "$HOME/Projects/wappalyzer",
+    "canonical": "$HOME/Projects/dotfiles/codex/projects/wappalyzer"
   },
   "links": [
     {

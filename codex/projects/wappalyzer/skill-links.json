@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "canonicalRoot": "$HOME/Sites/dotfiles/codex/skills",
+  "canonicalRoot": "$HOME/Projects/dotfiles/codex/skills",
   "discoveryRoot": "$HOME/.codex/skills",
   "skills": [
     "inspect-crisp-conversation",

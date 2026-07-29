@@ -1,8 +1,8 @@
 # Global Instructions
 
-Keep global Codex guidance intentionally minimal. This file is canonical at `$HOME/Sites/dotfiles/codex/AGENTS.md` and is symlinked to `$HOME/.codex/AGENTS.md`; edit the dotfiles source, not the discovery link.
+Keep global Codex guidance intentionally minimal. This file is canonical at `$HOME/Projects/dotfiles/codex/AGENTS.md` and is symlinked to `$HOME/.codex/AGENTS.md`; edit the dotfiles source, not the discovery link.
 
-Project instruction hierarchies live under `$HOME/Sites/dotfiles/codex/projects/<project>/`. Root and scoped `AGENTS.md` files are symlinked into the corresponding workspace paths, where the nearest scoped file adds narrower constraints.
+Project instruction hierarchies live under `$HOME/Projects/dotfiles/codex/projects/<project>/`. Root and scoped `AGENTS.md` files are symlinked into the corresponding workspace paths, where the nearest scoped file adds narrower constraints.
 
 Treat requests that ask only about feasibility, capability, or approach as read-only. Do not change files or external state unless the user also explicitly asks to implement or perform the action.
 

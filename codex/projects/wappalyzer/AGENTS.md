@@ -2,7 +2,7 @@
 
 ## Authority and storage
 
-- This file and every scoped `AGENTS.md` are canonical under `~/Sites/dotfiles/codex/projects/wappalyzer`. Workspace copies are symlinks declared in `agent-links.json` and managed by `scripts/manage-agent-links.js`; active skill discovery links are declared in `skill-links.json` and managed by `scripts/manage-skill-links.js`. Edit dotfiles sources, never symlink locations as independent copies.
+- This file and every scoped `AGENTS.md` are canonical under `~/Projects/dotfiles/codex/projects/wappalyzer`. Workspace copies are symlinks declared in `agent-links.json` and managed by `scripts/manage-agent-links.js`; active skill discovery links are declared in `skill-links.json` and managed by `scripts/manage-skill-links.js`. Edit dotfiles sources, never symlink locations as independent copies.
 - The workspace root is an aggregate directory, not a Git repository. Inspect, edit, validate, and commit from the owning repository such as `extension/`, `cli/`, `v4/apis-shared/`, `v4/apis/`, or `v4/frontend/`.
 - Create worktrees per owning repository, never at the aggregate workspace root. For dependency propagation, use a clean worktree when ordinary parent changes would otherwise be affected.
 - The nearest scoped `AGENTS.md` adds path-specific constraints. This root owns only cross-repository ownership, synchronization, authority, routing, and maintenance.
@@ -29,7 +29,7 @@
 - Canonical repositories are protected. Declared consumer submodule checkouts and their parent gitlinks are synchronization artifacts and may be reset, detached, or replaced to match the published canonical revision.
 - Discard authority is strictly limited to consumer paths and their exact parent gitlinks declared by the `deploy-wappalyzer` dependency manifest. Never discard, absorb, commit, or stage unrelated changes in a canonical repository or ordinary parent files.
 - Publish bottom-up: `extension` first; then any `cli` gitlink update; then every parent that records `cli` or `v4/apis-shared`. A consumer must never point to an unpublished or branch-only commit.
-- Use `$HOME/Sites/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs`. Run `--check` before and after propagation; after a canonical dependency is validated, committed, and pushed, use `--apply` as part of required delivery. The script may replace declared consumer dirt, but it stages only exact gitlinks or extractor-alias paths and never commits, pushes, or deploys.
+- Use `$HOME/Projects/dotfiles/codex/skills/deploy-wappalyzer/scripts/sync-dependencies.mjs`. Run `--check` before and after propagation; after a canonical dependency is validated, committed, and pushed, use `--apply` as part of required delivery. The script may replace declared consumer dirt, but it stages only exact gitlinks or extractor-alias paths and never commits, pushes, or deploys.
 - Commit and publish each dependency layer before propagating the next layer. Never use `git add -A` for propagation commits.
 - Propagation is complete only when every declared consumer resolves to the intended published commit and the extractor alias audit passes. Once a canonical dependency change is committed and pushed, updating every declared consumer is part of delivery—not optional follow-up work.
 - Remote publication and live deployment remain separate actions. A synchronized local checkout is not a deployed service.
@@ -67,6 +67,6 @@
 - Add an instruction only when it is durable, non-obvious, recurring, and changes future work. Put enforceable behavior in tests or configuration first and retain only the concise invariant here.
 - Keep one canonical statement per rule: path invariants in the nearest scoped `AGENTS.md`, task procedures in skills, mutable live state in runbooks, and incident history in Git history.
 - Operational runbooks must state owner, verification status, source of truth, and a discovery command or method. Query generated IDs, revisions, schedules, quotas, and billing modes at execution time rather than treating prose as live state.
-- Edit instruction and skill sources only under `~/Sites/dotfiles`. For authorized documentation work, validate, commit, and push only task-owned dotfiles changes under the global delivery rule. Deployment still requires Operate authority.
+- Edit instruction and skill sources only under `~/Projects/dotfiles`. For authorized documentation work, validate, commit, and push only task-owned dotfiles changes under the global delivery rule. Deployment still requires Operate authority.
 - Restore the repository’s starting branch when practical; never force an unrelated checkout back to `master`.
 - Remove superseded copies in the same documentation change. Do not create permanent staging or legacy copies; use Git history as the archive.

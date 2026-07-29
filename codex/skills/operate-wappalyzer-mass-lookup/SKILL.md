@@ -35,4 +35,4 @@ Change only canonical mass-lookup code, preserve unrelated worktree changes, and
 - Treat `start` and `resume` as live mutations requiring explicit intent.
 - Treat the utility's `setup` action as a separate infrastructure mutation; never infer it from troubleshooting.
 - Discover mutable AWS values at execution time. Never copy identifiers, email addresses, capacities, or historical-run values from prose.
-- Work inside the owning repositories under `$HOME/Sites/wappalyzer`; the workspace root is not a Git repository.
+- Work inside the owning repositories under `$HOME/Projects/wappalyzer`; the workspace root is not a Git repository.

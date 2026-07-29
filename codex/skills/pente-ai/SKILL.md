@@ -5,7 +5,7 @@ description: Analyze, debug, implement, and regression-check the Pente iOS app's
 
 # Pente AI
 
-Work in `/Users/elbert/Sites/pente`. Start with tactical evidence and preserve the Advanced 4-second response budget.
+Work in `/Users/elbert/Projects/pente`. Start with tactical evidence and preserve the Advanced 4-second response budget.
 
 ## Respect The Requested Scope
 
@@ -31,7 +31,7 @@ Work in `/Users/elbert/Sites/pente`. Start with tactical evidence and preserve t
 For a reported human win, identify and record the completed game id before rebuilding, relaunching, or starting another game:
 
 ```bash
-python3 /Users/elbert/Sites/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest-human-win --reverse
+python3 /Users/elbert/Projects/dotfiles/codex/skills/pente-ai/scripts/pente_ai_log_summary.py --device booted --latest-human-win --reverse
 ```
 
 Use `--list-games` if no human win is found. After identifying the game, use `--game-id <id>` for every summary, export, fixture, and triage command. Never assume a newly started session is the target loss.

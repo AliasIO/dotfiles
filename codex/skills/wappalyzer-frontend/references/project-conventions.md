@@ -2,7 +2,7 @@
 
 ## Nuxt and Vuetify
 
-- Work in `$HOME/Sites/wappalyzer/v4/frontend` and follow adjacent Nuxt 2 options-API patterns.
+- Work in `$HOME/Projects/wappalyzer/v4/frontend` and follow adjacent Nuxt 2 options-API patterns.
 - Keep one `v-app` application shell with routed content under `v-main`. Use application components with their documented layout behavior.
 - Build page structure with `v-container`, `v-row`, and `v-col`; use breakpoint props and `$vuetify.breakpoint` rather than manual resize listeners.
 - Prefer Vuetify spacing, display, flex, typography, and direction-aware helpers before CSS.

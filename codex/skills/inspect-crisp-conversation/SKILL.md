@@ -13,7 +13,7 @@ Keep Crisp read-only for the entire task. Use the bundled fetch script; never re
    - Prefer a full Crisp inbox URL:
 
      ```bash
-     node "$HOME/Sites/dotfiles/codex/skills/inspect-crisp-conversation/scripts/fetch-crisp-conversation.js" \
+     node "$HOME/Projects/dotfiles/codex/skills/inspect-crisp-conversation/scripts/fetch-crisp-conversation.js" \
        '<crisp-url>' --limit 50
      ```
 
@@ -40,7 +40,7 @@ If raw JSON is necessary, use a private temporary file and remove it in the same
 tmp=$(mktemp "${TMPDIR:-/tmp}/crisp-conversation.XXXXXX")
 chmod 600 "$tmp"
 trap 'rm -f "$tmp"' EXIT HUP INT TERM
-node "$HOME/Sites/dotfiles/codex/skills/inspect-crisp-conversation/scripts/fetch-crisp-conversation.js" \
+node "$HOME/Projects/dotfiles/codex/skills/inspect-crisp-conversation/scripts/fetch-crisp-conversation.js" \
   '<crisp-url>' --json --limit 50 > "$tmp"
 # Inspect the file locally, then delete it before reporting.
 rm -f "$tmp"
