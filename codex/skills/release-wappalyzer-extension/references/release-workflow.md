@@ -55,6 +55,7 @@ Scan non-merge commits whose subjects begin with `add`, `update`, or `fix`, case
 - emit `FIX` for a changed existing key
 - ignore removals and non-technology changes
 - format exactly as `* \`ADD\` Name detection` or `* \`FIX\` Name detection`
+- Sort the complete rendered lines lexicographically before writing the changelog so all `ADD` entries precede all `FIX` entries and names are alphabetical within each group.
 
 ## Handoff
 
