@@ -28,7 +28,7 @@ Verify with: inspect the relevant path-scoped AGENTS file, current tests/config,
 - Keep lookup cache-first. A live 20-second lookup performs only the direct crawl; when that crawl returns a confirmed Cloudflare challenge, it queues `crawl-async` without changing the public lookup response shape.
 - Signed crawling uses Ed25519 Web Bot Auth HTTP Message Signatures. Sign only top-level document requests and redirects, append the stable `WappalyzerBot/1.0 (+https://www.wappalyzer.com/)` token to the browser user agent, and publish every configured public key at `https://api.wappalyzer.com/.well-known/http-message-signatures-directory`. Never publish `d` or log the private JWKS.
 - The signatures directory must return `application/http-message-signatures-directory+json`, a five-minute public cache policy, and `Signature` plus `Signature-Input` binding headers. Return `503` with `no-store` when no valid private key is configured.
-- Enforce `robots.txt` Allow/Disallow and crawl-delay for signed and unsigned crawler routes. Cache rules for 24 hours. Preserve `WAPPALYZER_ROBOTS_DISALLOWED`, `WAPPALYZER_ROBOTS_DELAY_EXCEEDS_BUDGET`, and `WAPPALYZER_ROBOTS_UNAVAILABLE` as distinct handled outcomes.
+- Gate `robots.txt` handling independently with `WEB_BOT_AUTH_RESPECT_ROBOTS`. Keep it disabled by default for unsigned crawls, and force it on whenever request signing is enabled. When enabled, enforce Allow/Disallow and crawl-delay, cache rules for 24 hours, and preserve `WAPPALYZER_ROBOTS_DISALLOWED`, `WAPPALYZER_ROBOTS_DELAY_EXCEEDS_BUDGET`, and `WAPPALYZER_ROBOTS_UNAVAILABLE` as distinct handled outcomes.
 - Classify a Cloudflare challenge only when a document response has `cf-mitigated: challenge` after case-insensitive normalization. Generic access blocks, branded pages, status codes, or heuristic text must not authorize paid fallback.
 - The only paid fallback is the Bright Data Browser API over its Puppeteer WebSocket endpoint. It runs inline in `crawl-async` and mass lookup, never inline in live lookup. It blocks images, media, fonts, and other heavy resources; allows at most three concurrent sessions; uses a 120-second navigation budget and 180-second session budget; and records estimated transfer bytes without logging endpoint credentials.
 - Claim a hostname atomically before using the paid route. The same hostname is ineligible for another paid attempt for 24 hours. Mass lookup additionally caps each shard at the lower of 50 attempts or 20% of its input rows.
@@ -36,20 +36,20 @@ Verify with: inspect the relevant path-scoped AGENTS file, current tests/config,
 
 Configuration defaults and secrets:
 
-- Keep `WEB_BOT_AUTH_SIGN_REQUESTS=false` and `MANAGED_BROWSER_FALLBACK_ENABLED=false` in committed configuration.
-- Keep `WEB_BOT_AUTH_PRIVATE_JWKS_BASE64` and `BRIGHT_DATA_BROWSER_WEBSOCKET` outside repositories. Supply them through the authorized deployment secret path or the mass-lookup runtime-environment object in S3.
+- Keep `WEB_BOT_AUTH_SIGN_REQUESTS=false`, `WEB_BOT_AUTH_RESPECT_ROBOTS=false`, and `MANAGED_BROWSER_FALLBACK_ENABLED=false` in committed configuration.
+- Keep `WEB_BOT_AUTH_PRIVATE_JWKS_BASE64` and `BRIGHT_DATA_BROWSER_WEBSOCKET` outside repositories. Supply them through the authorized deployment secret path or the mass-lookup runtime-environment object in S3. Do not inject the private signing key into crawler functions until signing is ready to be enabled.
 - Discover active Lambda layer revisions, image digests, Batch job definitions, and runtime-environment object keys at rollout time; do not copy identifiers from this runbook.
 
 Authorized rollout sequence:
 
 1. Generate one or more private Ed25519 JWKs offline, encode `{ "keys": [...] }` as base64, and store the value in the approved secret system. Retain the previous key during rotation until caches and in-flight signatures have expired.
 2. Publish the dependencies layer and deploy the root service with signing still disabled. Verify the directory over GET and HEAD, confirm all intended public keys are present, confirm no private `d` value is exposed, and validate both binding headers.
-3. Deploy the updated lookup, crawl-async, and Batch/ECS artifacts. Confirm ordinary cached and direct crawls, robots outcomes, and generic access blocks do not start a paid browser session.
-4. Submit the crawler to Cloudflare's Verified Bot program using the Direct/Data Collection category and the production directory URL. Enable `WEB_BOT_AUTH_SIGN_REQUESTS` only after the directory is live and the identity is ready for verification. Validate a signed request against Cloudflare's official debug endpoint before broad rollout.
+3. Deploy the updated crawl-async artifact before lookup, with signing, robots handling, and managed fallback disabled. Confirm ordinary cached and direct crawls retain their baseline behavior and generic access blocks do not enqueue or start a paid browser session.
+4. Submit the crawler to Cloudflare's Verified Bot program using the Direct/Data Collection category and the production directory URL. Inject the crawler signing key and enable `WEB_BOT_AUTH_SIGN_REQUESTS` together with `WEB_BOT_AUTH_RESPECT_ROBOTS` only after the directory is live and the identity is ready for verification. Validate a signed request against Cloudflare's official debug endpoint before broad rollout.
 5. Create a dedicated Bright Data Browser API zone with provider-side spend controls. Store its WebSocket endpoint as a secret, keep fallback disabled, and smoke-test a single explicitly authorized challenge target.
 6. Enable managed fallback in beta first. Monitor started/succeeded/failed/skipped counts, estimated transfer bytes, Cloudflare challenge rate, robots outcomes, latency, and provider billing before enabling production or mass lookup.
 
-Rollback is flag-first: set `MANAGED_BROWSER_FALLBACK_ENABLED=false` to stop new paid sessions, and set `WEB_BOT_AUTH_SIGN_REQUESTS=false` to stop signing. Leave the public directory available during rollback and key rotation so already-issued signatures remain verifiable. Disabling or rotating live configuration, deploying services, changing Cloudflare registration, creating a Bright Data zone, or starting Batch work requires explicit Operate authority.
+Rollback is flag-first: set `MANAGED_BROWSER_FALLBACK_ENABLED=false` to stop new paid sessions, set `WEB_BOT_AUTH_SIGN_REQUESTS=false` to stop signing, and set `WEB_BOT_AUTH_RESPECT_ROBOTS=false` to restore unsigned crawl behavior. Leave the public directory available during rollback and key rotation so already-issued signatures remain verifiable. Disabling or rotating live configuration, deploying services, changing Cloudflare registration, creating a Bright Data zone, or starting Batch work requires explicit Operate authority.
 
 ## Packaging
 
