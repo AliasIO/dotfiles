@@ -23,6 +23,14 @@ Use two or three complementary rules when they improve coverage without weakenin
 - Separate the product signal from platform-wrapper signals. Scope the rule or remain conservative when evidence mostly identifies a wrapper.
 - Prefer safe implication for a backend technology with no realistic browser fingerprint.
 
+## Dependency semantics
+
+- Use `requires` when the detected technology is a plugin, theme, app, module, or other child that only operates on a host platform and that platform has reliable independent fingerprints. This keeps the child out of the initial scan and prevents a generic or reused child signal from creating a false platform detection.
+- Require the narrowest reliable parent. For example, a WooCommerce extension should require WooCommerce rather than WordPress when WooCommerce can be detected independently. Do not retain transitive implications such as PHP when the required parent already implies them.
+- Use `implies` only when the child detection is itself authoritative evidence that the parent is present and the parent may have no browser-visible fingerprint. Common examples are headless frontends, managed distributions, and detectable client technologies that safely reveal an otherwise invisible backend.
+- Do not use `implies` merely because a product commonly integrates with a platform. For a product that also runs elsewhere, keep the technology independent or create a platform-scoped definition with `requires`.
+- Before changing an existing relationship, verify that the required parent is detected early enough for the runtime's second pass to evaluate every signal type used by the child. Retest the child on positives and confirm that unrelated pages without the parent do not run or resolve it.
+
 ## Versions
 
 - Extract only a version users would recognize as the shipped client library or SDK.
