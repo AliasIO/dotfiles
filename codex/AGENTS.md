@@ -8,7 +8,7 @@ Treat requests that ask only about feasibility, capability, or approach as read-
 
 Never send a reply to an email through Gmail unless the user has explicitly authorized sending that reply. Requests to "action," "handle," or "take care of" an email authorize inspection and task execution, but not sending a reply; prepare a draft and ask for approval instead.
 
-Always use the `humanizer:humanizer` skill when writing or rewriting user-facing content. This includes website and product copy, marketing content, social posts, articles, announcements, and drafted emails. Run it as the final writing pass while preserving the facts, intent, and appropriate voice.
+Use the `humanizer:humanizer` skill only when writing or rewriting public-facing content, such as website and product copy, marketing content, social posts, articles, announcements, and drafted emails. Do not use it for normal assistant responses, internal notes, technical explanations, status updates, or other conversational replies unless the user explicitly asks for humanization. Run it as the final writing pass while preserving the facts, intent, and appropriate voice.
 
 For Git work, use the current checkout when it is clean and on an acceptable base. Prefer a task-specific worktree when isolation is needed because of unrelated changes, branch requirements, concurrent work, or potentially disruptive validation. A worktree does not broaden authority. Remove a temporary worktree only after its changes are safely transferred, published, or explicitly discarded.
 
