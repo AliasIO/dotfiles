@@ -20,6 +20,8 @@ Use two or three complementary rules when they improve coverage without weakenin
 
 - Apply the canonical boundary from the extension scoped `AGENTS.md`; the examples here only illustrate it.
 - A Sentry request identifying `sentry.javascript.vue` supports Sentry, not Vue.js on the host page, unless independent first-party DOM, globals, scripts, or assets show Vue.
+- Separate asset delivery from product integration. A vendor-hosted image, video, font, or download proves only that the asset was delivered by the vendor; it does not prove the page uses the vendor's player, SDK, analytics, CMS, or framework.
+- When a vendor offers distinct delivery, player, and analytics products, attribute only the product layer proven by the signal. A host/path-only asset rule is appropriate only when the definition intentionally represents the delivery or hosting service; otherwise require authoritative integration evidence such as a product SDK or global, custom element, player iframe, initialization configuration, or telemetry beacon.
 - Separate the product signal from platform-wrapper signals. Scope the rule or remain conservative when evidence mostly identifies a wrapper.
 - Prefer safe implication for a backend technology with no realistic browser fingerprint.
 
@@ -41,7 +43,8 @@ Use two or three complementary rules when they improve coverage without weakenin
 ## False-positive controls
 
 - Avoid short/generic globals, browser built-ins, generic configuration keys, broad vendor/CDN hosts, marketing links/logos, and bare iframe/link host selectors.
-- Remember that each `js` chain can independently trigger a technology; a generic fallback is not made safe by a stronger sibling rule.
+- Remember that each fingerprint can independently trigger a technology; a weak fallback is not made safe by a stronger sibling rule.
+- For every host/path-only asset rule, test an attribution control that embeds or hotlinks one vendor-hosted asset without initializing the product runtime. If that control detects, reject or narrow the rule unless asset delivery is explicitly the technology being identified.
 - Do not use marker-only `scripts` expressions that dynamic search, chat, bootstrap, or user content can echo.
 - Verify inline-bootstrap globals in a real browser before relying on them.
 - Retest every positive and control after editing. Stop when a signal remains ambiguous.

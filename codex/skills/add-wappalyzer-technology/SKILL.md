@@ -23,7 +23,7 @@ description: Research, validate, add, or update Wappalyzer browser-extension tec
 
 1. Confirm the product identity, canonical website, likely category, and requested outcome. Apply the eligibility gate; stop early with a reason if the candidate is out of scope.
 2. Inspect the existing definition, related technologies, schema, README, validator, and relevant Git history in `extension/`.
-3. Gather at least two independent positive implementations and one unrelated control. Target three to five positives and one or two controls when practical; cover materially different integration modes such as vendor-hosted and custom-domain deployments.
+3. Gather at least two independent positive implementations and one unrelated control. Target three to five positives and one or two controls when practical; cover materially different integration modes such as vendor-hosted and custom-domain deployments. For a vendor-owned asset or delivery-host signal, also include an attribution control that references such an asset without initializing the vendor's software; an unrelated negative alone is insufficient.
 4. Capture each site in a real browser with a short post-load observation window. Raw HTTP evidence may support the analysis but cannot replace browser evidence for a detection change.
 5. Compare captures, separate first-party host signals from third-party product signals, and select the narrowest repeatable evidence. Prefer complementary rules and a realistic path to confidence `100`.
 6. In Implement mode, edit the canonical definition/icon files in `extension/`. Omit uncertain metadata rather than guessing.
@@ -34,6 +34,7 @@ description: Research, validate, add, or update Wappalyzer browser-extension tec
 
 - Apply the extension scoped first-party/third-party detection boundary before accepting any signal.
 - Prefer product-specific JS globals, request hosts/XHR, script URLs/content, DOM, metadata, and headers. Use cookies cautiously and scope plugins/themes with dependency fields.
+- Treat delivery and integration as separate evidence. A vendor-hosted asset does not by itself prove the consuming page uses the vendor's player, SDK, analytics, CMS, or framework. Use asset-host rules only when the definition intentionally identifies the delivery or hosting service.
 - Verify client versions as recognizable shipped software versions; do not expose API, schema, protocol, wrapper, or snippet versions as the technology version.
 - Avoid generic globals, hosts, CDN markers, marketing links, and rules that match dynamic user/bootstrap text.
 - For a browser-undetectable backend technology, prefer a safe `implies` relationship from an existing detectable technology over a weak standalone rule.
