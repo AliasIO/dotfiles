@@ -30,7 +30,7 @@ description: Inspect Wappalyzer deployment state, propagate published canonical 
 2. Inspect every repository that will be touched. Preserve unrelated canonical and parent changes; consumer paths declared in the dependency manifest are disposable.
 3. Validate the canonical change before publication. For shared dependencies, publish bottom-up and run the deterministic synchronization workflow after each published layer.
 4. In Operate mode, use the supported target entrypoint and record the exact commit, stage, command/workflow, and resulting revision.
-5. Perform a target-specific smoke check plus a one-shot deployment status check. Continuous waiting/monitoring requires an explicit request.
+5. For an authorized rollout, wait with bounded polling/backoff until the target reaches a terminal state or a concrete blocker, then perform target-specific smoke checks. Distinguish this completion verification from a new recurring or ongoing monitor, which requires a separate request. Honor explicit dispatch-only scope.
 6. Report publication, dispatch, deployment, and verification as separate states. List moved gitlinks and any remaining consumer or service rollout.
 
 ## Non-negotiable boundaries

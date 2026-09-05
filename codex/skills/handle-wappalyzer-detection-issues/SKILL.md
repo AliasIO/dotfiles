@@ -33,7 +33,7 @@ An issue URL alone authorizes `inspect`. Default to one issue unless the user ex
 3. Apply [intake.md](./references/intake.md) and classify the issue as `ADD`, `FIX`, `META`, or `NOT_THIS_SKILL`.
 4. Stop after reporting the classification in `inspect` mode.
 5. For `ADD`, `FIX`, or `META` in an implementation-capable mode, work in `$HOME/Projects/wappalyzer/extension`, load `add-wappalyzer-technology`, and validate the result with `yarn validate` there.
-6. Stop with the validated local diff in `implement` mode.
+6. In `implement` mode, commit and push validated task-owned changes directly to the current upstream under the global delivery rule, complete required dependency propagation, and verify that the remote contains the commit. Do not open a PR or mutate the issue in this mode.
 7. In `publish-one` or `backlog`, follow [github-lifecycle.md](./references/github-lifecycle.md). Keep one accepted issue per branch, commit, and PR. Every handled in-scope issue must receive an appropriate non-`Acknowledged` label and be closed; outside-scope issues stay untouched.
 8. Report every referenced issue and PR as a clickable Markdown link.
 

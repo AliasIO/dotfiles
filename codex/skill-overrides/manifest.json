@@ -1,0 +1,948 @@
+{
+  "version": 1,
+  "review_date": "2026-09-05",
+  "files": [
+    {
+      "skill": "ad-creative",
+      "target": "skills/ad-creative/SKILL.md",
+      "source": "payloads/personal/ad-creative/SKILL.md",
+      "installation_root": "skills/ad-creative",
+      "base_sha256": "dfe60e076f0ffad82b9d26cb212c1b8839d833474f78a434357633e6b57165c9",
+      "applied_sha256": "1446e7900cd31d0c8c5cb23805a26f196fadaa30541902f70d4ada0e14db3cd9",
+      "mode": 420
+    },
+    {
+      "skill": "adaptive",
+      "target": "skills/adaptive/SKILL.md",
+      "source": "payloads/personal/adaptive/SKILL.md",
+      "installation_root": "skills/adaptive",
+      "base_sha256": "92a27203ecf29170ad69bd627a953ad4f72aa4fea5ecc0ee70a5e444787df38b",
+      "applied_sha256": "202584daea223b327cfa353522b73f1f84f662bde3b5cbd1786db5fe95f8bd86",
+      "mode": 420
+    },
+    {
+      "skill": "ads",
+      "target": "skills/ads/SKILL.md",
+      "source": "payloads/personal/ads/SKILL.md",
+      "installation_root": "skills/ads",
+      "base_sha256": "808b619bac5788aae8205b39412e26f42437647d2b0f78d1405a9274a143733c",
+      "applied_sha256": "eba5763a0a40038afadeacc7284c91eb4f25e4e9db14d0f67fe12b258fa9e160",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "01e1b0d01ea647b6ec37162811677c86381c58a72fd94302e99a494e1377db24"
+      ]
+    },
+    {
+      "skill": "ads",
+      "target": "skills/ads/references/google-rsa-output.md",
+      "source": "payloads/personal/ads/references/google-rsa-output.md",
+      "installation_root": "skills/ads",
+      "base_sha256": null,
+      "applied_sha256": "e9c582e48627beb01b8147076adaa3133c5ebb2629a19a8e5126e406464c78e3",
+      "mode": 420
+    },
+    {
+      "skill": "ai-seo",
+      "target": "skills/ai-seo/SKILL.md",
+      "source": "payloads/personal/ai-seo/SKILL.md",
+      "installation_root": "skills/ai-seo",
+      "base_sha256": "d0e95cf38b9589ce041858ca55d163d8295d1460266974239cb00adc4163b87a",
+      "applied_sha256": "e69ce2b4230fb51290919f135996a02c637768a60bdda7413a984c452f66cce4",
+      "mode": 420
+    },
+    {
+      "skill": "ai-seo",
+      "target": "skills/ai-seo/references/evidence-and-emerging-formats.md",
+      "source": "payloads/personal/ai-seo/references/evidence-and-emerging-formats.md",
+      "installation_root": "skills/ai-seo",
+      "base_sha256": null,
+      "applied_sha256": "1298a40d724d3e6bbca3660b16c35bc4c5f93fa071f51782a9bb8b3771d6de74",
+      "mode": 420
+    },
+    {
+      "skill": "analytics",
+      "target": "skills/analytics/SKILL.md",
+      "source": "payloads/personal/analytics/SKILL.md",
+      "installation_root": "skills/analytics",
+      "base_sha256": "16aab197f87bf6e2599d179061f1947d96acafe0a340837432d8ab96d2f8c55a",
+      "applied_sha256": "5881dc76d6b7e659a2b69b1a11df41d0fb82de3e8334f7bfe526c73cb18ef011",
+      "mode": 420
+    },
+    {
+      "skill": "competitors",
+      "target": "skills/competitors/SKILL.md",
+      "source": "payloads/personal/competitors/SKILL.md",
+      "installation_root": "skills/competitors",
+      "base_sha256": "ed3f85962b99c3b7b9b97de25a3f908bcb0c944e294d865bae36d0211da3faba",
+      "applied_sha256": "9a499d6ecae1004bde081eb0fc6dccee66eed685d55d87cf9aa1c1f8e06513ea",
+      "mode": 420
+    },
+    {
+      "skill": "content-strategy",
+      "target": "skills/content-strategy/SKILL.md",
+      "source": "payloads/personal/content-strategy/SKILL.md",
+      "installation_root": "skills/content-strategy",
+      "base_sha256": "0611532b2a0dce8d0d5b783c99bba10d13a6d5fd7eecd829974012f74ea33258",
+      "applied_sha256": "7e4384a3f1af3da53b8144e047069b79373e34031bfbfb32a889d4f58a934a6d",
+      "mode": 420
+    },
+    {
+      "skill": "copy-editing",
+      "target": "skills/copy-editing/SKILL.md",
+      "source": "payloads/personal/copy-editing/SKILL.md",
+      "installation_root": "skills/copy-editing",
+      "base_sha256": "9b5a20be3dc5513c8f0b4f4c4960857e4d28ed83698a5b33c8dde9dc75a47bf6",
+      "applied_sha256": "dafe14d3c9bb1c11c4a650132759f4e747526b9d70e3ae51ecbba40bb6dfe46d",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "82ad7a5b977b1ea506f150823ec7b81107d5e453b3ca4c88b2f9b5f6fb5b1749"
+      ]
+    },
+    {
+      "skill": "copywriting",
+      "target": "skills/copywriting/SKILL.md",
+      "source": "payloads/personal/copywriting/SKILL.md",
+      "installation_root": "skills/copywriting",
+      "base_sha256": "ecdaabca28863d1472f79ba637842fdf4ac2fd9acc92b215ab7f152e757b2a33",
+      "applied_sha256": "dd3de050a882751fb7749abd3475e8c5d9ee3bcccf5eaed36e2a55d75d4b12b0",
+      "mode": 420
+    },
+    {
+      "skill": "cro",
+      "target": "skills/cro/SKILL.md",
+      "source": "payloads/personal/cro/SKILL.md",
+      "installation_root": "skills/cro",
+      "base_sha256": "199016bec3b44bc6a7507b111b6028f6550cc852cd54c7d0df789f15d6f814c4",
+      "applied_sha256": "4d745bd357724c3c4ee727f5ac1d799aa8970b56892bbd24685a524c1fcb2906",
+      "mode": 420
+    },
+    {
+      "skill": "customer-research",
+      "target": "skills/customer-research/SKILL.md",
+      "source": "payloads/personal/customer-research/SKILL.md",
+      "installation_root": "skills/customer-research",
+      "base_sha256": "933146dd575e7bd3da0201056d5d7bd26e036ba4cfda797d3f68956d5eeacaa7",
+      "applied_sha256": "77de5dc3191ec78629fdd22ef53949f068b4cd0cb84f404e0d4dd29bccd3a21c",
+      "mode": 420
+    },
+    {
+      "skill": "edge-to-edge",
+      "target": "skills/edge-to-edge/SKILL.md",
+      "source": "payloads/personal/edge-to-edge/SKILL.md",
+      "installation_root": "skills/edge-to-edge",
+      "base_sha256": "d071a6d8a97c99235f8cb05795c2dc83f0420be2221cecf0de3ef2495cf67324",
+      "applied_sha256": "e49a6a053a3dc6476244d35d92b750b606859545c30c29c2bd6fc1b9079c5bbc",
+      "mode": 420
+    },
+    {
+      "skill": "humanizer",
+      "target": "skills/humanizer/SKILL.md",
+      "source": "payloads/personal/humanizer/SKILL.md",
+      "installation_root": "skills/humanizer",
+      "base_sha256": "70938f3cce25970e1ded5fdd194b755c03f1e4e4fa76820958ce78f86b677b1a",
+      "applied_sha256": "730f331756d0f09a9f1f358067116a8bb79107b90ce2bc1dfff22d5c1391b8ac",
+      "mode": 420
+    },
+    {
+      "skill": "launch",
+      "target": "skills/launch/SKILL.md",
+      "source": "payloads/personal/launch/SKILL.md",
+      "installation_root": "skills/launch",
+      "base_sha256": "6d8bbd61449c48c458b20457c0b698386fe808e7063a7baadc197fc179bd94bb",
+      "applied_sha256": "e651baf2963db5e13159e6a9cb352eed23e173de09d82d7e173bf39a833e8dc8",
+      "mode": 420
+    },
+    {
+      "skill": "material-3",
+      "target": "skills/material-3/SKILL.md",
+      "source": "payloads/personal/material-3/SKILL.md",
+      "installation_root": "skills/material-3",
+      "base_sha256": "5bbd6a903bb3839561c496b6edac04dcdd414fe0669e4910a7dba44acdf0ee7f",
+      "applied_sha256": "2fdf6b82665be03485cceb7bcc3bb9920a3ab9a8164b0586a488faf7dd9dd9c9",
+      "mode": 420
+    },
+    {
+      "skill": "material-3",
+      "target": "skills/material-3/references/app-patterns.md",
+      "source": "payloads/personal/material-3/references/app-patterns.md",
+      "installation_root": "skills/material-3",
+      "base_sha256": null,
+      "applied_sha256": "46856250a22bfc9f08616db2d19bb4a09d3c28c9601b23220fddbbe57f1b21d7",
+      "mode": 420
+    },
+    {
+      "skill": "material-3",
+      "target": "skills/material-3/references/compliance-audit.md",
+      "source": "payloads/personal/material-3/references/compliance-audit.md",
+      "installation_root": "skills/material-3",
+      "base_sha256": null,
+      "applied_sha256": "30c23ea2df2167954e4a5b9303df25e53606f50c53f70fd13a9457cdc8e6c1db",
+      "mode": 420
+    },
+    {
+      "skill": "material-3",
+      "target": "skills/material-3/references/tokens-and-components.md",
+      "source": "payloads/personal/material-3/references/tokens-and-components.md",
+      "installation_root": "skills/material-3",
+      "base_sha256": null,
+      "applied_sha256": "f2855648688457e4df03c5d6e6c776872ee3b6db3775a79d68f9df4fb0a430bd",
+      "mode": 420
+    },
+    {
+      "skill": "material-3",
+      "target": "skills/material-3/references/web-implementation.md",
+      "source": "payloads/personal/material-3/references/web-implementation.md",
+      "installation_root": "skills/material-3",
+      "base_sha256": null,
+      "applied_sha256": "38859ea0f01e7c92493b153776c781a32e6d0f6eccfcaac1e22fb1cf4fcc94f0",
+      "mode": 420
+    },
+    {
+      "skill": "onboarding",
+      "target": "skills/onboarding/SKILL.md",
+      "source": "payloads/personal/onboarding/SKILL.md",
+      "installation_root": "skills/onboarding",
+      "base_sha256": "15a802ffb73828730aba90b740426fbb8d2070721ee92d6f8737de4704e8ff0f",
+      "applied_sha256": "c714505606ccefd883ee31e1c6e2a940f4b8ba547d04c57b37d3433a35b422a8",
+      "mode": 420
+    },
+    {
+      "skill": "perfetto-sql",
+      "target": "skills/perfetto-sql/SKILL.md",
+      "source": "payloads/personal/perfetto-sql/SKILL.md",
+      "installation_root": "skills/perfetto-sql",
+      "base_sha256": "13e701190c529212ada3c6252c18a3cac8f33b1027b72db8c0bdd2f7726eb5ca",
+      "applied_sha256": "ce5fc81d9f0e90f0f12350c0ac6bd427a1d76a1904d43a5cf01073f68a093894",
+      "mode": 420
+    },
+    {
+      "skill": "perfetto-trace-analysis",
+      "target": "skills/perfetto-trace-analysis/SKILL.md",
+      "source": "payloads/personal/perfetto-trace-analysis/SKILL.md",
+      "installation_root": "skills/perfetto-trace-analysis",
+      "base_sha256": "cb1b5b16a4c74b7e18bed1b07217867c9e3c0155b4d3ce4dfb5800737f75f3db",
+      "applied_sha256": "246815bf3990174cfe1961a9cb26e7dcba287a763a95b4ff8a7e911368ec11c5",
+      "mode": 420
+    },
+    {
+      "skill": "perfetto-trace-analysis",
+      "target": "skills/perfetto-trace-analysis/references/sql.md",
+      "source": "payloads/personal/perfetto-trace-analysis/references/sql.md",
+      "installation_root": "skills/perfetto-trace-analysis",
+      "base_sha256": "5483af1377ff700ae33d9ee2ede1720aa751d24d6c33ea91740b70767c643adb",
+      "applied_sha256": "ae2e60ca82bc0d01ffe07df287ea149dab74409d9ecf2f67fdb94646910985ee",
+      "mode": 420
+    },
+    {
+      "skill": "pricing",
+      "target": "skills/pricing/SKILL.md",
+      "source": "payloads/personal/pricing/SKILL.md",
+      "installation_root": "skills/pricing",
+      "base_sha256": "a5d1cfe49b80569089b3d80f29b92075cf7554cef7e3cf618ef705a348a133f0",
+      "applied_sha256": "e778087971e43fcb6eeb17beab068c81d7b07770bb18711483bd0a31fb1708b3",
+      "mode": 420
+    },
+    {
+      "skill": "product-marketing",
+      "target": "skills/product-marketing/SKILL.md",
+      "source": "payloads/personal/product-marketing/SKILL.md",
+      "installation_root": "skills/product-marketing",
+      "base_sha256": "cbebd56731ed1883d2f481ec72477b392ee0bdf99be7fa7470b9d078ff154fcb",
+      "applied_sha256": "c1b4ebcd222b741fc9f679b883cde98941acc051e5b3b33ad38ccab22bc2bde6",
+      "mode": 420
+    },
+    {
+      "skill": "programmatic-seo",
+      "target": "skills/programmatic-seo/SKILL.md",
+      "source": "payloads/personal/programmatic-seo/SKILL.md",
+      "installation_root": "skills/programmatic-seo",
+      "base_sha256": "15cb5979cab5263ede902a830e03342869256ece17905bff240eef498e27cde1",
+      "applied_sha256": "94c7485aaf162352c3023a00ab987ae5983a6968276725ca96913ff962555400",
+      "mode": 420
+    },
+    {
+      "skill": "r8-analyzer",
+      "target": "skills/r8-analyzer/SKILL.md",
+      "source": "payloads/personal/r8-analyzer/SKILL.md",
+      "installation_root": "skills/r8-analyzer",
+      "base_sha256": "b2ce3bc42078f52d283a56793fb70b6f77c9934d3607cac0d73181b270a08924",
+      "applied_sha256": "9ff3c51995fafa291b340b44d5d8a47cf0a8dda0409cf133658570ad9da2e7c7",
+      "mode": 420
+    },
+    {
+      "skill": "schema",
+      "target": "skills/schema/SKILL.md",
+      "source": "payloads/personal/schema/SKILL.md",
+      "installation_root": "skills/schema",
+      "base_sha256": "d8b7aa7bcd9727a87fb5470a6c9ee252b99a7ccb84f637d7c67c5d155b507e0b",
+      "applied_sha256": "6b2abeb88255e4fecb93906c98d91608c1546adacf5b8d9378cf3b01bd0524d0",
+      "mode": 420
+    },
+    {
+      "skill": "seo-audit",
+      "target": "skills/seo-audit/SKILL.md",
+      "source": "payloads/personal/seo-audit/SKILL.md",
+      "installation_root": "skills/seo-audit",
+      "base_sha256": "3b03a2e07578e9964acac0b6907ae343a904c6547bfefe779ba326db5eedd1cb",
+      "applied_sha256": "8d82e3294c8a964952d2f721f6f241b671aaf6af504cbf1b0d252b8b2f7281f0",
+      "mode": 420
+    },
+    {
+      "skill": "signup",
+      "target": "skills/signup/SKILL.md",
+      "source": "payloads/personal/signup/SKILL.md",
+      "installation_root": "skills/signup",
+      "base_sha256": "9395aabae64891ebdac5f31d17c83b9d47546dc0c9b22654c7b89e9b04da7cf6",
+      "applied_sha256": "1d7372b49484ad22f1d816962bcf623c44130fe6da05ee1ddee09af83746aeca",
+      "mode": 420
+    },
+    {
+      "skill": "site-architecture",
+      "target": "skills/site-architecture/SKILL.md",
+      "source": "payloads/personal/site-architecture/SKILL.md",
+      "installation_root": "skills/site-architecture",
+      "base_sha256": "a47f693c6a4f45db89276d8c341b3aa3054090cc8002dd4a2635448d7d152492",
+      "applied_sha256": "988d188cba9853b1ce639afcdd8b990beda50cfd0cb78f7c04a4cd674049f197",
+      "mode": 420
+    },
+    {
+      "skill": "social",
+      "target": "skills/social/SKILL.md",
+      "source": "payloads/personal/social/SKILL.md",
+      "installation_root": "skills/social",
+      "base_sha256": "ace479ef3d3af94807a93c69dfa0c61b96a83b01062b9469e1d14515c6fdbcbd",
+      "applied_sha256": "517cb63a305914a66774b9adfcc086079e86c446cc2e7772d2aa4afad3037864",
+      "mode": 420
+    },
+    {
+      "skill": "testing-setup",
+      "target": "skills/testing-setup/SKILL.md",
+      "source": "payloads/personal/testing-setup/SKILL.md",
+      "installation_root": "skills/testing-setup",
+      "base_sha256": "88428c98f6c0ac9f004712f0295715cf8b7fabb051a604e8a62102c589eec10d",
+      "applied_sha256": "3c24499c8bbf80636503032d300ab6d8771adb0cb44dcf35e9f7fd853eff255f",
+      "mode": 420
+    },
+    {
+      "skill": "imagegen",
+      "target": "skills/.system/imagegen/SKILL.md",
+      "source": "payloads/system/imagegen/SKILL.md",
+      "installation_root": "skills/.system/imagegen",
+      "base_sha256": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+      "applied_sha256": "8fc81696614f189b4d7e0a809ccc4dbfafdf92d622e264e93ab4d5c7c970983d",
+      "mode": 420
+    },
+    {
+      "skill": "imagegen",
+      "target": "skills/.system/imagegen/references/prompt-schema-and-examples.md",
+      "source": "payloads/system/imagegen/references/prompt-schema-and-examples.md",
+      "installation_root": "skills/.system/imagegen",
+      "base_sha256": null,
+      "applied_sha256": "f76dffbcf809097ca6b41d0d803b6ecf9bec9bf85b666b98c218c181f244d7ce",
+      "mode": 420
+    },
+    {
+      "skill": "openai-docs",
+      "target": "skills/.system/openai-docs/SKILL.md",
+      "source": "payloads/system/openai-docs/SKILL.md",
+      "installation_root": "skills/.system/openai-docs",
+      "base_sha256": "7cb8fa1b2a0c635b5c61ffe1da7b8594a7ea0fce5b71e8d523e2025d88b2a05e",
+      "applied_sha256": "761cafd2b37a860535d4e73f1f66417ce85b6c361a34865d956031031f204685",
+      "mode": 420
+    },
+    {
+      "skill": "openai-docs",
+      "target": "skills/.system/openai-docs/references/official-docs.md",
+      "source": "payloads/system/openai-docs/references/official-docs.md",
+      "installation_root": "skills/.system/openai-docs",
+      "base_sha256": "7962f2dce55089b93bde4115bb89fd42f20993c1597a2b13edd4956f463875b9",
+      "applied_sha256": "2aa828a447386a9434294682bf101e4e2c5ab8a1126ea2413304f47da09a6a2a",
+      "mode": 420
+    },
+    {
+      "skill": "skill-creator",
+      "target": "skills/.system/skill-creator/SKILL.md",
+      "source": "payloads/system/skill-creator/SKILL.md",
+      "installation_root": "skills/.system/skill-creator",
+      "base_sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+      "applied_sha256": "58b499e439c780f8a7b02fe61231588e3fb64c13e883b04e01e55bd8dd96d274",
+      "mode": 420
+    },
+    {
+      "skill": "skill-creator",
+      "target": "skills/.system/skill-creator/scripts/quick_validate.py",
+      "source": "payloads/system/skill-creator/scripts/quick_validate.py",
+      "installation_root": "skills/.system/skill-creator",
+      "base_sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c",
+      "applied_sha256": "630150add0a57cdd2fafa7ae41e5cb7d9382a72d5df94dc04a6c1bb59e6fa52e",
+      "mode": 420
+    },
+    {
+      "skill": "visualize",
+      "target": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize/SKILL.md",
+      "source": "payloads/visualize/visualize/SKILL.md",
+      "installation_root": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize",
+      "base_sha256": "be82c4e573ffe2fc0921a10f49eb690ce6f7c8a06acffb2789600be677720d05",
+      "applied_sha256": "f30d6a23344236e9d7a130ef605e39c9f982cf5e737d5b4cad6496a8ab241245",
+      "mode": 420
+    },
+    {
+      "skill": "visualize",
+      "target": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize/references/composition-and-layout.md",
+      "source": "payloads/visualize/visualize/references/composition-and-layout.md",
+      "installation_root": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize",
+      "base_sha256": null,
+      "applied_sha256": "ab3fc28a5fa302b5c31b30593ff49cff7bfb869b6e6902e35294f6500bbc47a7",
+      "mode": 420
+    },
+    {
+      "skill": "visualize",
+      "target": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize/references/design-system.md",
+      "source": "payloads/visualize/visualize/references/design-system.md",
+      "installation_root": "plugins/cache/openai-bundled/visualize/1.0.29/skills/visualize",
+      "base_sha256": null,
+      "applied_sha256": "b19a38c130712476cc23157e09098c83be91527962ca08a94ece0b5515437b53",
+      "mode": 420
+    },
+    {
+      "skill": "analyze-data-quality",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/analyze-data-quality/SKILL.md",
+      "source": "payloads/data-analytics/analyze-data-quality/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/analyze-data-quality",
+      "base_sha256": "9a3c994f87da0c7a8c5ce37bbf08a59fc6f5b4f368475d3d7438f622b753d5f0",
+      "applied_sha256": "259bee92d2db10f791600571639d6fbce65268e69e96b50bdcd00479d3893365",
+      "mode": 420
+    },
+    {
+      "skill": "build-dashboard",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-dashboard/SKILL.md",
+      "source": "payloads/data-analytics/build-dashboard/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-dashboard",
+      "base_sha256": "c453ef3e1187477f696aae9a68b116d0e7e0bd6f665ab03a9d1634d13482aaaa",
+      "applied_sha256": "e8add5ef0b8a9f982c9cc1e04c0db06a5154788de81cb1bf0a97b796b7af3c93",
+      "mode": 420
+    },
+    {
+      "skill": "build-dashboard",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-dashboard/specifications/mcp-artifact-dashboard.md",
+      "source": "payloads/data-analytics/build-dashboard/specifications/mcp-artifact-dashboard.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-dashboard",
+      "base_sha256": "917ed70378cea390250c50217140a379a3a8ae6021a38d2bf072b24bcbf40c51",
+      "applied_sha256": "812e06f3d7889df5a4c43e7dbdb51716995accd90f7837dd62bb07e642b72bd2",
+      "mode": 420
+    },
+    {
+      "skill": "build-report",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-report/SKILL.md",
+      "source": "payloads/data-analytics/build-report/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-report",
+      "base_sha256": "03db47974dc400b026d9268730de1ef317b5446a7a6bc9906ad471bfb117fd22",
+      "applied_sha256": "c7254b3ad71fe1a8333eec8e01c2f6dc390f473c7085dcf9aaa5cb2e88c20f75",
+      "mode": 420
+    },
+    {
+      "skill": "build-report",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-report/specifications/mcp-app-report.md",
+      "source": "payloads/data-analytics/build-report/specifications/mcp-app-report.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-report",
+      "base_sha256": "9151a90db7b9a1b0dde3cf2a16ed524c01984bfd8c826f832a3f3eb6f459ca9d",
+      "applied_sha256": "3a87b8a0683d05025dd60e9a36d93b79a8ff30b2393cb5644d73bae6e769cada",
+      "mode": 420
+    },
+    {
+      "skill": "design-kpis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/design-kpis/SKILL.md",
+      "source": "payloads/data-analytics/design-kpis/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/design-kpis",
+      "base_sha256": "fcefdecacd1d64f847fbb7c45e93a6bd49c679dff66b8966ebc74c4dc39b8f21",
+      "applied_sha256": "655e1d6d0a6f2858c2e4a851611356e33179f074cba2bb79582a1bf13fc6e1fd",
+      "mode": 420
+    },
+    {
+      "skill": "gather-business-context",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/gather-business-context/SKILL.md",
+      "source": "payloads/data-analytics/gather-business-context/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/gather-business-context",
+      "base_sha256": "e8a1e917b8c4d03248987f33ca49fb7b1d6ed533328c39a02cafcc5b88b4577c",
+      "applied_sha256": "5aea843d00f86db943d4a9261661f0b3167184b81703b18c0ec3ef6e38c337a8",
+      "mode": 420
+    },
+    {
+      "skill": "index",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index/SKILL.md",
+      "source": "payloads/data-analytics/index/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index",
+      "base_sha256": "2239188d6ac667a9e4b546ffb441f17ac3cfe90fe7683ac68506789ef8dabeb3",
+      "applied_sha256": "36238f3dc3ecf2d330db7867113b37f624bc4a7e6093ab330e5eb3f75944d0f4",
+      "mode": 420
+    },
+    {
+      "skill": "index",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index/references/runtime-and-scope.md",
+      "source": "payloads/data-analytics/index/references/runtime-and-scope.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index",
+      "base_sha256": null,
+      "applied_sha256": "b2f67cb8cb43c932d7703454f37b1233d1f545f26207cf067697fb0036da2c40",
+      "mode": 420
+    },
+    {
+      "skill": "kpi-reporting",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/kpi-reporting/SKILL.md",
+      "source": "payloads/data-analytics/kpi-reporting/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/kpi-reporting",
+      "base_sha256": "a4ee918f3c87af4db8bb007cf8fefec444cd47b96b76de711349f11d7232861a",
+      "applied_sha256": "d013c09ea855f3982c219df643b46e18acb5c8a7ab3eac63b400912159a26cdc",
+      "mode": 420
+    },
+    {
+      "skill": "market-sizing",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/market-sizing/SKILL.md",
+      "source": "payloads/data-analytics/market-sizing/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/market-sizing",
+      "base_sha256": "dd353ab8c7229d3bc831234725db7d02ceeb1a889ee781103f90997879ac1951",
+      "applied_sha256": "7ef3622d439cbfdca142f9216105281213c5e130402c7d4d81d819532890d947",
+      "mode": 420
+    },
+    {
+      "skill": "metric-diagnostics",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/metric-diagnostics/SKILL.md",
+      "source": "payloads/data-analytics/metric-diagnostics/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/metric-diagnostics",
+      "base_sha256": "c9293227b592328c06cb9f6a2f23c0114ddcd1ca456a42f1ceebfe5981007314",
+      "applied_sha256": "fd78fff2443118721d51c86ed14d67683af03c5b9bcb6b3041b282cadbd560e8",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/SKILL.md",
+      "source": "payloads/data-analytics/product-business-analysis/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": "3e6b684ace151bbf777afd88fe34758b337ac0d6ff2bf332958d7a495d624a4b",
+      "applied_sha256": "60a5cd11ae6e28d36f4d76c312254a3e8fc27c67a1002b1a17b1b4ca92d5e51c",
+      "mode": 420
+    },
+    {
+      "skill": "publish-artifact-to-sites",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/publish-artifact-to-sites/SKILL.md",
+      "source": "payloads/data-analytics/publish-artifact-to-sites/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/publish-artifact-to-sites",
+      "base_sha256": "26b3846191d1c5237262a26da61694aa67bef38c4ed03eb3167e39f39c6f07a3",
+      "applied_sha256": "948352a380aaf7c443734228c84c4a443c1ebdcd9a358d613f7dbea285889cb3",
+      "mode": 420
+    },
+    {
+      "skill": "visualize-data",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/visualize-data/SKILL.md",
+      "source": "payloads/data-analytics/visualize-data/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/visualize-data",
+      "base_sha256": "ff2601669022a2ef43524e0225eb4833acc03260db90b996a2d6f74fbbce7b12",
+      "applied_sha256": "022e07f9aee05dbf08d40845e4d2d5643de8e8edbb2a14743b138c3266064a46",
+      "mode": 420
+    },
+    {
+      "skill": "visualize-data",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/visualize-data/references/native-inline-visualizations.md",
+      "source": "payloads/data-analytics/visualize-data/references/native-inline-visualizations.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/visualize-data",
+      "base_sha256": "50e062a5e3a4fff7ef7f392ea847ac0863d2006a38a280be9866bfe3aa2b8641",
+      "applied_sha256": "72bd7db07407985dc7b6969b3c757945afc6cbc3c57c9401cdf4b78c362eafab",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "fdae8617808ba99b06204edd9c726c0d198e16e582829a25c10407de70800e3c"
+      ]
+    },
+    {
+      "skill": "deep-research",
+      "target": "plugins/cache/openai-curated-remote/deep-research-work/0.1.14/skills/deep-research/SKILL.md",
+      "source": "payloads/deep-research-work/deep-research/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/deep-research-work/0.1.14/skills/deep-research",
+      "base_sha256": "c7b924a736d715bf90941c5e75460b3387ec90b1fdb3a7c79d3e9bfb10427dc6",
+      "applied_sha256": "d54382d3059940644916c77a50b4f4041cf7c1deb9fbea40126a20d73da1b426",
+      "mode": 420
+    },
+    {
+      "skill": "figma-code-connect",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect/SKILL.md",
+      "source": "payloads/figma/figma-code-connect/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect",
+      "base_sha256": "87af3996edb167d6aa3c044cb1bbb6a0d8e2d631c731bb896b1e1e8669640415",
+      "applied_sha256": "eef5626492962bde0bee12a012132ea7891568a107a4513116c023c555dd9b6e",
+      "mode": 436
+    },
+    {
+      "skill": "figma-code-connect",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect/references/parserless-example.md",
+      "source": "payloads/figma/figma-code-connect/references/parserless-example.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect",
+      "base_sha256": null,
+      "applied_sha256": "d8444245c60d016c8ca9a38ca9301d6c6913c7dde965a288c218ea3eec066caa",
+      "mode": 420
+    },
+    {
+      "skill": "figma-code-connect",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect/references/parserless-quick-reference.md",
+      "source": "payloads/figma/figma-code-connect/references/parserless-quick-reference.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect",
+      "base_sha256": null,
+      "applied_sha256": "3a6d26b5233d14ab71cc645b6dd29e953110cdde6bdaea7fb6ec8b2b4360279b",
+      "mode": 420
+    },
+    {
+      "skill": "figma-code-connect",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect/references/parserless-template-authoring.md",
+      "source": "payloads/figma/figma-code-connect/references/parserless-template-authoring.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-code-connect",
+      "base_sha256": null,
+      "applied_sha256": "dd97bad11a7e58e5f90ad67b1715d62ffbf55313e06333cc0bb6f8a41a670ae1",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "7ac00392dd7ebb8b9650e24293715c2e4795965c3756d8238c0e55fb1978505c"
+      ]
+    },
+    {
+      "skill": "figma-generate-design",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-design/SKILL.md",
+      "source": "payloads/figma/figma-generate-design/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-design",
+      "base_sha256": "4585464c09bed50215151e468ab8476848adcf56da017811ddcbfff199ee0b56",
+      "applied_sha256": "dc4a122ff34e021549a9d296070b14bc1ba0d62f1bd1c04fe25ac12997d4c686",
+      "mode": 436
+    },
+    {
+      "skill": "figma-generate-diagram",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-diagram/SKILL.md",
+      "source": "payloads/figma/figma-generate-diagram/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-diagram",
+      "base_sha256": "7297638dbf2130d1b37bfd85df65d290a4dd0b11a11b54abafcf7d07565922b5",
+      "applied_sha256": "2a9367275eb52eb6d54435771d9c13dcdbf77d13712211b6733858d75e900f39",
+      "mode": 420
+    },
+    {
+      "skill": "figma-generate-library",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-library/SKILL.md",
+      "source": "payloads/figma/figma-generate-library/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-generate-library",
+      "base_sha256": "3c995d483bbf4761392ba0c2e00df2b1b1c632cc05c6e7df57a2e89c311f53b7",
+      "applied_sha256": "2d934235f620f960b679130014130d0d7aa3567ef89011c9e203dd8f97e84173",
+      "mode": 436
+    },
+    {
+      "skill": "figma-implement-motion",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-implement-motion/SKILL.md",
+      "source": "payloads/figma/figma-implement-motion/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-implement-motion",
+      "base_sha256": "2e26e67284d47c6a74aedf9dca7543f4c8817dafc59a11abb156d4f7feedb2c2",
+      "applied_sha256": "e240b59c3d2fc8c9e29f94580b3b1c62f19aaac0e159674685d65f1469da802a",
+      "mode": 436
+    },
+    {
+      "skill": "figma-implement-motion",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-implement-motion/references/motion-implementation-workflow.md",
+      "source": "payloads/figma/figma-implement-motion/references/motion-implementation-workflow.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-implement-motion",
+      "base_sha256": null,
+      "applied_sha256": "a6d233eb05a9b775522fd222dde6cadec33e11c1aa0ccf7b1f8fceee6d16b9b0",
+      "mode": 420
+    },
+    {
+      "skill": "figma-swiftui",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-swiftui/SKILL.md",
+      "source": "payloads/figma/figma-swiftui/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-swiftui",
+      "base_sha256": "868c4defe2c0854f5a3e27594d3fa0f20347c86a9b15d103483b7488bfa8affe",
+      "applied_sha256": "de5f74c67186e86cac8b436489d24e1434164c905a6a642e9c69ceb3a0be9688",
+      "mode": 436
+    },
+    {
+      "skill": "figma-use",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use/SKILL.md",
+      "source": "payloads/figma/figma-use/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use",
+      "base_sha256": "7de62bb574c7acf3241643e0aafcea13e48ff06a12ef5203447eda3584e6ff4f",
+      "applied_sha256": "8fa49630e5efcc2cb67ea49df7c7df6c8377e1c9d71c5edd1db1e84a622e094f",
+      "mode": 436
+    },
+    {
+      "skill": "figma-use-slides",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use-slides/SKILL.md",
+      "source": "payloads/figma/figma-use-slides/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use-slides",
+      "base_sha256": "0a69a65e686dcc223581afb409a4d31cf318716e2c65cc9c926839a8737e71a4",
+      "applied_sha256": "5b38ede0eac057bb21d5223bf1f2fd386396549c8cd56eaa4f3fc66e809b5fa9",
+      "mode": 420
+    },
+    {
+      "skill": "figma-use-slides",
+      "target": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use-slides/references/sections-and-speaker-notes.md",
+      "source": "payloads/figma/figma-use-slides/references/sections-and-speaker-notes.md",
+      "installation_root": "plugins/cache/openai-curated-remote/figma/2.0.21/skills/figma-use-slides",
+      "base_sha256": null,
+      "applied_sha256": "5fbffd049aff78e8e2e39116fa97690131b487d04f819ddb2643791875dc5ea2",
+      "mode": 420
+    },
+    {
+      "skill": "agents-sdk",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/agents-sdk/SKILL.md",
+      "source": "payloads/openai-developers/agents-sdk/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/agents-sdk",
+      "base_sha256": "61830dccd552307bc714b961acae80b1c9c9c30b5d2faaa9e6043b6fb0414760",
+      "applied_sha256": "4b3f4ebf181233790d95323df61af99a0ef418054b543d788fc6b1018dfdeec7",
+      "mode": 420
+    },
+    {
+      "skill": "build-chatgpt-app",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/build-chatgpt-app/SKILL.md",
+      "source": "payloads/openai-developers/build-chatgpt-app/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/build-chatgpt-app",
+      "base_sha256": "b4ba5e0847e9b56b327da4e7546f5f0bf3325f54d6d21fc119b320bc2c898a53",
+      "applied_sha256": "e820ab0849d5d644fc83760471195f1bdf8d8d40f54348b2fcc595627890ae34",
+      "mode": 420
+    },
+    {
+      "skill": "chatgpt-app-submission",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/chatgpt-app-submission/SKILL.md",
+      "source": "payloads/openai-developers/chatgpt-app-submission/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/chatgpt-app-submission",
+      "base_sha256": "c9b43ca8fe60189e541afa30ea32a86f1bd7ab58a353faac777192a282b796cf",
+      "applied_sha256": "851fbf925c6cc020902904df8fad33b7e843c3202ea547e41faee9a368596de9",
+      "mode": 420
+    },
+    {
+      "skill": "openai-api-troubleshooting",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-api-troubleshooting/SKILL.md",
+      "source": "payloads/openai-developers/openai-api-troubleshooting/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-api-troubleshooting",
+      "base_sha256": "9fb4e152430c2f0475d1d14ce61b413267d322af9c032f2affb64698ca562662",
+      "applied_sha256": "456cb8c929bd045af5bd1db7fceb85e2e62118c4db57b3933b4d83d4999bf433",
+      "mode": 420
+    },
+    {
+      "skill": "openai-platform-api-key",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-platform-api-key/SKILL.md",
+      "source": "payloads/openai-developers/openai-platform-api-key/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-platform-api-key",
+      "base_sha256": "780670286fb0acf32660abafc1bc34d7a25ff7a74af59e02db8fb62bbdd21ac2",
+      "applied_sha256": "75798101204c7f5f00a5cfceb729f39a71892521374150cffd6ada253f04b549",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "b63222903ffbf474fbf720454351dd21cafb84ebac9a31af69f5f62426b1363d"
+      ]
+    },
+    {
+      "skill": "openai-platform-api-key",
+      "target": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-platform-api-key/references/evals.md",
+      "source": "payloads/openai-developers/openai-platform-api-key/references/evals.md",
+      "installation_root": "plugins/cache/openai-curated-remote/openai-developers/1.2.3/skills/openai-platform-api-key",
+      "base_sha256": "38c21189b124eaf25761f3314252e4d4452f3ff74db7c2f84a7d651406890d25",
+      "applied_sha256": "51071af38b31fa34037fe73bc152d4071620276933dff89a4657f6d679738cb3",
+      "mode": 420
+    },
+    {
+      "skill": "connect-recommend",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/connect-recommend/SKILL.md",
+      "source": "payloads/stripe/connect-recommend/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/connect-recommend",
+      "base_sha256": "84dc5a2622ca88cf80de8e5975d0e08112e596e97d7d6f453fbbfae9b76b1e1b",
+      "applied_sha256": "c32f1377d043084f45ec4c959d306223917e268accd1b1763095236c36fe1b30",
+      "mode": 420
+    },
+    {
+      "skill": "stripe-apps",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-apps/SKILL.md",
+      "source": "payloads/stripe/stripe-apps/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-apps",
+      "base_sha256": "83d4d8df8a02f2e373f79b44472f787da0dada7cb66bb645916f0430f0d1a881",
+      "applied_sha256": "5d9f294ff020c3bd498e6df631ab257a5b2c53e7e01584f492aeeec0f13545c4",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "d3405a646b013946610d3aad8376720bbb024a87175211d9f7ac9ffb77c2efb5"
+      ]
+    },
+    {
+      "skill": "stripe-apps",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-apps/references/discovery.md",
+      "source": "payloads/stripe/stripe-apps/references/discovery.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-apps",
+      "base_sha256": "fa20ebf623e3dd905daae707ae354ed92e799bc2eb9e0d310503db26ea66ca16",
+      "applied_sha256": "e5661378dd2a7e5ef3c54dafcf18ee3ef804719c5c207e5a3c8456aee280b4cc",
+      "mode": 420
+    },
+    {
+      "skill": "stripe-best-practices",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-best-practices/SKILL.md",
+      "source": "payloads/stripe/stripe-best-practices/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-best-practices",
+      "base_sha256": "7cccd871aabe35863986b4230b3368fbcfe0097e3b5294c962426a24db87dd9f",
+      "applied_sha256": "a1f5bcb77718bce2705ff0f94bc633e40694db1001c9683bb085d8ee788bcb08",
+      "mode": 420
+    },
+    {
+      "skill": "stripe-directory",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-directory/SKILL.md",
+      "source": "payloads/stripe/stripe-directory/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-directory",
+      "base_sha256": "bef1822ed6f4ae534765e5147cbb91e8ca506a337013dd332ff7f6c869d91f64",
+      "applied_sha256": "e30f7d3510f5e550e779cfbec4e474db12a2c27f4bcbb05f86af668cce8edf0e",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "2950b8ec651506b421c6f09f60381ce7867d43899fdc39c70376f293e004507d"
+      ]
+    },
+    {
+      "skill": "stripe-docs",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-docs/SKILL.md",
+      "source": "payloads/stripe/stripe-docs/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-docs",
+      "base_sha256": "fd02afdef978b9834b458822f253761dc81eac4fd54ff76e3f9ba7de62b2a6ac",
+      "applied_sha256": "65aa0c23e4855dfba8b0b4604644669f51758c588f352b9a9aa6e2c61e8dc63e",
+      "mode": 420
+    },
+    {
+      "skill": "stripe-projects",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-projects/SKILL.md",
+      "source": "payloads/stripe/stripe-projects/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-projects",
+      "base_sha256": "9d74a82cc3a9c777ba09e16fb663e7338108735462ce70cb75d99e7a250394d3",
+      "applied_sha256": "93ee917467754d9dae51897c2003a4e24bab0e07b0915cd0d8e818be69b66299",
+      "mode": 420
+    },
+    {
+      "skill": "upgrade-stripe",
+      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/upgrade-stripe/SKILL.md",
+      "source": "payloads/stripe/upgrade-stripe/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/upgrade-stripe",
+      "base_sha256": "d91f275ec132821bd2cd64824a339a1605353f50f81356880f2b5e66b649ddbe",
+      "applied_sha256": "8c65096ac901a344b488d7de699b5425b6fbaf01b1a07da56cea087d2b5fb682",
+      "mode": 420
+    },
+    {
+      "skill": "android-emulator-qa",
+      "target": "plugins/cache/openai-curated-remote/test-android-apps/0.1.2/skills/android-emulator-qa/SKILL.md",
+      "source": "payloads/test-android-apps/android-emulator-qa/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/test-android-apps/0.1.2/skills/android-emulator-qa",
+      "base_sha256": "0ce182ad60db73ea663f0eab6793f4fbf63b4b4e2ebba596a61b7b3b8985eeac",
+      "applied_sha256": "8de201de52035f4ccbd8a51c0ff7c52d8792205b49b0370c95e4437227ff35b1",
+      "mode": 420
+    },
+    {
+      "skill": "posthog",
+      "target": "plugins/cache/openai-curated-remote/posthog/1.0.0/skills/posthog/SKILL.md",
+      "source": "payloads/posthog/posthog/SKILL.md",
+      "installation_root": "plugins/cache/openai-curated-remote/posthog/1.0.0/skills/posthog",
+      "base_sha256": "a0b17693e926fd8ff090e87c2483e28016546863b1e2aa54e46a345f2719b29a",
+      "applied_sha256": "a37f5ccff321a1aa4dbf0e620bb140a1fb0e37fc8e24aac37ea22a33afbb4288",
+      "mode": 420
+    },
+    {
+      "skill": "documents",
+      "target": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents/SKILL.md",
+      "source": "payloads/documents/documents/SKILL.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents",
+      "base_sha256": "3154ace095b79bace582d7dc53c7744a40f835fe762726220708bde2360749aa",
+      "applied_sha256": "fa31b130dd5c40378aeb519459d484fef70fb5b4eb9f4270fb16d139785bdd89",
+      "mode": 420
+    },
+    {
+      "skill": "documents",
+      "target": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents/references/equation-workflows.md",
+      "source": "payloads/documents/documents/references/equation-workflows.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents",
+      "base_sha256": null,
+      "applied_sha256": "0ccba72d0714422a91a3490dc62980375485ff9a2973321833106dd8b7aca16b",
+      "mode": 420
+    },
+    {
+      "skill": "documents",
+      "target": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents/references/helper-reference.md",
+      "source": "payloads/documents/documents/references/helper-reference.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/documents/26.904.11930/skills/documents",
+      "base_sha256": null,
+      "applied_sha256": "d7e6950b3504deec02debe327fe6a97d6259e4babc7b81a867865f132c0ddb8e",
+      "mode": 420
+    },
+    {
+      "skill": "pdf",
+      "target": "plugins/cache/openai-primary-runtime/pdf/26.904.11930/skills/pdf/SKILL.md",
+      "source": "payloads/pdf/pdf/SKILL.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/pdf/26.904.11930/skills/pdf",
+      "base_sha256": "afc4472ec4d625f703e9f414fe6814ce3cfa0ec51c7a07887fe587264c8b561e",
+      "applied_sha256": "3e833e870236be529346ec999df39ecb061e7aac61d8f2b65980ca71aa82546b",
+      "mode": 420
+    },
+    {
+      "skill": "presentations",
+      "target": "plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations/SKILL.md",
+      "source": "payloads/presentations/presentations/SKILL.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations",
+      "base_sha256": "fd3703aa1f91d386b94806a3a4061f77cdd3ea830fddfb7297243c5c9e53a5a8",
+      "applied_sha256": "4855b10958ad4a54393d161f297d5088d3baa69d0db3621bcf29cabd46c70d16",
+      "mode": 420
+    },
+    {
+      "skill": "presentations",
+      "target": "plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations/references/writing-style-examples.md",
+      "source": "payloads/presentations/presentations/references/writing-style-examples.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations",
+      "base_sha256": null,
+      "applied_sha256": "603ed3ca567ff9ab94a2a2c9a45275f4a7a325763227d15f7c755fa46de93ef1",
+      "mode": 420
+    },
+    {
+      "skill": "spreadsheets",
+      "target": "plugins/cache/openai-primary-runtime/spreadsheets/26.904.11930/skills/spreadsheets/SKILL.md",
+      "source": "payloads/spreadsheets/spreadsheets/SKILL.md",
+      "installation_root": "plugins/cache/openai-primary-runtime/spreadsheets/26.904.11930/skills/spreadsheets",
+      "base_sha256": "655af692c745b9aab2fb06b8843b27de0099e9acebf28d67f3916d624c4a0f97",
+      "applied_sha256": "dd81792b6ffa1b0a96c89837b7694f2a710f7643a20ce38015bbb7a97929852d",
+      "mode": 420
+    },
+    {
+      "skill": "_shared",
+      "target": "skills/_shared/marketing-context.md",
+      "source": "payloads/shared/_shared/marketing-context.md",
+      "installation_root": "skills",
+      "requires_skill": false,
+      "base_sha256": null,
+      "applied_sha256": "254d86481b168e1520013d3ff2672d9dc49c9f6df2576e9f75cee098199b9b87",
+      "mode": 420
+    }
+  ],
+  "plugin_versions": {
+    "plugins/cache/openai-bundled/visualize": [
+      "1.0.29"
+    ],
+    "plugins/cache/openai-curated-remote/data-analytics": [
+      "0.2.10-13ceeea1f599"
+    ],
+    "plugins/cache/openai-curated-remote/deep-research-work": [
+      "0.1.14"
+    ],
+    "plugins/cache/openai-curated-remote/figma": [
+      "2.0.21"
+    ],
+    "plugins/cache/openai-curated-remote/openai-developers": [
+      "1.2.3"
+    ],
+    "plugins/cache/openai-curated-remote/posthog": [
+      "1.0.0"
+    ],
+    "plugins/cache/openai-curated-remote/stripe": [
+      "7.0.0"
+    ],
+    "plugins/cache/openai-curated-remote/test-android-apps": [
+      "0.1.2"
+    ],
+    "plugins/cache/openai-primary-runtime/documents": [
+      "26.904.11930"
+    ],
+    "plugins/cache/openai-primary-runtime/pdf": [
+      "26.904.11930"
+    ],
+    "plugins/cache/openai-primary-runtime/presentations": [
+      "26.904.11930"
+    ],
+    "plugins/cache/openai-primary-runtime/spreadsheets": [
+      "26.904.11930"
+    ]
+  }
+}
