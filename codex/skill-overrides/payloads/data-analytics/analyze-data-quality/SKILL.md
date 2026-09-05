@@ -5,7 +5,7 @@ description: "Assess whether structured data, query results, dashboards, or anal
 
 ## Related Skills
 
-Use $design-kpis when the work is to define or redesign a KPI framework, metric definition, guardrail, or target rather than checking whether existing data is trustworthy.
+Use [the kpi design reference](../product-business-analysis/references/kpi-design.md) when the work is to define or redesign a KPI framework, metric definition, guardrail, or target rather than checking whether existing data is trustworthy.
 
 Use $validate-data when the work is to QA an analysis, chart, report, or recommendation rather than investigate the underlying data.
 

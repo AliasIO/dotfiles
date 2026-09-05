@@ -8,8 +8,11 @@
       "source": "payloads/personal/ad-creative/SKILL.md",
       "installation_root": "skills/ad-creative",
       "base_sha256": "dfe60e076f0ffad82b9d26cb212c1b8839d833474f78a434357633e6b57165c9",
-      "applied_sha256": "1446e7900cd31d0c8c5cb23805a26f196fadaa30541902f70d4ada0e14db3cd9",
-      "mode": 420
+      "applied_sha256": "ba9a06acbe38216437424f7b68d7fb2a18ced5d9cb152093212c64060d288583",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "1446e7900cd31d0c8c5cb23805a26f196fadaa30541902f70d4ada0e14db3cd9"
+      ]
     },
     {
       "skill": "adaptive",
@@ -42,24 +45,6 @@
       "mode": 420
     },
     {
-      "skill": "ai-seo",
-      "target": "skills/ai-seo/SKILL.md",
-      "source": "payloads/personal/ai-seo/SKILL.md",
-      "installation_root": "skills/ai-seo",
-      "base_sha256": "d0e95cf38b9589ce041858ca55d163d8295d1460266974239cb00adc4163b87a",
-      "applied_sha256": "e69ce2b4230fb51290919f135996a02c637768a60bdda7413a984c452f66cce4",
-      "mode": 420
-    },
-    {
-      "skill": "ai-seo",
-      "target": "skills/ai-seo/references/evidence-and-emerging-formats.md",
-      "source": "payloads/personal/ai-seo/references/evidence-and-emerging-formats.md",
-      "installation_root": "skills/ai-seo",
-      "base_sha256": null,
-      "applied_sha256": "1298a40d724d3e6bbca3660b16c35bc4c5f93fa071f51782a9bb8b3771d6de74",
-      "mode": 420
-    },
-    {
       "skill": "analytics",
       "target": "skills/analytics/SKILL.md",
       "source": "payloads/personal/analytics/SKILL.md",
@@ -83,19 +68,10 @@
       "source": "payloads/personal/content-strategy/SKILL.md",
       "installation_root": "skills/content-strategy",
       "base_sha256": "0611532b2a0dce8d0d5b783c99bba10d13a6d5fd7eecd829974012f74ea33258",
-      "applied_sha256": "7e4384a3f1af3da53b8144e047069b79373e34031bfbfb32a889d4f58a934a6d",
-      "mode": 420
-    },
-    {
-      "skill": "copy-editing",
-      "target": "skills/copy-editing/SKILL.md",
-      "source": "payloads/personal/copy-editing/SKILL.md",
-      "installation_root": "skills/copy-editing",
-      "base_sha256": "9b5a20be3dc5513c8f0b4f4c4960857e4d28ed83698a5b33c8dde9dc75a47bf6",
-      "applied_sha256": "dafe14d3c9bb1c11c4a650132759f4e747526b9d70e3ae51ecbba40bb6dfe46d",
+      "applied_sha256": "3fec381ae949dc26573d103f27565890470252040c888aeee2ef8afae1d86d0e",
       "mode": 420,
       "previous_applied_sha256": [
-        "82ad7a5b977b1ea506f150823ec7b81107d5e453b3ca4c88b2f9b5f6fb5b1749"
+        "7e4384a3f1af3da53b8144e047069b79373e34031bfbfb32a889d4f58a934a6d"
       ]
     },
     {
@@ -104,8 +80,11 @@
       "source": "payloads/personal/copywriting/SKILL.md",
       "installation_root": "skills/copywriting",
       "base_sha256": "ecdaabca28863d1472f79ba637842fdf4ac2fd9acc92b215ab7f152e757b2a33",
-      "applied_sha256": "dd3de050a882751fb7749abd3475e8c5d9ee3bcccf5eaed36e2a55d75d4b12b0",
-      "mode": 420
+      "applied_sha256": "f5375c50fe3f9e4b88d59dc8d0ce9493f0104a16eed953015f77edf98f4d3195",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "dd3de050a882751fb7749abd3475e8c5d9ee3bcccf5eaed36e2a55d75d4b12b0"
+      ]
     },
     {
       "skill": "cro",
@@ -113,8 +92,11 @@
       "source": "payloads/personal/cro/SKILL.md",
       "installation_root": "skills/cro",
       "base_sha256": "199016bec3b44bc6a7507b111b6028f6550cc852cd54c7d0df789f15d6f814c4",
-      "applied_sha256": "4d745bd357724c3c4ee727f5ac1d799aa8970b56892bbd24685a524c1fcb2906",
-      "mode": 420
+      "applied_sha256": "efad705fe809201b68cc829f4f549d438313224bf62f885b66f1e2db3a6c0f70",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "4d745bd357724c3c4ee727f5ac1d799aa8970b56892bbd24685a524c1fcb2906"
+      ]
     },
     {
       "skill": "customer-research",
@@ -132,15 +114,6 @@
       "installation_root": "skills/edge-to-edge",
       "base_sha256": "d071a6d8a97c99235f8cb05795c2dc83f0420be2221cecf0de3ef2495cf67324",
       "applied_sha256": "e49a6a053a3dc6476244d35d92b750b606859545c30c29c2bd6fc1b9079c5bbc",
-      "mode": 420
-    },
-    {
-      "skill": "humanizer",
-      "target": "skills/humanizer/SKILL.md",
-      "source": "payloads/personal/humanizer/SKILL.md",
-      "installation_root": "skills/humanizer",
-      "base_sha256": "70938f3cce25970e1ded5fdd194b755c03f1e4e4fa76820958ce78f86b677b1a",
-      "applied_sha256": "730f331756d0f09a9f1f358067116a8bb79107b90ce2bc1dfff22d5c1391b8ac",
       "mode": 420
     },
     {
@@ -195,15 +168,6 @@
       "installation_root": "skills/material-3",
       "base_sha256": null,
       "applied_sha256": "38859ea0f01e7c92493b153776c781a32e6d0f6eccfcaac1e22fb1cf4fcc94f0",
-      "mode": 420
-    },
-    {
-      "skill": "onboarding",
-      "target": "skills/onboarding/SKILL.md",
-      "source": "payloads/personal/onboarding/SKILL.md",
-      "installation_root": "skills/onboarding",
-      "base_sha256": "15a802ffb73828730aba90b740426fbb8d2070721ee92d6f8737de4704e8ff0f",
-      "applied_sha256": "c714505606ccefd883ee31e1c6e2a940f4b8ba547d04c57b37d3433a35b422a8",
       "mode": 420
     },
     {
@@ -275,8 +239,11 @@
       "source": "payloads/personal/schema/SKILL.md",
       "installation_root": "skills/schema",
       "base_sha256": "d8b7aa7bcd9727a87fb5470a6c9ee252b99a7ccb84f637d7c67c5d155b507e0b",
-      "applied_sha256": "6b2abeb88255e4fecb93906c98d91608c1546adacf5b8d9378cf3b01bd0524d0",
-      "mode": 420
+      "applied_sha256": "c7dca0d7ebcfe7e87f63d5ad4636b4aaa433da55e4206c1cd68366b278d992ed",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "6b2abeb88255e4fecb93906c98d91608c1546adacf5b8d9378cf3b01bd0524d0"
+      ]
     },
     {
       "skill": "seo-audit",
@@ -284,17 +251,11 @@
       "source": "payloads/personal/seo-audit/SKILL.md",
       "installation_root": "skills/seo-audit",
       "base_sha256": "3b03a2e07578e9964acac0b6907ae343a904c6547bfefe779ba326db5eedd1cb",
-      "applied_sha256": "8d82e3294c8a964952d2f721f6f241b671aaf6af504cbf1b0d252b8b2f7281f0",
-      "mode": 420
-    },
-    {
-      "skill": "signup",
-      "target": "skills/signup/SKILL.md",
-      "source": "payloads/personal/signup/SKILL.md",
-      "installation_root": "skills/signup",
-      "base_sha256": "9395aabae64891ebdac5f31d17c83b9d47546dc0c9b22654c7b89e9b04da7cf6",
-      "applied_sha256": "1d7372b49484ad22f1d816962bcf623c44130fe6da05ee1ddee09af83746aeca",
-      "mode": 420
+      "applied_sha256": "6abceac673b0341e1748032f9bdfe8ed85f636831f8cddfd1e895a77faa58fc2",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "8d82e3294c8a964952d2f721f6f241b671aaf6af504cbf1b0d252b8b2f7281f0"
+      ]
     },
     {
       "skill": "site-architecture",
@@ -410,8 +371,11 @@
       "source": "payloads/data-analytics/analyze-data-quality/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/analyze-data-quality",
       "base_sha256": "9a3c994f87da0c7a8c5ce37bbf08a59fc6f5b4f368475d3d7438f622b753d5f0",
-      "applied_sha256": "259bee92d2db10f791600571639d6fbce65268e69e96b50bdcd00479d3893365",
-      "mode": 420
+      "applied_sha256": "ca03674398b38d40e84b76470fc07329b8ce28ed40139fcb4f4eecaaeceee4dd",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "259bee92d2db10f791600571639d6fbce65268e69e96b50bdcd00479d3893365"
+      ]
     },
     {
       "skill": "build-dashboard",
@@ -419,8 +383,11 @@
       "source": "payloads/data-analytics/build-dashboard/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/build-dashboard",
       "base_sha256": "c453ef3e1187477f696aae9a68b116d0e7e0bd6f665ab03a9d1634d13482aaaa",
-      "applied_sha256": "e8add5ef0b8a9f982c9cc1e04c0db06a5154788de81cb1bf0a97b796b7af3c93",
-      "mode": 420
+      "applied_sha256": "c998ebe4c0e181637026dca683266ac0d6048f56e39b87295cd7662e0508c043",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "e8add5ef0b8a9f982c9cc1e04c0db06a5154788de81cb1bf0a97b796b7af3c93"
+      ]
     },
     {
       "skill": "build-dashboard",
@@ -450,31 +417,16 @@
       "mode": 420
     },
     {
-      "skill": "design-kpis",
-      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/design-kpis/SKILL.md",
-      "source": "payloads/data-analytics/design-kpis/SKILL.md",
-      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/design-kpis",
-      "base_sha256": "fcefdecacd1d64f847fbb7c45e93a6bd49c679dff66b8966ebc74c4dc39b8f21",
-      "applied_sha256": "655e1d6d0a6f2858c2e4a851611356e33179f074cba2bb79582a1bf13fc6e1fd",
-      "mode": 420
-    },
-    {
-      "skill": "gather-business-context",
-      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/gather-business-context/SKILL.md",
-      "source": "payloads/data-analytics/gather-business-context/SKILL.md",
-      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/gather-business-context",
-      "base_sha256": "e8a1e917b8c4d03248987f33ca49fb7b1d6ed533328c39a02cafcc5b88b4577c",
-      "applied_sha256": "5aea843d00f86db943d4a9261661f0b3167184b81703b18c0ec3ef6e38c337a8",
-      "mode": 420
-    },
-    {
       "skill": "index",
       "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index/SKILL.md",
       "source": "payloads/data-analytics/index/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/index",
       "base_sha256": "2239188d6ac667a9e4b546ffb441f17ac3cfe90fe7683ac68506789ef8dabeb3",
-      "applied_sha256": "36238f3dc3ecf2d330db7867113b37f624bc4a7e6093ab330e5eb3f75944d0f4",
-      "mode": 420
+      "applied_sha256": "799b036b49e55de46c6083ddeaf52b3f1869e4e76328b9f61f2dab8df714f06b",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "36238f3dc3ecf2d330db7867113b37f624bc4a7e6093ab330e5eb3f75944d0f4"
+      ]
     },
     {
       "skill": "index",
@@ -486,22 +438,16 @@
       "mode": 420
     },
     {
-      "skill": "kpi-reporting",
-      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/kpi-reporting/SKILL.md",
-      "source": "payloads/data-analytics/kpi-reporting/SKILL.md",
-      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/kpi-reporting",
-      "base_sha256": "a4ee918f3c87af4db8bb007cf8fefec444cd47b96b76de711349f11d7232861a",
-      "applied_sha256": "d013c09ea855f3982c219df643b46e18acb5c8a7ab3eac63b400912159a26cdc",
-      "mode": 420
-    },
-    {
       "skill": "market-sizing",
       "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/market-sizing/SKILL.md",
       "source": "payloads/data-analytics/market-sizing/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/market-sizing",
       "base_sha256": "dd353ab8c7229d3bc831234725db7d02ceeb1a889ee781103f90997879ac1951",
-      "applied_sha256": "7ef3622d439cbfdca142f9216105281213c5e130402c7d4d81d819532890d947",
-      "mode": 420
+      "applied_sha256": "e78c9fc6d790773a9136ff49bfba2c0f9ea4d648dff638bcffb1bf57a0c9a6c4",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "7ef3622d439cbfdca142f9216105281213c5e130402c7d4d81d819532890d947"
+      ]
     },
     {
       "skill": "metric-diagnostics",
@@ -509,8 +455,11 @@
       "source": "payloads/data-analytics/metric-diagnostics/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/metric-diagnostics",
       "base_sha256": "c9293227b592328c06cb9f6a2f23c0114ddcd1ca456a42f1ceebfe5981007314",
-      "applied_sha256": "fd78fff2443118721d51c86ed14d67683af03c5b9bcb6b3041b282cadbd560e8",
-      "mode": 420
+      "applied_sha256": "3e64c16688126d8332134bc969917985299f8c128b838540deedd352708b1cbb",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "fd78fff2443118721d51c86ed14d67683af03c5b9bcb6b3041b282cadbd560e8"
+      ]
     },
     {
       "skill": "product-business-analysis",
@@ -518,8 +467,11 @@
       "source": "payloads/data-analytics/product-business-analysis/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
       "base_sha256": "3e6b684ace151bbf777afd88fe34758b337ac0d6ff2bf332958d7a495d624a4b",
-      "applied_sha256": "60a5cd11ae6e28d36f4d76c312254a3e8fc27c67a1002b1a17b1b4ca92d5e51c",
-      "mode": 420
+      "applied_sha256": "397b9f8b9242377edaf6b9e4acac1d1b004da0a34ff0591a11765e9154a1bd42",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "60a5cd11ae6e28d36f4d76c312254a3e8fc27c67a1002b1a17b1b4ca92d5e51c"
+      ]
     },
     {
       "skill": "publish-artifact-to-sites",
@@ -777,33 +729,12 @@
       "mode": 420
     },
     {
-      "skill": "stripe-directory",
-      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-directory/SKILL.md",
-      "source": "payloads/stripe/stripe-directory/SKILL.md",
-      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-directory",
-      "base_sha256": "bef1822ed6f4ae534765e5147cbb91e8ca506a337013dd332ff7f6c869d91f64",
-      "applied_sha256": "e30f7d3510f5e550e779cfbec4e474db12a2c27f4bcbb05f86af668cce8edf0e",
-      "mode": 420,
-      "previous_applied_sha256": [
-        "2950b8ec651506b421c6f09f60381ce7867d43899fdc39c70376f293e004507d"
-      ]
-    },
-    {
       "skill": "stripe-docs",
       "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-docs/SKILL.md",
       "source": "payloads/stripe/stripe-docs/SKILL.md",
       "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-docs",
       "base_sha256": "fd02afdef978b9834b458822f253761dc81eac4fd54ff76e3f9ba7de62b2a6ac",
       "applied_sha256": "65aa0c23e4855dfba8b0b4604644669f51758c588f352b9a9aa6e2c61e8dc63e",
-      "mode": 420
-    },
-    {
-      "skill": "stripe-projects",
-      "target": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-projects/SKILL.md",
-      "source": "payloads/stripe/stripe-projects/SKILL.md",
-      "installation_root": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-projects",
-      "base_sha256": "9d74a82cc3a9c777ba09e16fb663e7338108735462ce70cb75d99e7a250394d3",
-      "applied_sha256": "93ee917467754d9dae51897c2003a4e24bab0e07b0915cd0d8e818be69b66299",
       "mode": 420
     },
     {
@@ -903,7 +834,127 @@
       "installation_root": "skills",
       "requires_skill": false,
       "base_sha256": null,
-      "applied_sha256": "254d86481b168e1520013d3ff2672d9dc49c9f6df2576e9f75cee098199b9b87",
+      "applied_sha256": "573058ca20366007f5df9da5aec5f39ffd2797fe944689bf031d942ea5fc8063",
+      "mode": 420,
+      "previous_applied_sha256": [
+        "254d86481b168e1520013d3ff2672d9dc49c9f6df2576e9f75cee098199b9b87"
+      ]
+    },
+    {
+      "skill": "copywriting",
+      "target": "skills/copywriting/references/voice-and-clarity.md",
+      "source": "payloads/personal/copywriting/references/voice-and-clarity.md",
+      "installation_root": "skills/copywriting",
+      "base_sha256": null,
+      "applied_sha256": "a0130a780fa68015033102e0011d3b1ae181530c6d7fb6df6eb5f5b4f9af164f",
+      "mode": 420
+    },
+    {
+      "skill": "copywriting",
+      "target": "skills/copywriting/references/drafting.md",
+      "source": "payloads/personal/copywriting/references/drafting.md",
+      "installation_root": "skills/copywriting",
+      "base_sha256": null,
+      "applied_sha256": "b8dd8ade338994ae3bd91326302c3fbb403c05bd4fa1845a7da4aee6fcd9a981",
+      "mode": 420
+    },
+    {
+      "skill": "copywriting",
+      "target": "skills/copywriting/references/editing.md",
+      "source": "payloads/personal/copywriting/references/editing.md",
+      "installation_root": "skills/copywriting",
+      "base_sha256": null,
+      "applied_sha256": "711ccbb269fa3981ae74f5aabd60b1e10400691e6ff68121e97792557adab149",
+      "mode": 420
+    },
+    {
+      "skill": "cro",
+      "target": "skills/cro/references/page-review.md",
+      "source": "payloads/personal/cro/references/page-review.md",
+      "installation_root": "skills/cro",
+      "base_sha256": null,
+      "applied_sha256": "5d0c14f1c4dc295e21a3f56c214d2d768dc22fbae7c297b6c7cafd58ad975ac2",
+      "mode": 420
+    },
+    {
+      "skill": "cro",
+      "target": "skills/cro/references/registration.md",
+      "source": "payloads/personal/cro/references/registration.md",
+      "installation_root": "skills/cro",
+      "base_sha256": null,
+      "applied_sha256": "16e2b8b08b5840640d1404c5e9a4244a9cadaf08bad4ef1d639a1381319b16f2",
+      "mode": 420
+    },
+    {
+      "skill": "cro",
+      "target": "skills/cro/references/activation.md",
+      "source": "payloads/personal/cro/references/activation.md",
+      "installation_root": "skills/cro",
+      "base_sha256": null,
+      "applied_sha256": "da265240cc3473371001d4d560317b237855cd173794bb3d73fd534a36a4f4cb",
+      "mode": 420
+    },
+    {
+      "skill": "seo-audit",
+      "target": "skills/seo-audit/references/ai-search.md",
+      "source": "payloads/personal/seo-audit/references/ai-search.md",
+      "installation_root": "skills/seo-audit",
+      "base_sha256": null,
+      "applied_sha256": "2b74126c18d4cd27a0bf4c2fae39329f0610fc8fab4afe8152b729b5a6562bf3",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/references/context-and-sources.md",
+      "source": "payloads/data-analytics/product-business-analysis/references/context-and-sources.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": null,
+      "applied_sha256": "96456891701d4de76c944b43db86777f80b717c71712fbe6f600e80a24313990",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/references/kpi-design.md",
+      "source": "payloads/data-analytics/product-business-analysis/references/kpi-design.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": null,
+      "applied_sha256": "4463ae2b225a6f8bca2da9a5763d0d89634d64346469c4c22ee416317b32198b",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/references/kpi-readouts.md",
+      "source": "payloads/data-analytics/product-business-analysis/references/kpi-readouts.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": null,
+      "applied_sha256": "3d8e18877ff2ed2f60fcda8c85e1d4af9adc8bf8c1908c28c36736735508f22c",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/references/decision-analysis.md",
+      "source": "payloads/data-analytics/product-business-analysis/references/decision-analysis.md",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": null,
+      "applied_sha256": "1ee77561de8b7de9c12b2111a43d819a2fc99b6e05cdfde82d61016bc85ca65a",
+      "mode": 420
+    },
+    {
+      "skill": "cro",
+      "target": "skills/cro/references/form.md",
+      "source": "payloads/personal/cro/references/form.md",
+      "installation_root": "skills/cro",
+      "base_sha256": "e3115b0fdfb3968915b8e3acdc32a6e5f1d2c6a335ebbed25bee9b601ec573d7",
+      "applied_sha256": "e5e1a28216d7822d75b71dd59e2abfe0f53bcfd97ed7161efc183c8885fdb64f",
+      "mode": 420
+    },
+    {
+      "skill": "product-business-analysis",
+      "target": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis/agents/openai.yaml",
+      "source": "payloads/data-analytics/product-business-analysis/agents/openai.yaml",
+      "installation_root": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/product-business-analysis",
+      "base_sha256": "37bb6b4c190d14dae10d0457998a0356f473968988ba2469c4fe7c49414a069e",
+      "applied_sha256": "e31a18824c8514b91905b3e735ab950af285013a972c9b8d18ed0f3e696b27a9",
       "mode": 420
     }
   ],

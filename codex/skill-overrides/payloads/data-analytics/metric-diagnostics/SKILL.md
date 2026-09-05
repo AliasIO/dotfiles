@@ -5,7 +5,7 @@ description: "Diagnose why a metric changed or differs from expectation. Use whe
 
 ## Related Skills
 
-Use $gather-business-context when business context is needed to understand the metric, analysis period, ownership, or plausible explanations.
+Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) when business context is needed to understand the metric, analysis period, ownership, or plausible explanations.
 
 Use $product-business-analysis when the task asks for a recommendation or tradeoff decision after diagnosing the movement.
 
@@ -48,7 +48,7 @@ Define:
 - the source that owns the metric definition
 - the diagnostic question being answered, for example movement, concentration, or reconciliation
 
-Use $gather-business-context when business context is needed to understand what the metric means, what changed around the analysis period, or which explanations are plausible.
+Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) when business context is needed to understand what the metric means, what changed around the analysis period, or which explanations are plausible.
 
 ### 2. Validate The Metric Definition And Source
 
@@ -72,7 +72,7 @@ Do not search for causes until the size, timing, and scope of the pattern are ve
 
 Choose the smallest set of cuts and checks likely to explain the pattern or strengthen confidence.
 
-Choose driver dimensions from the metric's operating logic, business context, and source shape. Prioritize drivers the business usually monitors or can act on, not every field available in the source. If the relevant drivers are unclear, use current context, a named semantic layer, or $gather-business-context to understand how the business explains the metric and what changed around the analysis period.
+Choose driver dimensions from the metric's operating logic, business context, and source shape. Prioritize drivers the business usually monitors or can act on, not every field available in the source. If the relevant drivers are unclear, use current context, a named semantic layer, or [the context and sources reference](../product-business-analysis/references/context-and-sources.md) to understand how the business explains the metric and what changed around the analysis period.
 
 When using a lower-level table, do not limit the driver analysis to fields surfaced by the first query. Recreate or join the business grouping needed to answer the question, such as model family, model superfamily, segment, region, cohort, product taxonomy, or customer hierarchy. If the grouping cannot be reconstructed, say so before simplifying the analysis.
 
@@ -124,7 +124,7 @@ Use $product-business-analysis when the user needs a recommendation or tradeoff 
 
 Keep implications distinguishable from verified factual reporting so a reader can tell where evidence ends and interpretation begins. Do not claim causality from timing alone; state when an explanation is only a plausible hypothesis.
 
-Use $gather-business-context when the metric result is clear but business context is needed to interpret the `so what` or identify realistic next actions.
+Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) when the metric result is clear but business context is needed to interpret the `so what` or identify realistic next actions.
 
 Use $validate-data when methodology, calculations, caveats, or the evidentiary support for the diagnostic conclusion need review before sharing.
 

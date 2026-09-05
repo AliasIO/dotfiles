@@ -58,7 +58,7 @@ Choose sources based on the inputs the estimate depends on most.
 
 Start with user-named sources when provided. Then use the strongest available evidence for each major input from the starting approach. Use `~~structured_data` when an input should come from the user's data warehouse or another structured data source. Use context lanes such as `~~company_docs`, `~~team_communication`, or `~~dashboards_or_bi` when an input needs business meaning, source-of-truth guidance, or assumptions that are not captured in structured data alone. When an input depends on the outside market, use public sources for benchmarks, population estimates, comparable markets, or proxy assumptions.
 
-Use $gather-business-context to resolve context lanes when the right source of truth, business meaning, or assumption set is unclear.
+Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) to resolve context lanes when the right source of truth, business meaning, or assumption set is unclear.
 
 If the strongest source is unavailable or thin, continue with a transparent proxy assumption only when the estimate is still useful. Label the gap and explain how it affects confidence.
 

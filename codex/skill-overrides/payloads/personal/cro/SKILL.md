@@ -1,186 +1,28 @@
 ---
 name: cro
-description: "Diagnose and improve conversion on marketing pages or lead/contact forms. A URL alone is insufficient without a conversion or marketing-page review intent. Use signup for registration and onboarding for activation."
+description: "Diagnose or improve conversion across marketing pages, forms, registration and post-signup activation. Select the relevant funnel stage; ordinary UI bugs, loading screens and internal tools do not activate this skill without a conversion or activation goal."
 metadata:
   version: 2.0.0
 ---
 
-# Conversion Rate Optimization (CRO)
+# Conversion and activation
 
-You are a conversion rate optimization expert. Your goal is to analyze marketing pages and provide actionable recommendations to improve conversion rates.
+Read [shared marketing context](../_shared/marketing-context.md), then identify the requested stage, intended user action, relevant audience, and business constraints. Use existing evidence and ask only about material gaps.
 
-## Initial Assessment
+## Select one stage
 
-Read [shared marketing context](../_shared/marketing-context.md) before asking for background. Reuse the project’s declared source and ask only for information that materially affects this request.
+- **Marketing page or lead/contact form:** inspect message match, value clarity, trustworthy proof, action hierarchy and friction. Use [page and form review](references/page-review.md); load [form details](references/form.md) only for a form-specific issue.
+- **Registration or trial signup:** use [registration](references/registration.md) for field requirements, validation, authentication, mobile input and recovery. Preserve account-security and abuse-prevention requirements.
+- **Post-signup activation:** use [activation](references/activation.md) for first value, setup dependencies, stalled users and retention evidence. An ordinary empty state or loading bug does not by itself require an activation redesign.
 
-Before providing recommendations, identify:
+A narrow request should stay within its stage. Trace adjacent stages only when evidence suggests the problem crosses the boundary. Use `copywriting` for substantive copy work and `analytics` when instrumentation itself needs implementation or correction.
 
-1. **Page Type**: Homepage, landing page, pricing, feature, blog, about, other
-2. **Primary Conversion Goal**: Sign up, request demo, purchase, subscribe, download, contact sales
-3. **Traffic Context**: Where are visitors coming from? (organic, paid, email, social)
+## Measurement and action
 
----
+Define who enters the funnel, what counts as success, the denominator, time window and downstream quality measure. Distinguish observed failure, supported interpretation and an experiment hypothesis. A lower field count, extra testimonial or new headline does not guarantee a conversion lift.
 
-## CRO Analysis Framework
+Prioritize concrete defects and evidence-backed opportunities by likely effect, confidence, effort and reversibility. Choose experiments the traffic and budget can support; retain guardrails for retention, qualified leads, fraud, revenue or support burden as relevant. Do not assume an unavailable experiment skill or analytics connector exists.
 
-Analyze the page across these dimensions, in order of impact:
+For implementation, make the requested change, test meaningful success/error/recovery paths, inspect the affected viewport, and follow project delivery rules. Report what changed, the evidence, and material limitations. A review can end with a concise prioritized recommendation; it does not require a full funnel report or several creative alternatives.
 
-### 1. Value Proposition Clarity (Highest Impact)
-
-**Check for:**
-- Can a visitor understand what this is and why they should care within 5 seconds?
-- Is the primary benefit clear, specific, and differentiated?
-- Is it written in the customer's language (not company jargon)?
-
-**Common issues:**
-- Feature-focused instead of benefit-focused
-- Too vague or too clever (sacrificing clarity)
-- Trying to say everything instead of the most important thing
-
-### 2. Headline Effectiveness
-
-**Evaluate:**
-- Does it communicate the core value proposition?
-- Is it specific enough to be meaningful?
-- Does it match the traffic source's messaging?
-
-**Strong headline patterns:**
-- Outcome-focused: "Get [desired outcome] without [pain point]"
-- Specificity: Include numbers, timeframes, or concrete details
-- Social proof: "Join 10,000+ teams who..."
-
-### 3. CTA Placement, Copy, and Hierarchy
-
-**Primary CTA assessment:**
-- Is there one clear primary action?
-- Is it visible without scrolling?
-- Does the button copy communicate value, not just action?
-  - Weak: "Submit," "Sign Up," "Learn More"
-  - Strong: "Start Free Trial," "Get My Report," "See Pricing"
-
-**CTA hierarchy:**
-- Is there a logical primary vs. secondary CTA structure?
-- Are CTAs repeated at key decision points?
-
-### 4. Visual Hierarchy and Scannability
-
-**Check:**
-- Can someone scanning get the main message?
-- Are the most important elements visually prominent?
-- Is there enough white space?
-- Do images support or distract from the message?
-
-### 5. Trust Signals and Social Proof
-
-**Types to look for:**
-- Customer logos (especially recognizable ones)
-- Testimonials (specific, attributed, with photos)
-- Case study snippets with real numbers
-- Review scores and counts
-- Security badges (where relevant)
-
-**Placement:** Near CTAs and after benefit claims
-
-### 6. Objection Handling
-
-**Common objections to address:**
-- Price/value concerns
-- "Will this work for my situation?"
-- Implementation difficulty
-- "What if it doesn't work?"
-
-**Address through:** FAQ sections, guarantees, comparison content, process transparency
-
-### 7. Friction Points
-
-**Look for:**
-- Too many form fields
-- Unclear next steps
-- Confusing navigation
-- Required information that shouldn't be required
-- Mobile experience issues
-- Long load times
-
----
-
-## Output Format
-
-Structure your recommendations as:
-
-### Quick Wins (Implement Now)
-Easy changes with likely immediate impact.
-
-### High-Impact Changes (Prioritize)
-Bigger changes that require more effort but will significantly improve conversions.
-
-### Test Ideas
-Hypotheses worth A/B testing rather than assuming.
-
-### Copy Alternatives
-For key elements (headlines, CTAs), provide 2-3 alternatives with rationale.
-
----
-
-## Page-Specific Frameworks
-
-### Homepage CRO
-- Clear positioning for cold visitors
-- Quick path to most common conversion
-- Handle both "ready to buy" and "still researching"
-
-### Landing Page CRO
-- Message match with traffic source
-- Single CTA (remove navigation if possible)
-- Complete argument on one page
-
-### Pricing Page CRO
-- Clear plan comparison
-- Recommended plan indication
-- Address "which plan is right for me?" anxiety
-
-### Feature Page CRO
-- Connect feature to benefit
-- Use cases and examples
-- Clear path to try/buy
-
-### Blog Post CRO
-- Contextual CTAs matching content topic
-- Inline CTAs at natural stopping points
-
----
-
-## Experiment Ideas
-
-When recommending experiments, consider tests for:
-- Hero section (headline, visual, CTA)
-- Trust signals and social proof placement
-- Pricing presentation
-- Form optimization
-- Navigation and UX
-
-**For comprehensive experiment ideas by page type**: See [references/experiments.md](references/experiments.md)
-
----
-
-## Task-Specific Questions
-
-1. What's your current conversion rate and goal?
-2. Where is traffic coming from?
-3. What does your signup/purchase flow look like after this page?
-4. Do you have user research, heatmaps, or session recordings?
-5. What have you already tried?
-
----
-
-## Related Skills
-
-- **signup**: If the issue is in the signup process itself
-- **popups**: If considering popups as part of the strategy
-- **copywriting**: If the page needs a complete copy rewrite
-- **ab-testing**: To properly test recommended changes
-
----
-
-## Form Optimization
-
-For detailed form CRO guidance — including field optimization, multi-step forms, error handling, and form-specific experiments — see [references/form.md](references/form.md).
+Sending lifecycle messages, publishing content or changing spend needs matching authorization. Do not turn an activation recommendation into automatic outreach or a new recurring monitor.

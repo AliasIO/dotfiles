@@ -129,14 +129,26 @@ def main():
     args = parser.parse_args()
     try:
         jobs = plan(args.manifest, args.codex_home)
+        retirement = None
+        retirement_path = args.manifest.with_name('retired.json')
+        if retirement_path.exists():
+            import retire
+            retirement = retire.plan(retirement_path, args.codex_home)
         ready = sum(job['status'] == 'ready' for job in jobs)
         if args.operation == 'verify' and ready:
             raise ValueError(f'{ready} files are not applied')
+        if args.operation == 'verify' and retirement and retire.pending(retirement):
+            raise ValueError('Skill retirements or disabled-skill settings are not applied')
         backup = apply(jobs, args.codex_home) if args.operation == 'apply' else None
+        retired_archive = retire.apply(retirement) if args.operation == 'apply' and retirement else None
         applied_count = len(jobs) if args.operation == 'apply' else len(jobs)-ready
         print(f'{len(jobs)} files checked; {applied_count} applied; {0 if args.operation == "apply" else ready} ready.')
         if backup:
             print(f'Previous content backed up to {backup}')
+        if retirement:
+            print(f"Skill retirement directories: {len(retirement['jobs'])}; settings {'applied' if args.operation == 'apply' or not retire.pending(retirement) else 'ready'}.")
+        if retired_archive:
+            print(f'Removed skill directories archived at {retired_archive}')
         return 0
     except (ValueError, OSError, json.JSONDecodeError) as exc:
         print(str(exc))

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Business Analysis and KPIs"
+  short_description: "Analyze decisions, define KPIs and report performance"
+  default_prompt: "Use $product-business-analysis to answer a business question, define its KPIs, or prepare an evidence-backed operating readout."
+policy:
+  allow_implicit_invocation: true

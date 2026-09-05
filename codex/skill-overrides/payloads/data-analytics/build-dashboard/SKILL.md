@@ -46,7 +46,7 @@ Understand who will use the dashboard, what they need to measure or monitor, whi
 
 Clarify only the inputs that materially affect the dashboard, such as the primary audience, measurement goal, metric scope, delivery surface, refresh expectations, required filters, access constraints, or sharing needs. Decide whether the dashboard is mainly for status monitoring, recurring operating review, or analytical exploration, because that changes the layout, filter design, and validation bar.
 
-Use $gather-business-context when dashboard purpose, metric definitions, operating context, audience expectations, or existing dashboard conventions are not clear enough to design the dashboard well.
+Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) when dashboard purpose, metric definitions, operating context, audience expectations, or existing dashboard conventions are not clear enough to design the dashboard well.
 
 ### 2. Select The Delivery Surface
 
@@ -69,7 +69,7 @@ Do the data work in this order:
 - **Find the source path before rendering.** Source discovery is part of dashboard building, not optional enrichment. Identify the source path for the core dashboard metrics. Use `~~structured_data` when the dashboard needs data from a warehouse or another structured data source. Use context lanes such as `~~company_docs`, `~~team_communication`, or `~~dashboards_or_bi` when the dashboard needs business meaning, source-of-truth guidance, metric definitions, or requirements that are not captured in structured data alone.
 - **Use durable dashboard data.** Validate the data before wiring it into the dashboard. Keep final extracts compact and aggregated unless a bounded detail table is part of the dashboard's purpose. Avoid final dashboards that depend on scratch or temporary tables.
 - **Validate trust.** For straightforward dashboards, confirm the source, grain, freshness, and basic reconciliation needed to trust the displayed metrics. Use $analyze-data-quality when data trust is a material risk, such as a new source, recent backfill, complex join, or surprising result.
-- **Resolve time and context anchors.** Before selecting metrics, establish any date anchor, comparison window, latest complete data date, source coverage, or authoritative artifact needed to shape the dashboard, such as a launch date, incident window, or campaign period. Use $gather-business-context when the prompt does not provide it. If still unclear, ask only when it would materially change the dashboard; otherwise state the assumption and shape queries around it.
+- **Resolve time and context anchors.** Before selecting metrics, establish any date anchor, comparison window, latest complete data date, source coverage, or authoritative artifact needed to shape the dashboard, such as a launch date, incident window, or campaign period. Use [the context and sources reference](../product-business-analysis/references/context-and-sources.md) when the prompt does not provide it. If still unclear, ask only when it would materially change the dashboard; otherwise state the assumption and shape queries around it.
 - **Stop if source-backed data is unavailable.** Do not render dashboards from fallback, sample, scratch, or partially blocked data unless the user explicitly asked for a mockup. If the core dashboard data is not available, stop the build path and tell the user what source or access is needed. Do not claim a dashboard was created from real data when the source path is missing.
 
 ### 4. Define The Metric Model
@@ -99,7 +99,7 @@ Let the decision determine the number of hero metric cards. Do not pad or trunca
 
 **Escalate when metric design is the hard part.**
 
-Invoke $design-kpis when this baseline metric-family pass is not enough, such as when the dashboard needs a deeper metric framework, target-setting, formal KPI tradeoff analysis, or clearer definitions than this workflow can safely infer. Pass the dashboard brief, business context, source context, existing metric definitions, and constraints so the recommended metrics fit the audience and use case.
+Invoke [the kpi design reference](../product-business-analysis/references/kpi-design.md) when this baseline metric-family pass is not enough, such as when the dashboard needs a deeper metric framework, target-setting, formal KPI tradeoff analysis, or clearer definitions than this workflow can safely infer. Pass the dashboard brief, business context, source context, existing metric definitions, and constraints so the recommended metrics fit the audience and use case.
 
 **Keep the data model consistent.**
 

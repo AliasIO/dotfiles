@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "name": "humanizer",
+      "path": "skills/humanizer",
+      "pattern": "skills/humanizer",
+      "replacement": "copywriting"
+    },
+    {
+      "name": "copy-editing",
+      "path": "skills/copy-editing",
+      "pattern": "skills/copy-editing",
+      "replacement": "copywriting"
+    },
+    {
+      "name": "ai-seo",
+      "path": "skills/ai-seo",
+      "pattern": "skills/ai-seo",
+      "replacement": "seo-audit"
+    },
+    {
+      "name": "signup",
+      "path": "skills/signup",
+      "pattern": "skills/signup",
+      "replacement": "cro"
+    },
+    {
+      "name": "onboarding",
+      "path": "skills/onboarding",
+      "pattern": "skills/onboarding",
+      "replacement": "cro"
+    },
+    {
+      "name": "gather-business-context",
+      "path": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/gather-business-context",
+      "pattern": "plugins/cache/openai-curated-remote/data-analytics/*/skills/gather-business-context",
+      "replacement": "product-business-analysis"
+    },
+    {
+      "name": "design-kpis",
+      "path": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/design-kpis",
+      "pattern": "plugins/cache/openai-curated-remote/data-analytics/*/skills/design-kpis",
+      "replacement": "product-business-analysis"
+    },
+    {
+      "name": "kpi-reporting",
+      "path": "plugins/cache/openai-curated-remote/data-analytics/0.2.10-13ceeea1f599/skills/kpi-reporting",
+      "pattern": "plugins/cache/openai-curated-remote/data-analytics/*/skills/kpi-reporting",
+      "replacement": "product-business-analysis"
+    },
+    {
+      "name": "stripe-projects",
+      "path": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-projects",
+      "pattern": "plugins/cache/openai-curated-remote/stripe/*/skills/stripe-projects",
+      "replacement": null
+    },
+    {
+      "name": "stripe-directory",
+      "path": "plugins/cache/openai-curated-remote/stripe/7.0.0/skills/stripe-directory",
+      "pattern": "plugins/cache/openai-curated-remote/stripe/*/skills/stripe-directory",
+      "replacement": null
+    }
+  ]
+}

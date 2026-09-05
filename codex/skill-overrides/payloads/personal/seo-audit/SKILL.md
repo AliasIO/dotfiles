@@ -1,6 +1,6 @@
 ---
 name: seo-audit
-description: "Audit crawlability, indexing, technical and on-page SEO using source and rendered evidence. Scope to the requested site or pages; use ai-seo for AI-search visibility and schema for focused structured-data changes."
+description: "Audit technical/on-page SEO and, when requested, AI-search citation visibility using source and rendered evidence. Bound the review to the requested pages and goal; use schema for structured-data implementation."
 metadata:
   version: 2.0.0
 ---
@@ -443,7 +443,7 @@ Same format as above
 
 - [AI Writing Detection](references/ai-writing-detection.md): Common AI writing patterns to avoid (em dashes, overused phrases, filler words)
 - [International SEO](references/international-seo.md): Evidence and sources for hreflang, canonical + i18n, sitemaps, URL structure, and content quality across locales
-- For AI search optimization (AEO, GEO, LLMO, AI Overviews), see the **ai-seo** skill
+- For an explicit AI-search citation or answer-engine request, read [AI-search visibility](references/ai-search.md).
 
 ---
 
@@ -479,7 +479,7 @@ Same format as above
 
 ## Related Skills
 
-- **ai-seo**: For optimizing content for AI search engines (AEO, GEO, LLMO)
+- [AI-search visibility](references/ai-search.md): Optional checks for AI-search citations and answer-engine requests.
 - **programmatic-seo**: For building SEO pages at scale
 - **site-architecture**: For page hierarchy, navigation design, and URL structure
 - **schema**: For implementing structured data

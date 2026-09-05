@@ -15,9 +15,7 @@ Read [runtime and scope](references/runtime-and-scope.md) when choosing source b
 
 | Requested work | Primary workflow |
 | --- | --- |
-| Missing business meaning or ownership | `$gather-business-context`, then continue the requested analysis |
-| Define metrics, targets, or guardrails | `$design-kpis` |
-| KPI status or operating readout | `$kpi-reporting` |
+| Business decision, missing context, KPI definition or operating readout | `$product-business-analysis`, choosing only the needed reference |
 | Explain metric movement or discrepancy | `$metric-diagnostics` |
 | Decide launch, segment, or business direction | `$product-business-analysis` |
 | Estimate TAM, SAM, SOM, or opportunity | `$market-sizing` |
