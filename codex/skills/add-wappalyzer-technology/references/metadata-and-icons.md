@@ -12,13 +12,13 @@
 
 ## Icons
 
-1. Prefer an official transparent square SVG mark that matches current public branding and remains legible at small size.
+1. Prefer an official transparent SVG mark that matches current public branding and remains legible at small size.
 2. If the product site has no usable asset, search reputable brand sources and compare candidates with the current official mark.
-3. Extract a standalone mark from an existing full-logo SVG when practical. Removing wordmarks, recentering, padding, and clipping fixes are allowed.
+3. Extract a standalone mark from an existing full-logo SVG when practical. Removing wordmarks and trimming empty canvas space are allowed.
 4. Never trace a new SVG from a raster image or wrap a raster inside SVG.
 5. Use PNG only after exhausting suitable SVG sources. The committed PNG must be no larger than `32x32`; resize larger sources, prefer `32x32`, and accept `16x16` when no better official asset exists.
 6. Omit `icon` when no suitable asset is available.
 
-- Keep SVG viewBoxes square, visually centered, minimally padded, and unclipped.
+- SVGs must have no canvas padding: fit the viewBox tightly to the visible artwork, including strokes, without clipping. Preserve the artwork’s aspect ratio; use a rectangular viewBox when needed instead of adding space to make it square. Remove or adjust fixed width/height attributes that would introduce letterboxing.
 - Do not reject a user-supplied ticket asset solely because it is third-party; compare it with first-party choices and use the best current mark.
-- Preview the committed icon at small size before delivery.
+- Verify the artwork bounds against the viewBox and preview the committed icon at small size before delivery.
