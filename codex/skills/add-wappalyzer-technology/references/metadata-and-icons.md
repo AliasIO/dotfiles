@@ -19,6 +19,6 @@
 5. Use PNG only after exhausting suitable SVG sources. The committed PNG must be no larger than `32x32`; resize larger sources, prefer `32x32`, and accept `16x16` when no better official asset exists.
 6. Omit `icon` when no suitable asset is available.
 
-- SVGs must have no canvas padding: fit the viewBox tightly to the visible artwork, including strokes, without clipping. Preserve the artwork’s aspect ratio; use a rectangular viewBox when needed instead of adding space to make it square. Remove or adjust fixed width/height attributes that would introduce letterboxing.
+- SVGs must use the smallest square viewBox that contains the visible artwork, including strokes. Set its side length to the larger artwork dimension and center the artwork without stretching or clipping. The longer dimension must fill the square; only the necessary, equal padding on the two sides of the shorter dimension is allowed. Keep any explicit width/height dimensions square.
 - Do not reject a user-supplied ticket asset solely because it is third-party; compare it with first-party choices and use the best current mark.
-- Verify the artwork bounds against the viewBox and preview the committed icon at small size before delivery.
+- Verify that the viewBox is square and the artwork is centered at its largest unclipped size, then preview the committed icon at small size before delivery.
