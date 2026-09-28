@@ -389,7 +389,9 @@ def build_changelog_lines(
                 if label == "ADD" and entries[existing_index]["label"] != "ADD":
                     entries[existing_index] = {"label": label, "name": technology_name}
 
-    return [f"* `{entry['label']}` {entry['name']} detection" for entry in entries]
+    return sorted(
+        f"* `{entry['label']}` {entry['name']} detection" for entry in entries
+    )
 
 
 def ensure_artifacts_exist(paths: list[Path]) -> None:
