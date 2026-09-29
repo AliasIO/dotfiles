@@ -19,14 +19,12 @@
   },
   "parents": {
     "cli": "cli",
-    "static": "static",
     "apis": "v4/apis",
     "utils": "_other/utils",
     "extract": "extract"
   },
   "consumers": [
     { "canonical": "extension", "parent": "cli", "path": "wappalyzer" },
-    { "canonical": "extension", "parent": "static", "path": "wappalyzer" },
     { "canonical": "cli", "parent": "apis", "path": "ecs/wappalyzer" },
     { "canonical": "cli", "parent": "apis", "path": "lookup/wappalyzer" },
     { "canonical": "cli", "parent": "apis", "path": "lookup-site/wappalyzer" },

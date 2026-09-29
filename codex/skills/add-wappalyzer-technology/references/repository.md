@@ -13,7 +13,7 @@
 - Detection engine: `extension/src/js/wappalyzer.js`
 - Definition documentation: `extension/README.md`
 
-Do not edit extension consumers such as `cli/wappalyzer`, `static/wappalyzer`, or `v4/apis/*/wappalyzer`.
+Do not edit extension consumers such as `cli/wappalyzer` or `v4/apis/*/wappalyzer`.
 
 ## Placement and history
 

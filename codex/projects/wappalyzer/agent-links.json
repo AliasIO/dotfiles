@@ -28,12 +28,6 @@
       "exclude": "/AGENTS.md"
     },
     {
-      "destination": "static/AGENTS.md",
-      "source": "scopes/static/AGENTS.md",
-      "repository": "static",
-      "exclude": "/AGENTS.md"
-    },
-    {
       "destination": "v4/apis/AGENTS.md",
       "source": "scopes/v4/apis/AGENTS.md",
       "repository": "v4/apis",

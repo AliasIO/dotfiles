@@ -14,14 +14,13 @@
 | --- | --- |
 | Extension runtime, detection engine, technology definitions, and icons | `extension/` |
 | CLI and browser crawler | `cli/` |
-| Browserless single-URL crawler | `static/` |
 | Shared API logic, AWS helpers, and extractor | `v4/apis-shared/` |
 | API service packaging, infrastructure configuration, and deploy entrypoint | `v4/apis/` |
 | Website | `v4/frontend/` |
 | `extract/` aliases | Content from `v4/apis-shared/`; aliases are not another source |
 | Declared submodule copies | Disposable consumers; never primary edit locations |
 
-- Do not patch `cli/wappalyzer`, `static/wappalyzer`, `v4/apis/*/wappalyzer`, or `v4/apis/*/shared`. Make the change in the canonical repository and propagate its published commit.
+- Do not patch `cli/wappalyzer`, `v4/apis/*/wappalyzer`, or `v4/apis/*/shared`. Make the change in the canonical repository and propagate its published commit.
 - Keep `extract/shared.js`, `extract/linkedin.js`, `extract/diallingcodes.json`, and `extract/extract.js` byte-identical to their `v4/apis-shared/` sources. Symlink or hardlink identity is preferred where present, but content equality is the required invariant.
 
 ## Dependency synchronization
