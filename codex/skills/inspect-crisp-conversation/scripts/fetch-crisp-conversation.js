@@ -3,6 +3,7 @@
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
+const { tableRecords } = require('./leveldb-table')
 
 const LEVELDB_DIR = path.join(
   os.homedir(),
@@ -141,31 +142,40 @@ function listCredentialFiles(directory) {
     })
 }
 
-function extractSession(directory) {
+function extractSessions(directory) {
   const files = listCredentialFiles(directory)
+  const sessions = []
+  const seen = new Set()
   const pattern =
-    /user_session[\s\S]{0,400}?"identifier":"([^"]+)","key":"([^"]+)"/
+    /user_session[\s\S]{0,400}?"identifier":"([^"]+)","key":"([^"]+)"/g
 
   for (const file of files) {
     let text
 
     try {
-      text = fs.readFileSync(file, 'latin1')
+      const buffer = fs.readFileSync(file)
+      text = file.endsWith('.ldb')
+        ? tableRecords(buffer).map(([key, value]) => key.toString('latin1') + value.toString('latin1')).join('\n')
+        : buffer.toString('latin1')
     } catch (error) {
       continue
     }
 
-    const match = text.match(pattern)
-
-    if (match) {
-      return {
-        identifier: match[1],
-        key: match[2],
+    // LevelDB logs can contain several historical values in one file.
+    // Prefer later records, but validate candidates rather than trusting mtime.
+    for (const match of [...text.matchAll(pattern)].reverse()) {
+      const identity = JSON.stringify([match[1], match[2]])
+      if (!seen.has(identity)) {
+        seen.add(identity)
+        sessions.push({ identifier: match[1], key: match[2] })
       }
     }
   }
 
-  fail('Could not find a local Crisp desktop user_session')
+  if (!sessions.length) {
+    throw new Error('Could not find a local Crisp desktop user_session')
+  }
+  return sessions
 }
 
 async function fetchJson(url, headers) {
@@ -183,10 +193,10 @@ async function fetchJson(url, headers) {
   }
 
   if (!response.ok) {
-    const reason =
-      (payload && payload.reason) || body || response.statusText || 'Request failed'
-
-    fail(`${response.status} ${reason} for ${url}`)
+    const error = new Error(`${response.status} ${response.statusText || 'Request failed'} for ${url}`)
+    error.status = response.status
+    error.reason = payload && payload.reason
+    throw error
   }
 
   return payload
@@ -339,6 +349,26 @@ function formatSummary(target, payload, options) {
   return lines.join('\n')
 }
 
+async function selectSession(sessions, websiteId, request = fetchJson) {
+  for (const session of sessions) {
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Basic ${Buffer.from(`${session.identifier}:${session.key}`).toString('base64')}`,
+      'X-Crisp-Tier': 'user',
+    }
+    try {
+      const websitePayload = await request(
+        `https://api.crisp.chat/v1/website/${websiteId}`, headers
+      )
+      return { headers, websitePayload }
+    } catch (error) {
+      // Permission errors, rate limits and network failures must not trigger retries.
+      if (error.status !== 401 || error.reason !== 'invalid_session') throw error
+    }
+  }
+  throw new Error('No valid saved Crisp desktop session found; the app may still be signed in')
+}
+
 async function main() {
   const { options, positional } = parseArgs(process.argv.slice(2))
   const target = parseTarget(positional)
@@ -359,24 +389,16 @@ async function main() {
     return
   }
 
-  const session = extractSession(LEVELDB_DIR)
-  const authorization = `Basic ${Buffer.from(
-    `${session.identifier}:${session.key}`
-  ).toString('base64')}`
-  const headers = {
-    Accept: 'application/json',
-    Authorization: authorization,
-    'X-Crisp-Tier': 'user',
-  }
+  const { headers, websitePayload } = await selectSession(
+    extractSessions(LEVELDB_DIR), target.websiteId
+  )
   const base = `https://api.crisp.chat/v1/website/${target.websiteId}/conversation/${target.sessionId}`
 
-  const [websitePayload, conversationPayload, metaPayload, messagesPayload] =
-    await Promise.all([
-      fetchJson(`https://api.crisp.chat/v1/website/${target.websiteId}`, headers),
-      fetchJson(base, headers),
-      fetchJson(`${base}/meta`, headers),
-      fetchJson(`${base}/messages`, headers),
-    ])
+  const [conversationPayload, metaPayload, messagesPayload] = await Promise.all([
+    fetchJson(base, headers),
+    fetchJson(`${base}/meta`, headers),
+    fetchJson(`${base}/messages`, headers),
+  ])
 
   const allMessages = (messagesPayload && messagesPayload.data) || []
   let payload = {
@@ -399,6 +421,10 @@ async function main() {
   console.log(formatSummary(target, payload, options))
 }
 
-main().catch((error) => {
-  fail(error.message || String(error))
-})
+if (require.main === module) {
+  main().catch((error) => {
+    fail(error.message || String(error))
+  })
+}
+
+module.exports = { extractSessions, selectSession, fetchJson }
